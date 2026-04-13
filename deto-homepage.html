@@ -1,0 +1,1421 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deto — Professionele autodetailing aan huis in Gent</title>
+<meta name="description" content="Deto biedt professionele autodetailing aan huis in Gent. Exterieur, interieur of volledig — wij komen naar jou. Boek direct online vanaf €35.">
+<meta name="keywords" content="autodetailing Gent, auto poetsen aan huis, carwash aan huis, auto wassen Gent, detailing service Gent">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="Deto — Professionele autodetailing aan huis in Gent">
+<meta property="og:description" content="Professionele autodetailing aan huis. Exterieur, interieur of volledig. Boek direct online vanaf €35.">
+<meta property="og:type" content="website">
+<link rel="icon" type="image/png" href="deto-logo.png">
+<link rel="stylesheet" href="style.css">
+<style>
+  /* HERO WRAPPER */
+  .hero-wrapper {
+    position: relative;
+    background: linear-gradient(155deg, #F0FDF4 0%, #FFFFFF 60%);
+    overflow: hidden;
+  }
+  .hero-wrapper::before {
+    content: '';
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 550px; height: 550px;
+    background: radial-gradient(circle, rgba(34,197,94,0.08) 0%, transparent 65%);
+    pointer-events: none;
+  }
+
+  /* HERO */
+  .hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 90px 60px 80px;
+    max-width: 1200px;
+    margin: 0 auto;
+    gap: 60px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-left { flex: 1; }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(34,197,94,0.12);
+    color: #22C55E;
+    padding: 6px 16px;
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 24px;
+    border: 1px solid rgba(34,197,94,0.25);
+  }
+  .hero-badge span {
+    width: 7px; height: 7px; background: #22C55E; border-radius: 50%; display: inline-block;
+    animation: badgePulse 2s ease-in-out infinite;
+  }
+  @keyframes badgePulse {
+    0%,100% { box-shadow: 0 0 0 0 rgba(34,197,94,0.6); }
+    50% { box-shadow: 0 0 0 5px rgba(34,197,94,0); }
+  }
+
+  h1 {
+    font-size: 56px;
+    font-weight: 900;
+    line-height: 1.08;
+    letter-spacing: -2px;
+    color: #0F172A;
+    margin-bottom: 22px;
+  }
+
+  h1 .accent { color: #22C55E; }
+
+  .hero-sub {
+    font-size: 18px;
+    color: #6B7280;
+    line-height: 1.6;
+    margin-bottom: 36px;
+    max-width: 480px;
+  }
+
+  .hero-buttons { display: flex; gap: 14px; align-items: center; }
+
+  .hero-right { flex: 1; display: flex; justify-content: center; align-items: center; }
+
+  .hero-card {
+    background: white;
+    border: 1px solid #E5E7EB;
+    border-radius: 20px;
+    padding: 28px;
+    width: 340px;
+    box-shadow: 0 8px 48px rgba(0,0,0,0.09);
+  }
+
+  .hero-card-title {
+    color: #9CA3AF; font-size: 11px; font-weight: 700;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    margin-bottom: 18px;
+  }
+
+  .service-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 22px;
+  }
+
+  .service-option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background 0.2s;
+    border: 2px solid transparent;
+  }
+
+  .service-option.active {
+    background: rgba(34,197,94,0.15);
+    border-color: var(--green);
+  }
+
+  .service-option:not(.active) { background: #F9FAFB; }
+
+  .service-name { color: #111827; font-size: 14px; font-weight: 600; }
+  .service-price { color: var(--green); font-size: 15px; font-weight: 700; }
+
+  .book-btn {
+    width: 100%;
+    background: var(--green);
+    color: white;
+    border: none;
+    padding: 16px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .book-btn:hover { background: var(--green-dark); }
+
+  .hero-stats {
+    display: flex;
+    gap: 30px;
+    margin-top: 44px;
+  }
+
+  .stat { display: flex; flex-direction: column; }
+  .stat-num { font-size: 26px; font-weight: 800; color: #0F172A; letter-spacing: -1px; }
+  .stat-label { font-size: 13px; color: #9CA3AF; margin-top: 2px; }
+
+  /* SCROLL REVEAL */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.65s cubic-bezier(0.16,1,0.3,1), transform 0.65s cubic-bezier(0.16,1,0.3,1);
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.12s; }
+  .reveal-delay-2 { transition-delay: 0.24s; }
+  .reveal-delay-3 { transition-delay: 0.36s; }
+
+  /* HOE WERKT HET */
+  .how {
+    background: var(--light);
+    padding: 90px 60px;
+  }
+
+  .section-label {
+    text-align: center;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 14px;
+  }
+
+  .section-title {
+    text-align: center;
+    font-size: 40px;
+    font-weight: 900;
+    letter-spacing: -1.5px;
+    color: var(--dark);
+    margin-bottom: 56px;
+  }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .step {
+    background: white;
+    border-radius: 16px;
+    padding: 32px 28px;
+    position: relative;
+    border: 1px solid #E5E7EB;
+    transition: box-shadow 0.25s;
+  }
+  .step:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.08); }
+
+  .step-icon-wrap {
+    width: 48px; height: 48px;
+    background: #F0FDF4;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 20px;
+  }
+  .step-icon-wrap svg { width: 22px; height: 22px; color: #22C55E; }
+
+  .step-num {
+    position: absolute; top: 20px; right: 20px;
+    width: 26px; height: 26px;
+    background: #F3F4F6;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 800; color: #9CA3AF;
+  }
+
+  .step h3 {
+    font-size: 17px;
+    font-weight: 800;
+    margin-bottom: 8px;
+    letter-spacing: -0.3px;
+  }
+
+  .step p {
+    font-size: 14px;
+    color: var(--gray);
+    line-height: 1.6;
+  }
+
+  /* DIENSTEN */
+  .services {
+    padding: 90px 60px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .service-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+  }
+
+  .service-card {
+    border: 2px solid #E5E7EB;
+    border-radius: 20px;
+    padding: 34px 28px;
+    transition: border-color 0.2s, transform 0.2s;
+    cursor: pointer;
+    position: relative;
+  }
+
+  .service-card:hover { border-color: var(--green); transform: translateY(-3px); }
+
+  .service-card.featured {
+    background: var(--dark);
+    border-color: var(--dark);
+  }
+
+  .service-card.featured h3,
+  .service-card.featured .price,
+  .service-card.featured .price-label,
+  .service-card.featured li { color: white; }
+
+  .service-card.featured p { color: rgba(255,255,255,0.6); }
+
+  .popular-badge {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--green);
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 4px 14px;
+    border-radius: 100px;
+  }
+
+  .service-card h3 {
+    font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 6px;
+  }
+
+  .service-card p {
+    font-size: 13px;
+    color: var(--gray);
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+
+  .price {
+    font-size: 42px;
+    font-weight: 900;
+    letter-spacing: -2px;
+    color: var(--dark);
+  }
+
+  .price-label {
+    font-size: 13px;
+    color: var(--gray);
+    margin-bottom: 24px;
+  }
+
+  .service-card ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 28px;
+  }
+
+  .service-card li {
+    font-size: 14px;
+    color: var(--dark);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .service-card li::before {
+    content: '✓';
+    color: var(--green);
+    font-weight: 700;
+    font-size: 13px;
+  }
+
+  .service-card.featured li::before { color: var(--green); }
+
+  .book-service-btn {
+    display: block;
+    text-align: center;
+    padding: 13px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .book-service-btn.dark { background: var(--dark); color: white; }
+  .book-service-btn.dark:hover { background: #374151; }
+  .book-service-btn.green { background: var(--green); color: white; }
+  .book-service-btn.green:hover { background: var(--green-dark); }
+  .book-service-btn.outline { border: 2px solid #E5E7EB; color: var(--dark); }
+  .book-service-btn.outline:hover { border-color: var(--green); color: var(--green); }
+
+  /* CTA BANNER — modern card design */
+  .cta-banner {
+    background: var(--light);
+    padding: 80px 60px;
+    display: flex;
+    justify-content: center;
+  }
+  .cta-card {
+    background: var(--dark);
+    border-radius: 24px;
+    padding: 72px 60px;
+    max-width: 900px;
+    width: 100%;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-card::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 240px; height: 240px;
+    background: radial-gradient(circle, rgba(34,197,94,0.25) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .cta-card::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: -60px;
+    width: 280px; height: 280px;
+    background: radial-gradient(circle, rgba(34,197,94,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .cta-banner h2 {
+    font-size: 42px;
+    font-weight: 900;
+    color: white;
+    letter-spacing: -1.5px;
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 1;
+  }
+  .cta-banner p {
+    color: rgba(255,255,255,0.55);
+    font-size: 16px;
+    margin-bottom: 36px;
+    position: relative;
+    z-index: 1;
+  }
+  .cta-btn-row {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 1;
+  }
+  .cta-btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #22C55E;
+    color: white;
+    padding: 16px 36px;
+    border-radius: 100px;
+    font-size: 16px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .cta-btn-primary:hover { background: #16A34A; transform: translateY(-2px); }
+  .cta-btn-outline {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    color: rgba(255,255,255,0.75);
+    padding: 16px 36px;
+    border-radius: 100px;
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none;
+    border: 1.5px solid rgba(255,255,255,0.2);
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .cta-btn-outline:hover { border-color: rgba(255,255,255,0.5); color: white; }
+
+  /* FOOTER */
+  footer {
+    background: #0a0a0a;
+    padding: 50px 60px 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .footer-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .footer-logo { font-size: 20px; font-weight: 800; color: white; }
+  .footer-tagline { font-size: 13px; color: #555; margin-top: 6px; }
+
+  .footer-links {
+    display: flex;
+    gap: 50px;
+  }
+
+  .footer-col h4 {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #555;
+    margin-bottom: 14px;
+  }
+
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .footer-col a { text-decoration: none; color: #888; font-size: 14px; transition: color 0.2s; }
+  .footer-col a:hover { color: white; }
+
+  .footer-bottom {
+    border-top: 1px solid #1a1a1a;
+    padding-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-bottom p { font-size: 13px; color: #444; }
+
+  /* CAR SIZE BUTTONS IN HERO */
+  .car-size-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .car-btn {
+    background: #F9FAFB;
+    border: 1.5px solid #E5E7EB;
+    color: #374151;
+    padding: 9px 10px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: left;
+  }
+  .car-btn.active { background: #F0FDF4; border-color: var(--green); color: #15803D; }
+  .car-btn:hover:not(.active) { border-color: #D1D5DB; background: #F3F4F6; }
+
+  .dirt-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+  .dirt-btn {
+    background: #F9FAFB;
+    border: 1.5px solid #E5E7EB;
+    color: #374151;
+    padding: 9px 12px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: left;
+  }
+  .dirt-btn.active { background: #F0FDF4; border-color: var(--green); color: #15803D; }
+  .dirt-btn:hover:not(.active) { border-color: #D1D5DB; background: #F3F4F6; }
+
+  /* SIZE TABS IN DIENSTEN */
+  .size-tabs {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+  }
+  .size-tab {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 12px 20px;
+    border-radius: 14px;
+    border: 2px solid #E5E7EB;
+    background: white;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--dark);
+    transition: all 0.2s;
+    gap: 3px;
+  }
+  .size-tab span {
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--gray);
+  }
+  .size-tab.active { border-color: var(--green); background: #F0FDF4; color: var(--green-dark); }
+  .size-tab:hover:not(.active) { border-color: #d1d5db; }
+
+  /* DIRT INFO */
+  .dirt-info {
+    max-width: 900px;
+    margin: 40px auto 0;
+    background: var(--light);
+    border-radius: 20px;
+    padding: 28px 32px;
+  }
+  .dirt-info-title {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gray);
+    margin-bottom: 18px;
+  }
+  .dirt-info-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .dirt-info-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: white;
+    border-radius: 12px;
+    padding: 16px;
+  }
+  .dirt-emoji { font-size: 26px; }
+  .dirt-info-card div {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .dirt-info-card strong { font-size: 14px; color: var(--dark); }
+  .dirt-info-card span { font-size: 12px; color: var(--gray); }
+  .dirt-price { color: var(--green) !important; font-weight: 700 !important; }
+
+
+  /* REVIEWS — auto-scroll masonry */
+  .reviews {
+    padding: 90px 0;
+    background: white;
+    overflow: hidden;
+  }
+  .reviews-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 60px;
+  }
+  .testimonials-columns {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    max-height: 680px;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
+    mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
+    margin-top: 48px;
+  }
+  .testimonials-col {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    animation: scrollUp 18s linear infinite;
+    flex: 1;
+    min-width: 0;
+  }
+  .testimonials-col:nth-child(2) { animation-duration: 22s; animation-direction: normal; }
+  .testimonials-col:nth-child(3) { animation-duration: 16s; }
+  @keyframes scrollUp {
+    0%   { transform: translateY(0); }
+    100% { transform: translateY(-50%); }
+  }
+  .testimonials-columns:hover .testimonials-col { animation-play-state: paused; }
+  .review-card {
+    background: var(--light);
+    border-radius: 16px;
+    padding: 24px;
+    border: 1px solid #E5E7EB;
+    flex-shrink: 0;
+  }
+  .review-stars { color: #FBBF24; font-size: 14px; margin-bottom: 10px; letter-spacing: 2px; }
+  .review-text { font-size: 14px; color: #374151; line-height: 1.65; margin-bottom: 16px; }
+  .review-author { display: flex; align-items: center; gap: 10px; }
+  .review-avatar {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--green);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 700; color: white;
+    flex-shrink: 0;
+  }
+  .review-name { font-size: 14px; font-weight: 700; color: var(--dark); }
+  .review-city { font-size: 12px; color: var(--gray); }
+
+  /* TRUST BAR */
+  .trust-bar {
+    background: var(--light);
+    border-top: 1px solid #E5E7EB;
+    border-bottom: 1px solid #E5E7EB;
+    padding: 20px 60px;
+  }
+  .trust-bar-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 48px;
+    flex-wrap: wrap;
+  }
+  .trust-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    color: #374151;
+    font-weight: 500;
+  }
+  .trust-item svg { color: var(--green); flex-shrink: 0; }
+
+  /* CTA BTN LARGE */
+  .btn-primary-lg {
+    background: var(--green);
+    color: white;
+    padding: 17px 36px;
+    border-radius: 12px;
+    font-size: 17px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.1s;
+    display: inline-block;
+  }
+  .btn-primary-lg:hover { background: var(--green-dark); transform: translateY(-1px); }
+
+  @media (max-width: 1024px) {
+    nav { padding: 16px 30px; }
+    .hero { padding: 70px 30px 60px; }
+    .how, .cta-banner { padding: 70px 30px; }
+    .services { padding: 70px 30px; }
+    .reviews { padding: 60px 30px; }
+    footer { padding: 50px 30px 30px; }
+  }
+
+  @media (max-width: 1024px) {
+    .testimonials-col:nth-child(3) { display: none; }
+    .trust-bar { padding: 20px 30px; }
+    .trust-bar-inner { gap: 24px; }
+  }
+
+  @media (max-width: 768px) {
+    .hero { flex-direction: column; padding: 40px 20px 50px; }
+    h1 { font-size: 34px; letter-spacing: -1px; }
+    .hero-right { width: 100%; }
+    .hero-card { width: 100%; }
+    .steps { grid-template-columns: 1fr; }
+    .service-cards { grid-template-columns: 1fr; }
+    .how { padding: 60px 20px; }
+    .services { padding: 60px 20px; }
+    .reviews { padding: 60px 0; }
+    .reviews-inner { padding: 0 20px; }
+    .testimonials-columns { gap: 12px; max-height: 520px; }
+    .testimonials-col:nth-child(2) { display: none; }
+    .testimonials-col:nth-child(3) { display: none; }
+    .cta-banner { padding: 40px 20px; }
+    .cta-card { padding: 48px 24px; border-radius: 20px; }
+    .cta-banner h2 { font-size: 28px; }
+    .footer-top { flex-direction: column; gap: 30px; }
+    .footer-links { flex-direction: column; gap: 24px; }
+    footer { padding: 40px 20px 20px; }
+    .hero-stats { gap: 20px; }
+    .section-title { font-size: 30px; }
+    .dirt-info-cards { grid-template-columns: 1fr; }
+    .dirt-info { padding: 20px; }
+    .trust-bar { padding: 16px 20px; }
+    .trust-bar-inner { gap: 14px; justify-content: flex-start; }
+    .trust-item { font-size: 13px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">
+    <img src="deto-logo.png" style="height:40px; width:auto;">
+  </a>
+  <ul class="nav-links">
+    <li><a href="#hoe">Hoe het werkt</a></li>
+    <li><a href="#diensten">Diensten</a></li>
+    <li><a href="detailer-registratie.html">Word detailer</a></li>
+    <li id="nav-auth-item">
+      <a href="login.html" class="nav-auth-link">Inloggen</a>
+    </li>
+    <li><a href="boeken.html" class="nav-cta">Boek nu</a></li>
+  </ul>
+  <button class="hamburger" onclick="document.getElementById('mobileMenu').classList.toggle('open')" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});closeMobileMenu();return false;">&#127968; Home</a>
+  <a href="#hoe" onclick="closeMobileMenu()">Hoe het werkt</a>
+  <a href="#diensten" onclick="closeMobileMenu()">Diensten</a>
+  <a href="detailer-registratie.html" onclick="closeMobileMenu()">Word detailer</a>
+  <a href="login.html" id="mobile-auth-link" onclick="closeMobileMenu()">Inloggen</a>
+  <a href="boeken.html" class="nav-cta-mobile" onclick="closeMobileMenu()">Boek nu →</a>
+</div>
+
+<!-- HERO -->
+<div class="hero-wrapper">
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-badge">
+      <span></span>
+      Nu beschikbaar in Gent
+    </div>
+    <h1>Jouw auto <span class="accent">blinkend schoon</span> — jij ontspant thuis</h1>
+    <p class="hero-sub">Geen file naar de carwash, geen gedoe met afspraken. Wij komen naar jou — jij zit met een koffie.</p>
+    <div class="hero-buttons">
+      <a href="boeken.html" class="btn-primary">Boek een beurt →</a>
+      <a href="#hoe" class="btn-secondary">Hoe werkt het?</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat">
+        <span class="stat-num">500+</span>
+        <span class="stat-label">Blije klanten</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">4.9★</span>
+        <span class="stat-label">Gemiddelde score</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">2u</span>
+        <span class="stat-label">Gemiddelde tijd</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-card">
+      <div class="hero-card-title">Bereken jouw prijs</div>
+
+      <div style="margin-bottom:14px;">
+        <div style="color:#9CA3AF;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;">Jouw auto</div>
+        <div class="car-size-grid">
+          <button class="car-btn active" data-size="klein">🚗 Klein</button>
+          <button class="car-btn" data-size="medium">🚙 Medium</button>
+          <button class="car-btn" data-size="groot">🚐 Groot</button>
+          <button class="car-btn" data-size="bestel">🚌 Bestel</button>
+        </div>
+      </div>
+
+      <div style="margin-bottom:14px;">
+        <div style="color:#9CA3AF;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;">Dienst</div>
+        <div class="service-options">
+          <div class="service-option active" data-service="exterieur">
+            <span class="service-name">Exterieur</span>
+            <span class="service-price" id="price-ext">€35</span>
+          </div>
+          <div class="service-option" data-service="interieur">
+            <span class="service-name">Interieur</span>
+            <span class="service-price" id="price-int">€45</span>
+          </div>
+          <div class="service-option" data-service="volledig">
+            <span class="service-name">Volledig</span>
+            <span class="service-price" id="price-vol">€75</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-bottom:18px;">
+        <div style="color:#9CA3AF;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;">Conditie</div>
+        <div class="dirt-grid">
+          <button class="dirt-btn active" data-dirt="0">😊 Normaal</button>
+          <button class="dirt-btn" data-dirt="15">😅 Vuil +€15</button>
+          <button class="dirt-btn" data-dirt="30">🐶 Heel vuil +€30</button>
+        </div>
+      </div>
+
+      <button class="book-btn" id="heroBookBtn" onclick="window.location='boeken.html'">Boek nu — €35</button>
+    </div>
+  </div>
+</section>
+</div><!-- /hero-wrapper -->
+
+<!-- TRUST BAR -->
+<div class="trust-bar">
+  <div class="trust-bar-inner">
+    <div class="trust-item">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      Gratis verplaatsing in Gent
+    </div>
+    <div class="trust-item">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      Beschikbaar binnen 24u
+    </div>
+    <div class="trust-item">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      4.9★ gemiddelde beoordeling
+    </div>
+    <div class="trust-item">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      Betaling na de dienst
+    </div>
+    <div class="trust-item">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      500+ tevreden klanten
+    </div>
+  </div>
+</div>
+
+<!-- HOE WERKT HET -->
+<section class="how" id="hoe">
+  <div class="section-label">Simpel & snel</div>
+  <h2 class="section-title">Hoe werkt Deto?</h2>
+  <div class="steps">
+    <div class="step reveal">
+      <div class="step-icon-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+        </svg>
+      </div>
+      <div class="step-num">1</div>
+      <h3>Kies je dienst</h3>
+      <p>Selecteer exterieur, interieur of een volledige detailing. Kies je datum en tijdstip dat jou past.</p>
+    </div>
+    <div class="step reveal reveal-delay-1">
+      <div class="step-icon-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+        </svg>
+      </div>
+      <div class="step-num">2</div>
+      <h3>Detailer komt naar jou</h3>
+      <p>Een ervaren detailer rijdt naar jouw thuis of werk. Doorgaans beschikbaar binnen 24u. Gratis verplaatsing in Gent.</p>
+    </div>
+    <div class="step reveal reveal-delay-2">
+      <div class="step-icon-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      </div>
+      <div class="step-num">3</div>
+      <h3>Genieten maar</h3>
+      <p>Na 1 à 2 uur staat jouw auto blinkend klaar. Betaal veilig via de app. Geen verrassingen, geen cash.</p>
+    </div>
+  </div>
+</section>
+
+<!-- DIENSTEN -->
+<section class="services" id="diensten">
+  <div class="section-label">Prijzen</div>
+  <h2 class="section-title">Eerlijke prijs, geen verrassingen</h2>
+  <p style="text-align:center;color:var(--gray);margin-top:-36px;margin-bottom:48px;font-size:16px;">Prijs hangt af van jouw auto en hoe vuil hij is. Zie het zelf hieronder.</p>
+
+  <div class="size-tabs">
+    <button class="size-tab active" data-size="klein">🚗 Klein<span>Clio, Polo, Yaris</span></button>
+    <button class="size-tab" data-size="medium">🚙 Medium<span>Golf, A-klasse, 3-serie</span></button>
+    <button class="size-tab" data-size="groot">🚐 Groot SUV<span>Tiguan, X5, Outlander</span></button>
+    <button class="size-tab" data-size="bestel">🚌 Bestelwagen<span>Transit, Ducato, Sprinter</span></button>
+  </div>
+
+  <div class="service-cards" style="margin-top:28px;">
+    <div class="service-card">
+      <h3>Exterieur</h3>
+      <p>Blinkend schoon van buiten</p>
+      <div class="price" id="price-ext-main">€35</div>
+      <div class="price-label">vanaf — afhankelijk van conditie</div>
+      <ul>
+        <li>Handwas buiten</li>
+        <li>Velgen gereinigd</li>
+        <li>Ramen gepoetst</li>
+        <li>Banden behandeld</li>
+        <li>Drooggewreven</li>
+      </ul>
+      <a href="boeken.html?size=klein&service=0&dirt=0" id="btn-boek-ext" class="book-service-btn outline">Boek exterieur</a>
+    </div>
+
+    <div class="service-card featured">
+      <div class="popular-badge">Meest gekozen</div>
+      <h3>Interieur</h3>
+      <p>Compleet opgefrist van binnen</p>
+      <div class="price" id="price-int-main">€45</div>
+      <div class="price-label">vanaf — afhankelijk van conditie</div>
+      <ul>
+        <li>Stofzuigen & uitkloppen</li>
+        <li>Dashboard & console</li>
+        <li>Stoelen gereinigd</li>
+        <li>Ramen van binnen</li>
+        <li>Frisse geur</li>
+      </ul>
+      <a href="boeken.html?size=klein&service=1&dirt=0" id="btn-boek-int" class="book-service-btn green">Boek interieur</a>
+    </div>
+
+    <div class="service-card">
+      <h3>Volledig</h3>
+      <p>Binnen én buiten — als nieuw</p>
+      <div class="price" id="price-vol-main">€75</div>
+      <div class="price-label">vanaf — afhankelijk van conditie</div>
+      <ul>
+        <li>Alles van exterieur</li>
+        <li>Alles van interieur</li>
+        <li>Motorruimte</li>
+        <li>Wax bescherming</li>
+        <li>Beste waarde</li>
+      </ul>
+      <a href="boeken.html?size=klein&service=2&dirt=0" id="btn-boek-vol" class="book-service-btn dark">Boek volledig</a>
+    </div>
+  </div>
+
+  <div class="dirt-info">
+    <div class="dirt-info-title">Toeslag op basis van conditie</div>
+    <div class="dirt-info-cards">
+      <div class="dirt-info-card">
+        <span class="dirt-emoji">😊</span>
+        <div>
+          <strong>Normaal vuil</strong>
+          <span>Gewone weekgrime</span>
+          <span class="dirt-price">+€0</span>
+        </div>
+      </div>
+      <div class="dirt-info-card">
+        <span class="dirt-emoji">😅</span>
+        <div>
+          <strong>Redelijk vuil</strong>
+          <span>Zand, stof, voedsel, vlekken</span>
+          <span class="dirt-price">+€15</span>
+        </div>
+      </div>
+      <div class="dirt-info-card">
+        <span class="dirt-emoji">🐶</span>
+        <div>
+          <strong>Heel vuil</strong>
+          <span>Modder, huisdieren, erge staining</span>
+          <span class="dirt-price">+€30</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="reviews" id="reviews">
+  <div class="reviews-inner">
+    <div class="section-label">Wat klanten zeggen</div>
+    <h2 class="section-title">Ze zijn er blij mee</h2>
+  </div>
+  <div class="testimonials-columns">
+    <!-- Kolom 1 -->
+    <div class="testimonials-col">
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Thuis laten wassen terwijl ik werkte — waanzinnig handig. Auto zag eruit alsof hij van de showroom kwam."</p>
+        <div class="review-author"><div class="review-avatar">S</div><div><div class="review-name">Sarah V.</div><div class="review-city">Gent</div></div></div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Perfecte service — snel, professioneel en mijn auto was brandschoon. Ik boek nooit meer ergens anders."</p>
+        <div class="review-author"><div class="review-avatar">K</div><div><div class="review-name">Kevin A.</div><div class="review-city">Gent</div></div></div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Bestelwagen was een ramp vanbinnen. Na 2 uur was hij zo goed als nieuw. Serieuze aanrader voor elke zaakvoerder."</p>
+        <div class="review-author"><div class="review-avatar">J</div><div><div class="review-name">Jan P.</div><div class="review-city">Gent</div></div></div>
+      </div>
+      <!-- duplicate for seamless loop -->
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Thuis laten wassen terwijl ik werkte — waanzinnig handig. Auto zag eruit alsof hij van de showroom kwam."</p>
+        <div class="review-author"><div class="review-avatar">S</div><div><div class="review-name">Sarah V.</div><div class="review-city">Gent</div></div></div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Perfecte service — snel, professioneel en mijn auto was brandschoon. Ik boek nooit meer ergens anders."</p>
+        <div class="review-author"><div class="review-avatar">K</div><div><div class="review-name">Kevin A.</div><div class="review-city">Gent</div></div></div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Bestelwagen was een ramp vanbinnen. Na 2 uur was hij zo goed als nieuw. Serieuze aanrader voor elke zaakvoerder."</p>
+        <div class="review-author"><div class="review-avatar">J</div><div><div class="review-name">Jan P.</div><div class="review-city">Gent</div></div></div>
+      </div>
+    </div>
+    <!-- Kolom 2 -->
+    <div class="testimonials-col">
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Eindelijk geen zaterdag meer kwijt aan de carwash. Geboekt op vrijdag, zaterdag ochtend klaar. Aanrader."</p>
+        <div class="review-author"><div class="review-avatar">M</div><div><div class="review-name">Mathias D.</div><div class="review-city">Gent</div></div></div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Binnen 24u iemand aan de deur. Auto zag er fantastisch uit na de volledige behandeling. Top prijs-kwaliteit."</p>
+        <div class="review-author"><div class="review-avatar">A</div><div><div class="review-name">An D.</div><div class="review-city">Gent</div></div></div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Superhandige app, vriendelijke detailer en super resultaat. Mijn SUV schittert. Al de tweede keer dat ik boek."</p>
+        <div class="review-author"><div class="review-avatar">R</div><div><div class="review-name">Raf S.</div><div class="review-city">Gent</div></div></div>
+      </div>
+      <!-- duplicate -->
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Eindelijk geen zaterdag meer kwijt aan de carwash. Geboekt op vrijdag, zaterdag ochtend klaar. Aanrader."</p>
+        <div class="review-author"><div class="review-avatar">M</div><div><div class="review-name">Mathias D.</div><div class="review-city">Gent</div></div></div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Binnen 24u iemand aan de deur. Auto zag er fantastisch uit na de volledige behandeling. Top prijs-kwaliteit."</p>
+        <div class="review-author"><div class="review-avatar">A</div><div><div class="review-name">An D.</div><div class="review-city">Gent</div></div></div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Superhandige app, vriendelijke detailer en super resultaat. Mijn SUV schittert. Al de tweede keer dat ik boek."</p>
+        <div class="review-author"><div class="review-avatar">R</div><div><div class="review-name">Raf S.</div><div class="review-city">Gent</div></div></div>
+      </div>
+    </div>
+    <!-- Kolom 3 -->
+    <div class="testimonials-col">
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Interieur was écht vies na de zomervakantie. Nu ziet het er beter uit dan toen ik de auto kocht. Meer dan tevreden."</p>
+        <div class="review-author"><div class="review-avatar">L</div><div><div class="review-name">Laura M.</div><div class="review-city">Gent</div></div></div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Gratis verplaatsing naar mijn thuis, vriendelijk team en perfect eindresultaat. Mijn Golf heeft nog nooit zo geblinkt."</p>
+        <div class="review-author"><div class="review-avatar">T</div><div><div class="review-name">Thomas B.</div><div class="review-city">Gent</div></div></div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Als mama van 3 kinderen is de auto altijd een chaos. Deto maakte er een nieuw interieur van. Pure aanrader!"</p>
+        <div class="review-author"><div class="review-avatar">N</div><div><div class="review-name">Nathalie V.</div><div class="review-city">Gent</div></div></div>
+      </div>
+      <!-- duplicate -->
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Interieur was écht vies na de zomervakantie. Nu ziet het er beter uit dan toen ik de auto kocht. Meer dan tevreden."</p>
+        <div class="review-author"><div class="review-avatar">L</div><div><div class="review-name">Laura M.</div><div class="review-city">Gent</div></div></div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Gratis verplaatsing naar mijn thuis, vriendelijk team en perfect eindresultaat. Mijn Golf heeft nog nooit zo geblinkt."</p>
+        <div class="review-author"><div class="review-avatar">T</div><div><div class="review-name">Thomas B.</div><div class="review-city">Gent</div></div></div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Als mama van 3 kinderen is de auto altijd een chaos. Deto maakte er een nieuw interieur van. Pure aanrader!"</p>
+        <div class="review-author"><div class="review-avatar">N</div><div><div class="review-name">Nathalie V.</div><div class="review-city">Gent</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-banner">
+  <div class="cta-card">
+    <h2>Jouw auto verdient beter dan carwash-chaos.</h2>
+    <p>Boek je eerste beurt in 2 minuten. Doorgaans beschikbaar binnen 24 uur in Gent.</p>
+    <div class="cta-btn-row">
+      <a href="boeken.html" class="cta-btn-primary">
+        Boek nu
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="#hoe" class="cta-btn-outline">Hoe werkt het?</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-logo">deto</div>
+      <div class="footer-tagline">Autodetailing aan huis in België</div>
+    </div>
+    <div class="footer-links">
+      <div class="footer-col">
+        <h4>App</h4>
+        <ul>
+          <li><a href="#hoe">Hoe het werkt</a></li>
+          <li><a href="#diensten">Prijzen</a></li>
+          <li><a href="boeken.html">Boek nu</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Detailers</h4>
+        <ul>
+          <li><a href="detailer-registratie.html">Word partner</a></li>
+          <li><a href="detailer-dashboard.html">Inloggen</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:info@deto.be">info@deto.be</a></li>
+          <li><a href="https://instagram.com/deto.be" target="_blank">Instagram</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Deto. Alle rechten voorbehouden. · <a href="privacy.html" style="color:#555;">Privacybeleid</a> · <a href="algemene-voorwaarden.html" style="color:#555;">Algemene Voorwaarden</a></p>
+    <p>Gemaakt in België 🇧🇪</p>
+  </div>
+</footer>
+
+<!-- Cookie banner -->
+<div id="cookie-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;background:#111827;color:#fff;padding:16px 24px;z-index:99999;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;box-shadow:0 -4px 20px rgba(0,0,0,0.15);">
+  <p style="margin:0;font-size:14px;line-height:1.5;flex:1;min-width:200px;">
+    🍪 Wij gebruiken functionele cookies voor een goede werking van de website en om boekingen op te slaan.
+    Lees ons <a href="privacy.html" style="color:#22C55E;">privacybeleid</a>.
+  </p>
+  <div style="display:flex;gap:10px;flex-shrink:0;">
+    <button onclick="acceptCookies()" style="background:#22C55E;color:#fff;border:none;padding:10px 20px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;">Accepteer</button>
+    <button onclick="declineCookies()" style="background:transparent;color:#9CA3AF;border:1px solid #374151;padding:10px 20px;border-radius:8px;font-size:14px;cursor:pointer;">Alleen noodzakelijk</button>
+  </div>
+</div>
+<script>
+  (function() {
+    var consent = localStorage.getItem('deto_cookie_consent');
+    if (!consent) document.getElementById('cookie-banner').style.display = 'flex';
+  })();
+  function closeMobileMenu() {
+    document.getElementById('mobileMenu').classList.remove('open');
+  }
+  function acceptCookies() {
+    localStorage.setItem('deto_cookie_consent', 'all');
+    document.getElementById('cookie-banner').style.display = 'none';
+  }
+  function declineCookies() {
+    localStorage.setItem('deto_cookie_consent', 'minimal');
+    document.getElementById('cookie-banner').style.display = 'none';
+  }
+</script>
+
+<!-- WhatsApp floating button -->
+<a href="https://wa.me/32465471373?text=Hallo%20Deto%2C%20ik%20heb%20een%20vraag%20over%20jullie%20service."
+   target="_blank"
+   style="position:fixed;bottom:24px;right:24px;width:58px;height:58px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(37,211,102,0.5);z-index:9999;text-decoration:none;"
+   title="Chat met ons op WhatsApp">
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="white">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+  </svg>
+</a>
+
+<script>
+  const prices = {
+    klein:  [35, 45, 75],
+    medium: [45, 55, 95],
+    groot:  [55, 70, 115],
+    bestel: [65, 85, 140]
+  };
+
+  let currentSize = 'klein';
+  let currentService = 0;
+  let currentDirt = 0;
+
+  function calcPrice(sizeKey, serviceIdx, dirt) {
+    return prices[sizeKey][serviceIdx] + dirt;
+  }
+
+  function updateHeroCard() {
+    const p = calcPrice(currentSize, currentService, currentDirt);
+    document.getElementById('heroBookBtn').textContent = `Boek nu — €${p}`;
+    document.getElementById('heroBookBtn').onclick = () => {
+      sessionStorage.setItem('deto_keuze', JSON.stringify({ size: currentSize, service: currentService, dirt: currentDirt }));
+      window.location = 'boeken.html';
+    };
+    const ids = ['price-ext','price-int','price-vol'];
+    ids.forEach((id, i) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = '€' + calcPrice(currentSize, i, currentDirt);
+    });
+  }
+
+  function updateMainPrices() {
+    const ids = ['price-ext-main','price-int-main','price-vol-main'];
+    ids.forEach((id, i) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = '€' + prices[currentSize][i];
+    });
+    // Update service card links met huidige auto grootte
+    const serviceLinks = [
+      { id: 'btn-boek-ext', service: 0 },
+      { id: 'btn-boek-int', service: 1 },
+      { id: 'btn-boek-vol', service: 2 }
+    ];
+    serviceLinks.forEach(({ id, service }) => {
+      const el = document.getElementById(id);
+      if (el) el.onclick = (e) => {
+        e.preventDefault();
+        sessionStorage.setItem('deto_keuze', JSON.stringify({ size: currentSize, service, dirt: 0 }));
+        window.location = 'boeken.html';
+      };
+    });
+  }
+
+  document.querySelectorAll('.car-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.car-btn').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      currentSize = this.dataset.size;
+      updateHeroCard();
+    });
+  });
+
+  document.querySelectorAll('.service-option').forEach((opt, idx) => {
+    opt.addEventListener('click', function() {
+      document.querySelectorAll('.service-option').forEach(o => o.classList.remove('active'));
+      this.classList.add('active');
+      currentService = idx;
+      updateHeroCard();
+    });
+  });
+
+  document.querySelectorAll('.dirt-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.dirt-btn').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      currentDirt = parseInt(this.dataset.dirt);
+      updateHeroCard();
+    });
+  });
+
+  document.querySelectorAll('.size-tab').forEach(tab => {
+    tab.addEventListener('click', function() {
+      document.querySelectorAll('.size-tab').forEach(t => t.classList.remove('active'));
+      this.classList.add('active');
+      currentSize = this.dataset.size;
+      updateMainPrices();
+      updateHeroCard();
+    });
+  });
+
+  updateHeroCard();
+  updateMainPrices();
+</script>
+
+<script>
+  // Auth nav: check Supabase sessie en update nav zonder CDN-vertraging
+  (function() {
+    // Lees sessie direct uit localStorage (Supabase v2 format)
+    const KEY = 'sb-clvbgogcsmpszhdvhqyv-auth-token';
+    let session = null;
+    try { session = JSON.parse(localStorage.getItem(KEY)); } catch(e) {}
+
+    if (!session || !session.user) return; // niet ingelogd → standaard nav
+
+    const user = session.user;
+    const meta = user.user_metadata || {};
+    const voornaam = meta.voornaam || user.email.split('@')[0];
+    const letter = voornaam.charAt(0).toUpperCase();
+
+    // Desktop nav: vervang "Inloggen" door gebruikersmenu
+    const navItem = document.getElementById('nav-auth-item');
+    if (navItem) {
+      navItem.innerHTML = `
+        <div class="nav-user-wrap" id="nav-user-wrap">
+          <div class="nav-user-btn" onclick="toggleUserMenu(event)">
+            <div class="nav-user-avatar">${letter}</div>
+            ${voornaam} ▾
+          </div>
+          <div class="nav-user-dropdown" id="nav-user-dropdown">
+            <a href="profiel.html">👤 Mijn profiel</a>
+            <a href="boeken.html">+ Nieuw boeken</a>
+            <button onclick="detoLogout()">Uitloggen ↩</button>
+          </div>
+        </div>`;
+    }
+
+    // Mobile menu
+    const mobileLink = document.getElementById('mobile-auth-link');
+    if (mobileLink) {
+      mobileLink.textContent = '👤 ' + voornaam + ' — Mijn profiel';
+      mobileLink.href = 'profiel.html';
+    }
+  })();
+
+  function toggleUserMenu(e) {
+    e.stopPropagation();
+    const dd = document.getElementById('nav-user-dropdown');
+    if (dd) dd.classList.toggle('open');
+  }
+  document.addEventListener('click', function() {
+    const dd = document.getElementById('nav-user-dropdown');
+    if (dd) dd.classList.remove('open');
+  });
+
+  function detoLogout() {
+    // Wis Supabase sessie uit localStorage
+    const KEY = 'sb-clvbgogcsmpszhdvhqyv-auth-token';
+    localStorage.removeItem(KEY);
+    // Laad Supabase voor volledige sign-out (server-side sessie)
+    const s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
+    s.onload = async function() {
+      const sb = window.supabase.createClient(
+        'https://clvbgogcsmpszhdvhqyv.supabase.co',
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNsdmJnb2djc21wc3poZHZocXl2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNDg2OTEsImV4cCI6MjA5MDgyNDY5MX0.SOIRnPdiDr04OebiQyY_IE1ViP9gW6C4xTNgwr14xk4'
+      );
+      await sb.auth.signOut();
+      window.location.reload();
+    };
+    document.head.appendChild(s);
+  }
+</script>
+
+<script>
+// ── Scroll reveal ──────────────────────────────────
+(function() {
+  const els = document.querySelectorAll('.reveal');
+  if (!('IntersectionObserver' in window)) {
+    els.forEach(el => el.classList.add('visible'));
+    return;
+  }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.12 });
+  els.forEach(el => io.observe(el));
+})();
+
+// ── Animated stat counters ─────────────────────────
+(function() {
+  const statsEl = document.querySelector('.hero-stats');
+  if (!statsEl) return;
+  let fired = false;
+  const io = new IntersectionObserver(entries => {
+    if (fired || !entries[0].isIntersecting) return;
+    fired = true;
+    document.querySelectorAll('.stat-num').forEach(el => {
+      const raw = el.textContent.trim();
+      const num = parseInt(raw);
+      if (isNaN(num)) return;
+      const suffix = raw.replace(/^\d+/, '');
+      let cur = 0;
+      const step = num / 45;
+      const iv = setInterval(() => {
+        cur = Math.min(cur + step, num);
+        el.textContent = Math.floor(cur) + suffix;
+        if (cur >= num) clearInterval(iv);
+      }, 25);
+    });
+  }, { threshold: 0.5 });
+  io.observe(statsEl);
+})();
+</script>
+
+</body>
+</html>

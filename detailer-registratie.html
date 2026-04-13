@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Word Deto Detailer — Verdien meer, werk zelfstandig</title>
+<meta name="description" content="Word partner bij Deto en verdien meer als autodetailer. Zelfstandig werken, eigen uren, meer klanten.">
+<link rel="icon" type="image/png" href="deto-logo.png">
+<link rel="stylesheet" href="style.css">
+<style>
+  .nav-back {
+    text-decoration: none;
+    color: var(--gray);
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+  .nav-back:hover { color: var(--dark); }
+
+  /* HERO */
+  .hero {
+    background: var(--dark);
+    padding: 90px 60px;
+    text-align: center;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(34,197,94,0.15);
+    color: var(--green);
+    padding: 6px 16px;
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 28px;
+    border: 1px solid rgba(34,197,94,0.3);
+  }
+
+  .hero h1 {
+    font-size: 52px;
+    font-weight: 900;
+    color: white;
+    letter-spacing: -2px;
+    line-height: 1.08;
+    margin-bottom: 20px;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero h1 .accent { color: var(--green); }
+
+  .hero p {
+    font-size: 18px;
+    color: rgba(255,255,255,0.55);
+    max-width: 520px;
+    margin: 0 auto 40px;
+    line-height: 1.6;
+  }
+
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 48px;
+    margin-top: 52px;
+    padding-top: 48px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .hero-stat { text-align: center; }
+  .hero-stat-num { font-size: 34px; font-weight: 900; color: white; letter-spacing: -1px; }
+  .hero-stat-label { font-size: 13px; color: rgba(255,255,255,0.4); margin-top: 4px; }
+
+  /* VOORDELEN */
+  .voordelen {
+    padding: 90px 60px;
+    background: var(--light);
+  }
+
+  .section-label {
+    text-align: center;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 14px;
+  }
+
+  .section-title {
+    text-align: center;
+    font-size: 38px;
+    font-weight: 900;
+    letter-spacing: -1.5px;
+    margin-bottom: 52px;
+  }
+
+  .voordelen-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .voordeel-card {
+    background: white;
+    border-radius: 20px;
+    padding: 32px 28px;
+    border: 1px solid var(--border);
+  }
+
+  .voordeel-icon {
+    font-size: 32px;
+    margin-bottom: 18px;
+    display: block;
+  }
+
+  .voordeel-card h3 {
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 10px;
+    letter-spacing: -0.3px;
+  }
+
+  .voordeel-card p {
+    font-size: 14px;
+    color: var(--gray);
+    line-height: 1.6;
+  }
+
+  /* HOE WERKT HET VOOR DETAILERS */
+  .hoe {
+    padding: 90px 60px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .stappen {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-top: 48px;
+  }
+
+  .stap {
+    display: flex;
+    gap: 28px;
+    padding-bottom: 40px;
+    position: relative;
+  }
+
+  .stap:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    left: 20px;
+    top: 44px;
+    bottom: 0;
+    width: 2px;
+    background: var(--border);
+  }
+
+  .stap-num {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: var(--green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 800;
+    color: white;
+    flex-shrink: 0;
+  }
+
+  .stap-content h3 {
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 8px;
+    margin-top: 8px;
+  }
+
+  .stap-content p {
+    font-size: 14px;
+    color: var(--gray);
+    line-height: 1.6;
+  }
+
+  /* REGISTRATIE FORMULIER */
+  .registratie {
+    background: var(--light);
+    padding: 90px 60px;
+  }
+
+  .form-wrapper {
+    max-width: 640px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 24px;
+    padding: 44px;
+    border: 1px solid var(--border);
+    box-shadow: 0 8px 40px rgba(0,0,0,0.06);
+  }
+
+  .form-title {
+    font-size: 26px;
+    font-weight: 900;
+    letter-spacing: -0.8px;
+    margin-bottom: 8px;
+  }
+
+  .form-subtitle {
+    font-size: 15px;
+    color: var(--gray);
+    margin-bottom: 36px;
+    line-height: 1.5;
+  }
+
+  .field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .field label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--dark);
+  }
+
+  .field input, .field select, .field textarea {
+    padding: 13px 14px;
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    font-size: 15px;
+    font-family: inherit;
+    color: var(--dark);
+    background: white;
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+  }
+
+  .field input:focus, .field select:focus, .field textarea:focus {
+    border-color: var(--green);
+  }
+
+  .field textarea { resize: vertical; min-height: 90px; }
+
+  .field-hint {
+    font-size: 11px;
+    color: var(--gray);
+    margin-top: 2px;
+  }
+
+  .diensten-check {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .dienst-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .dienst-option input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--green);
+    cursor: pointer;
+    flex-shrink: 0;
+    padding: 0;
+    border: none;
+  }
+
+  .dienst-option:has(input:checked) {
+    border-color: var(--green);
+    background: #F0FDF4;
+    color: var(--green-dark);
+    font-weight: 600;
+  }
+
+  .submit-btn {
+    width: 100%;
+    background: var(--green);
+    color: white;
+    border: none;
+    padding: 16px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 8px;
+    font-family: inherit;
+    transition: background 0.2s, transform 0.1s;
+  }
+
+  .submit-btn:hover { background: var(--green-dark); transform: translateY(-1px); }
+
+  .form-note {
+    font-size: 12px;
+    color: var(--gray);
+    text-align: center;
+    margin-top: 14px;
+    line-height: 1.5;
+  }
+
+  /* SUCCESS STATE */
+  .success-state {
+    display: none;
+    text-align: center;
+    padding: 20px 0;
+  }
+
+  .success-icon {
+    width: 72px;
+    height: 72px;
+    background: #DCFCE7;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px;
+    font-size: 32px;
+  }
+
+  .success-state h2 {
+    font-size: 24px;
+    font-weight: 900;
+    letter-spacing: -0.5px;
+    margin-bottom: 10px;
+  }
+
+  .success-state p {
+    font-size: 15px;
+    color: var(--gray);
+    line-height: 1.6;
+    margin-bottom: 28px;
+  }
+
+  .btn-home {
+    display: inline-block;
+    background: var(--dark);
+    color: white;
+    padding: 14px 28px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+
+  .btn-home:hover { background: #374151; }
+
+  /* FOOTER */
+  footer {
+    background: #0a0a0a;
+    padding: 36px 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  footer p { font-size: 13px; color: #444; }
+  footer a { color: #888; text-decoration: none; font-size: 13px; }
+  footer a:hover { color: white; }
+
+  @media (max-width: 768px) {
+    nav { padding: 16px 20px; }
+    .hero { padding: 60px 20px; }
+    .hero h1 { font-size: 34px; letter-spacing: -1px; }
+    .hero-stats { gap: 24px; }
+    .voordelen { padding: 60px 20px; }
+    .voordelen-grid { grid-template-columns: 1fr; }
+    .hoe { padding: 60px 20px; }
+    .registratie { padding: 60px 20px; }
+    .form-wrapper { padding: 28px 20px; }
+    .field-row { grid-template-columns: 1fr; }
+    .diensten-check { grid-template-columns: 1fr; }
+    footer { flex-direction: column; gap: 12px; text-align: center; padding: 28px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="deto-homepage.html" class="logo">
+    <img src="deto-logo.png" style="height:40px; width:auto;">
+  </a>
+  <a href="deto-homepage.html" class="nav-back">← Terug naar home</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">Nu werving open in Gent</div>
+  <h1>Verdien meer als <span class="accent">zelfstandig detailer</span></h1>
+  <p>Sluit je aan bij Deto en ontvang boekingen direct in jouw dashboard. Jij bepaalt je uren en zone — wij zorgen voor de klanten.</p>
+  <a href="#registreer" class="btn-primary" style="background:var(--green);color:white;padding:15px 32px;border-radius:12px;font-size:16px;font-weight:700;text-decoration:none;display:inline-block;transition:background 0.2s;" onmouseover="this.style.background='#16A34A'" onmouseout="this.style.background='#22C55E'">Meld je aan als detailer →</a>
+
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="hero-stat-num">85%</div>
+      <div class="hero-stat-label">Van de omzet is voor jou</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">€1.200+</div>
+      <div class="hero-stat-label">Gemiddeld per maand</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">100%</div>
+      <div class="hero-stat-label">Zelf je uren kiezen</div>
+    </div>
+  </div>
+</section>
+
+<!-- VOORDELEN -->
+<section class="voordelen">
+  <div class="section-label">Waarom Deto</div>
+  <h2 class="section-title">Alles geregeld, jij werkt</h2>
+  <div class="voordelen-grid">
+    <div class="voordeel-card">
+      <span class="voordeel-icon">💰</span>
+      <h3>85% commissie voor jou</h3>
+      <p>Wij nemen slechts 15% voor marketing, platform en klantenservice. De rest is van jou — eerlijk en transparant.</p>
+    </div>
+    <div class="voordeel-card">
+      <span class="voordeel-icon">📅</span>
+      <h3>Jij kiest je agenda</h3>
+      <p>Zet jezelf aan of uit wanneer je wil. Geen minimumuren, geen verplichtingen. Werk zo veel of zo weinig als je wil.</p>
+    </div>
+    <div class="voordeel-card">
+      <span class="voordeel-icon">📱</span>
+      <h3>Boekingen automatisch</h3>
+      <p>Klanten boeken via Deto, jij accepteert in je dashboard. Geen telefoon, geen gedoe met plannen of offerten.</p>
+    </div>
+    <div class="voordeel-card">
+      <span class="voordeel-icon">📍</span>
+      <h3>Jouw zone, jouw klanten</h3>
+      <p>Stel je werkgebied in op postcode of afstand. Nooit meer reizen voor een klus buiten jouw buurt.</p>
+    </div>
+    <div class="voordeel-card">
+      <span class="voordeel-icon">⭐</span>
+      <h3>Reviews bouwen je naam</h3>
+      <p>Elke goede boeking levert een review op. Hoe hoger jouw score, hoe meer boekingen je krijgt.</p>
+    </div>
+    <div class="voordeel-card">
+      <span class="voordeel-icon">💳</span>
+      <h3>Wekelijkse uitbetaling</h3>
+      <p>Je verdiensten worden elke week uitbetaald op jouw rekening. Geen wachten, geen facturen sturen.</p>
+    </div>
+  </div>
+</section>
+
+<!-- HOE WERKT HET -->
+<section class="hoe">
+  <div class="section-label">Aan de slag</div>
+  <h2 class="section-title" style="text-align:center;">In 3 stappen live</h2>
+  <div class="stappen">
+    <div class="stap">
+      <div class="stap-num">1</div>
+      <div class="stap-content">
+        <h3>Registreer je hieronder</h3>
+        <p>Vul het formulier in met je gegevens, werkzone en aangeboden diensten. We reviewen je aanvraag binnen 48 uur.</p>
+      </div>
+    </div>
+    <div class="stap">
+      <div class="stap-num">2</div>
+      <div class="stap-content">
+        <h3>Kort gesprek met ons team</h3>
+        <p>We plannen een kort videogesprek om alles door te nemen: werkwijze, materiaal, kwaliteitsstandaarden. Duurt max. 20 minuten.</p>
+      </div>
+    </div>
+    <div class="stap">
+      <div class="stap-num">3</div>
+      <div class="stap-content">
+        <h3>Dashboard activeren & eerste boeking</h3>
+        <p>Je krijgt toegang tot je persoonlijk dashboard. Zet jezelf beschikbaar en de eerste boekingen komen vanzelf.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FORMULIER -->
+<section class="registratie" id="registreer">
+  <div class="section-label" style="text-align:center;">Aanmelden</div>
+  <h2 class="section-title">Klaar om te starten?</h2>
+
+  <div class="form-wrapper">
+    <div id="formContent">
+      <div class="form-title">Jouw aanvraag</div>
+      <p class="form-subtitle">Vul je gegevens in. We nemen binnen 48 uur contact op.</p>
+
+      <div class="field-group">
+        <div class="field-row">
+          <div class="field">
+            <label>Voornaam</label>
+            <input type="text" placeholder="Jan" id="firstName">
+          </div>
+          <div class="field">
+            <label>Achternaam</label>
+            <input type="text" placeholder="Janssen" id="lastName">
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label>Telefoonnummer</label>
+            <input type="tel" placeholder="+32 4xx xx xx xx" id="phone">
+          </div>
+          <div class="field">
+            <label>E-mailadres</label>
+            <input type="email" placeholder="jan@email.be" id="email">
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Werkzone (gemeente / postcode)</label>
+          <input type="text" placeholder="Gent, 9000" id="zone">
+          <span class="field-hint">Je kan meerdere gemeenten opgeven, gescheiden door komma's</span>
+        </div>
+
+        <div class="field">
+          <label>Welke diensten bied je aan?</label>
+          <div class="diensten-check">
+            <label class="dienst-option">
+              <input type="checkbox" value="exterieur"> Exterieur wassen
+            </label>
+            <label class="dienst-option">
+              <input type="checkbox" value="interieur"> Interieur reiniging
+            </label>
+            <label class="dienst-option">
+              <input type="checkbox" value="volledig"> Volledig detailing
+            </label>
+            <label class="dienst-option">
+              <input type="checkbox" value="wax"> Wax / polijsten
+            </label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Jaren ervaring</label>
+          <select id="ervaring">
+            <option value="">Selecteer</option>
+            <option>Minder dan 1 jaar</option>
+            <option>1 – 2 jaar</option>
+            <option>3 – 5 jaar</option>
+            <option>Meer dan 5 jaar</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Vertel ons iets over jezelf (optioneel)</label>
+          <textarea placeholder="Bv. eigen materiaal, eerder zelfstandig gewerkt, certificaten..." id="bio"></textarea>
+        </div>
+
+        <button class="submit-btn" onclick="submitRegistratie()">Stuur mijn aanvraag →</button>
+        <p class="form-note">Door te verzenden ga je akkoord met onze samenwerkingsvoorwaarden. Geen verborgen kosten of verplichtingen.</p>
+      </div>
+    </div>
+
+    <div class="success-state" id="successState">
+      <div class="success-icon">✓</div>
+      <h2>Aanvraag ontvangen!</h2>
+      <p>Bedankt voor je interesse. We reviewen je aanvraag en nemen binnen 48 uur contact op via e-mail of telefoon.</p>
+      <a href="deto-homepage.html" class="btn-home">Terug naar home</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 Deto. Alle rechten voorbehouden.</p>
+  <a href="mailto:info@deto.be">info@deto.be</a>
+</footer>
+
+<script>
+  async function submitRegistratie() {
+    const voornaam = document.getElementById('firstName').value.trim();
+    const achternaam = document.getElementById('lastName').value.trim();
+    const telefoon = document.getElementById('phone').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const zone = document.getElementById('zone').value.trim();
+    const ervaring = document.getElementById('ervaring').value;
+    const bio = document.getElementById('bio').value.trim();
+    const dienstChecks = document.querySelectorAll('.dienst-option input:checked');
+
+    if (!voornaam || !achternaam || !telefoon || !email || !zone || !ervaring) {
+      alert('Vul alle verplichte velden in voor je verder gaat.');
+      return;
+    }
+
+    if (dienstChecks.length === 0) {
+      alert('Kies minstens één dienst die je aanbiedt.');
+      return;
+    }
+
+    const diensten = Array.from(dienstChecks).map(el => el.value);
+    const btn = document.querySelector('.submit-btn');
+    btn.disabled = true;
+    btn.textContent = 'Versturen…';
+
+    try {
+      const res = await fetch('/api/register-detailer', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ voornaam, achternaam, telefoon, email, zone, diensten, ervaring, bio })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Fout');
+
+      document.getElementById('formContent').style.display = 'none';
+      document.getElementById('successState').style.display = 'block';
+    } catch (err) {
+      alert('Er is iets misgegaan. Probeer het opnieuw of stuur een e-mail naar info@deto.site.');
+      btn.disabled = false;
+      btn.textContent = 'Stuur mijn aanvraag →';
+    }
+  }
+</script>
+
+</body>
+</html>

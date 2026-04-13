@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E-mail bevestigd — Deto</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" href="deto-logo.png">
+<link rel="stylesheet" href="style.css">
+<style>
+  body { background: var(--light); min-height: 100vh; display: flex; flex-direction: column; }
+
+  .main {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 24px;
+  }
+
+  .card {
+    background: white;
+    border-radius: 24px;
+    padding: 56px 48px;
+    max-width: 480px;
+    width: 100%;
+    text-align: center;
+    border: 1px solid var(--border);
+    box-shadow: 0 8px 40px rgba(0,0,0,0.06);
+  }
+
+  .icon-circle {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 28px;
+    font-size: 36px;
+  }
+
+  .icon-circle.success { background: #DCFCE7; }
+  .icon-circle.error   { background: #FEE2E2; }
+  .icon-circle.loading { background: #F3F4F6; animation: pulse 1.5s infinite; }
+
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+
+  h1 {
+    font-size: 28px;
+    font-weight: 900;
+    letter-spacing: -0.5px;
+    margin-bottom: 12px;
+    color: var(--dark);
+  }
+
+  .subtitle {
+    font-size: 15px;
+    color: var(--gray);
+    line-height: 1.6;
+    margin-bottom: 36px;
+  }
+
+  .btn-primary {
+    display: block;
+    background: var(--green);
+    color: white;
+    padding: 15px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background 0.2s;
+    margin-bottom: 10px;
+  }
+  .btn-primary:hover { background: var(--green-dark); }
+
+  .btn-secondary {
+    display: block;
+    color: var(--gray);
+    padding: 12px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .btn-secondary:hover { color: var(--dark); }
+
+  .countdown {
+    font-size: 13px;
+    color: var(--gray);
+    margin-bottom: 20px;
+  }
+  .countdown span { font-weight: 700; color: var(--green); }
+
+  @media (max-width: 768px) {
+    .card { padding: 36px 20px; }
+    h1 { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="deto-homepage.html" class="logo">
+    <img src="deto-logo.png" style="height:56px;width:auto;" alt="Deto">
+  </a>
+</nav>
+
+<div class="main">
+  <div class="card" id="card">
+    <!-- Loading state -->
+    <div class="icon-circle loading" id="icon">⏳</div>
+    <h1 id="title">Even geduld…</h1>
+    <p class="subtitle" id="subtitle">We bevestigen jouw e-mailadres.</p>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL  = 'https://clvbgogcsmpszhdvhqyv.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNsdmJnb2djc21wc3poZHZocXl2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNDg2OTEsImV4cCI6MjA5MDgyNDY5MX0.SOIRnPdiDr04OebiQyY_IE1ViP9gW6C4xTNgwr14xk4';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+function showSuccess(name) {
+  document.getElementById('icon').className = 'icon-circle success';
+  document.getElementById('icon').textContent = '✓';
+  document.getElementById('title').textContent = 'E-mail bevestigd!';
+  document.getElementById('subtitle').textContent =
+    (name ? `Welkom ${name}! ` : 'Welkom! ') +
+    'Jouw account is klaar. Je kan nu een afspraak inplannen.';
+
+  const card = document.getElementById('card');
+  const countEl = document.createElement('p');
+  countEl.className = 'countdown';
+  countEl.innerHTML = 'Je wordt automatisch doorgestuurd in <span id="ct">5</span>s…';
+  card.appendChild(countEl);
+
+  const btnBoek = document.createElement('a');
+  btnBoek.href = 'boeken.html';
+  btnBoek.className = 'btn-primary';
+  btnBoek.textContent = 'Maak een boeking →';
+  card.appendChild(btnBoek);
+
+  const btnHome = document.createElement('a');
+  btnHome.href = 'deto-homepage.html';
+  btnHome.className = 'btn-secondary';
+  btnHome.textContent = 'Terug naar home';
+  card.appendChild(btnHome);
+
+  let sec = 5;
+  const timer = setInterval(() => {
+    sec--;
+    const el = document.getElementById('ct');
+    if (el) el.textContent = sec;
+    if (sec <= 0) { clearInterval(timer); window.location.href = 'boeken.html'; }
+  }, 1000);
+}
+
+function showError(msg) {
+  document.getElementById('icon').className = 'icon-circle error';
+  document.getElementById('icon').textContent = '✗';
+  document.getElementById('title').textContent = 'Bevestiging mislukt';
+  document.getElementById('subtitle').textContent =
+    msg || 'De bevestigingslink is verlopen of ongeldig. Probeer opnieuw in te loggen.';
+
+  const card = document.getElementById('card');
+  const btnLogin = document.createElement('a');
+  btnLogin.href = 'login.html';
+  btnLogin.className = 'btn-primary';
+  btnLogin.textContent = 'Naar inlogpagina';
+  card.appendChild(btnLogin);
+
+  const btnHome = document.createElement('a');
+  btnHome.href = 'deto-homepage.html';
+  btnHome.className = 'btn-secondary';
+  btnHome.textContent = 'Terug naar home';
+  card.appendChild(btnHome);
+}
+
+async function handleCallback() {
+  try {
+    // 1. Check for PKCE code in URL params (newer Supabase flow)
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get('code');
+    const errorParam = params.get('error');
+    const errorDesc = params.get('error_description');
+
+    if (errorParam) {
+      showError(errorDesc || errorParam);
+      return;
+    }
+
+    if (code) {
+      // Exchange code for session
+      const { data, error } = await sb.auth.exchangeCodeForSession(code);
+      if (error) { showError(error.message); return; }
+      const name = data?.user?.user_metadata?.voornaam || '';
+      showSuccess(name);
+      return;
+    }
+
+    // 2. Check for token_hash (email OTP flow)
+    const tokenHash = params.get('token_hash');
+    const type = params.get('type');
+    if (tokenHash && type) {
+      const { data, error } = await sb.auth.verifyOtp({ token_hash: tokenHash, type });
+      if (error) { showError(error.message); return; }
+      const name = data?.user?.user_metadata?.voornaam || '';
+      showSuccess(name);
+      return;
+    }
+
+    // 3. Check hash fragment (older implicit flow)
+    const hash = window.location.hash;
+    if (hash && hash.includes('access_token')) {
+      // Supabase JS automatically processes the hash
+      await new Promise(r => setTimeout(r, 800));
+      const { data: { session } } = await sb.auth.getSession();
+      if (session?.user) {
+        const name = session.user.user_metadata?.voornaam || '';
+        showSuccess(name);
+        return;
+      }
+    }
+
+    // 4. Maybe already logged in (user clicked again)
+    const { data: { session } } = await sb.auth.getSession();
+    if (session?.user) {
+      const name = session.user.user_metadata?.voornaam || '';
+      showSuccess(name);
+      return;
+    }
+
+    // Nothing found
+    showError('Geen bevestigingstoken gevonden. Is de link correct?');
+  } catch (e) {
+    showError(e.message);
+  }
+}
+
+handleCallback();
+</script>
+</body>
+</html>

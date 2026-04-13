@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pagina niet gevonden — Deto</title>
+<link rel="icon" type="image/png" href="deto-logo.png">
+<link rel="stylesheet" href="style.css">
+<style>
+  body { background: #F9FAFB; min-height: 100vh; display: flex; flex-direction: column; }
+  nav { padding: 18px 60px; background: white; border-bottom: 1px solid var(--border); position: static; backdrop-filter: none; }
+  .logo-text { display: none; }
+  @media (max-width: 768px) { nav { padding: 16px 20px; } }
+  main { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 60px 24px; text-align: center; }
+  .code { font-size: 120px; font-weight: 900; color: var(--green); line-height: 1; }
+  h1 { font-size: 32px; font-weight: 800; margin: 16px 0 12px; }
+  p { color: var(--gray); font-size: 16px; max-width: 400px; line-height: 1.6; }
+  .btns { display: flex; gap: 12px; margin-top: 32px; flex-wrap: wrap; justify-content: center; }
+  .btn-secondary { background: white; color: var(--dark); padding: 14px 28px; border-radius: 12px; text-decoration: none; font-weight: 700; font-size: 15px; border: 2px solid var(--border); }
+</style>
+</head>
+<body>
+<nav>
+  <a href="deto-homepage.html" class="logo">
+    <img src="deto-logo.png" style="height:40px;width:auto;" alt="Deto logo">
+    <span class="logo-text">Deto</span>
+  </a>
+</nav>
+<main>
+  <div class="code">404</div>
+  <h1>Pagina niet gevonden</h1>
+  <p>De pagina die je zoekt bestaat niet of is verplaatst. Geen nood — we brengen je terug op de goede weg.</p>
+  <div class="btns">
+    <a href="deto-homepage.html" class="btn-primary">Naar de homepage →</a>
+    <a href="boeken.html" class="btn-secondary">Direct boeken</a>
+  </div>
+</main>
+</body>
+</html>

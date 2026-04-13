@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Boeking bevestigd — Deto</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" href="deto-logo.png">
+<link rel="stylesheet" href="style.css">
+<style>
+  body { background: var(--light); min-height: 100vh; display: flex; flex-direction: column; }
+
+  .main {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 24px;
+  }
+
+  .card {
+    background: white;
+    border-radius: 24px;
+    padding: 56px 48px;
+    max-width: 520px;
+    width: 100%;
+    text-align: center;
+    border: 1px solid var(--border);
+    box-shadow: 0 8px 40px rgba(0,0,0,0.06);
+  }
+
+  .check-circle {
+    width: 80px;
+    height: 80px;
+    background: #DCFCE7;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 28px;
+    font-size: 36px;
+  }
+
+  h1 {
+    font-size: 30px;
+    font-weight: 900;
+    letter-spacing: -1px;
+    margin-bottom: 12px;
+  }
+
+  .subtitle {
+    font-size: 16px;
+    color: var(--gray);
+    line-height: 1.6;
+    margin-bottom: 36px;
+  }
+
+  .booking-ref {
+    background: var(--light);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .booking-ref span:first-child {
+    font-size: 13px;
+    color: var(--gray);
+    font-weight: 500;
+  }
+
+  .booking-ref span:last-child {
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: var(--dark);
+  }
+
+  .info-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-bottom: 32px;
+    text-align: left;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+
+  .info-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+  }
+
+  .info-row:last-child { border-bottom: none; }
+  .info-row span:first-child { color: var(--gray); }
+  .info-row span:last-child { font-weight: 600; }
+
+  .what-next {
+    text-align: left;
+    margin-bottom: 32px;
+  }
+
+  .what-next h3 {
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--gray);
+    margin-bottom: 14px;
+  }
+
+  .next-step {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin-bottom: 12px;
+  }
+
+  .next-dot {
+    width: 24px;
+    height: 24px;
+    background: var(--green);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 800;
+    color: white;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .next-text { font-size: 14px; color: var(--dark); line-height: 1.5; }
+  .next-text strong { display: block; font-weight: 700; margin-bottom: 2px; }
+
+  .btn-home {
+    display: block;
+    background: var(--dark);
+    color: white;
+    padding: 15px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+
+  .btn-home:hover { background: #374151; }
+
+  .btn-new {
+    display: block;
+    color: var(--gray);
+    padding: 12px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    margin-top: 10px;
+    transition: color 0.2s;
+  }
+
+  .btn-new:hover { color: var(--dark); }
+
+  @media (max-width: 768px) {
+    .card { padding: 36px 20px; }
+    h1 { font-size: 24px; }
+    .booking-ref { flex-direction: column; align-items: flex-start; gap: 6px; }
+    .booking-ref span:last-child { font-size: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="deto-homepage.html" class="logo">
+    <img src="deto-logo.png" style="height:56px;width:auto;" alt="Deto">
+  </a>
+  <ul class="nav-links">
+    <li><a href="deto-homepage.html#hoe">Hoe het werkt</a></li>
+    <li><a href="deto-homepage.html#diensten">Diensten</a></li>
+    <li><a href="detailer-registratie.html">Word detailer</a></li>
+    <li id="nav-auth-item">
+      <a href="login.html" class="nav-auth-link">Inloggen</a>
+    </li>
+    <li><a href="boeken.html" class="nav-cta">Boek nu</a></li>
+  </ul>
+  <button class="hamburger" onclick="document.getElementById('mobileMenu').classList.toggle('open')" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="deto-homepage.html">&#127968; Home</a>
+  <a href="deto-homepage.html#hoe">Hoe het werkt</a>
+  <a href="deto-homepage.html#diensten">Diensten</a>
+  <a href="detailer-registratie.html">Word detailer</a>
+  <a href="login.html" id="mobile-auth-link">Inloggen</a>
+  <a href="boeken.html" class="nav-cta-mobile">Boek nu →</a>
+</div>
+
+<div class="main">
+  <div class="card">
+
+    <div class="check-circle">✓</div>
+
+    <h1>Boeking bevestigd!</h1>
+    <p class="subtitle">Top, jouw beurt is ingepland. Je ontvangt zo dadelijk een bevestiging per e-mail.</p>
+
+    <div class="booking-ref">
+      <span>Boekingsnummer</span>
+      <span id="bookingRef">DT-2026-0001</span>
+    </div>
+
+    <div class="info-rows">
+      <div class="info-row">
+        <span>Dienst</span>
+        <span id="infoService">—</span>
+      </div>
+      <div class="info-row">
+        <span>Auto</span>
+        <span id="infoCar">—</span>
+      </div>
+      <div class="info-row">
+        <span>Datum</span>
+        <span id="dateDisplay">—</span>
+      </div>
+      <div class="info-row">
+        <span>Tijdstip</span>
+        <span id="infoTime">—</span>
+      </div>
+      <div class="info-row">
+        <span>Totaal</span>
+        <span id="infoTotal" style="color: var(--green); font-size: 16px;">—</span>
+      </div>
+    </div>
+
+    <div class="what-next">
+      <h3>Wat nu?</h3>
+      <div class="next-step">
+        <div class="next-dot">1</div>
+        <div class="next-text">
+          <strong>Bevestiging per e-mail</strong>
+          Je ontvangt binnen enkele minuten een e-mail met alle details.
+        </div>
+      </div>
+      <div class="next-step">
+        <div class="next-dot">2</div>
+        <div class="next-text">
+          <strong>Detailer neemt contact op</strong>
+          De dag voor jouw afspraak stuurt de detailer een berichtje ter bevestiging.
+        </div>
+      </div>
+      <div class="next-step">
+        <div class="next-dot">3</div>
+        <div class="next-text">
+          <strong>Jij doet niets</strong>
+          Zorg dat de auto bereikbaar is. De rest doen wij.
+        </div>
+      </div>
+    </div>
+
+    <a href="profiel.html" class="btn-home">Bekijk mijn boeking →</a>
+    <a href="deto-homepage.html" class="btn-new">Terug naar home</a>
+
+  </div>
+</div>
+
+<script>
+  const ref = 'DT-2026-' + String(Math.floor(Math.random() * 9000) + 1000);
+  document.getElementById('bookingRef').textContent = ref;
+
+  // Lees boekingsdata van sessionStorage
+  const booking = JSON.parse(sessionStorage.getItem('deto_booking') || '{}');
+
+  document.getElementById('infoService').textContent = booking.service || '—';
+  document.getElementById('infoCar').textContent = booking.car || '—';
+  document.getElementById('infoTime').textContent = booking.time || '—';
+  document.getElementById('infoTotal').textContent = booking.total ? '€' + booking.total : '—';
+
+  if (booking.date) {
+    const d = new Date(booking.date + 'T00:00:00');
+    document.getElementById('dateDisplay').textContent = d.toLocaleDateString('nl-BE', { weekday: 'long', day: 'numeric', month: 'long' });
+  } else {
+    const d = new Date();
+    d.setDate(d.getDate() + 1);
+    document.getElementById('dateDisplay').textContent = d.toLocaleDateString('nl-BE', { weekday: 'long', day: 'numeric', month: 'long' });
+  }
+</script>
+
+<script>
+  (function() {
+    const KEY = 'sb-clvbgogcsmpszhdvhqyv-auth-token';
+    let session = null;
+    try { session = JSON.parse(localStorage.getItem(KEY)); } catch(e) {}
+    if (!session || !session.user) return;
+    const user = session.user;
+    const meta = user.user_metadata || {};
+    const voornaam = meta.voornaam || user.email.split('@')[0];
+    const letter = voornaam.charAt(0).toUpperCase();
+    const navItem = document.getElementById('nav-auth-item');
+    if (navItem) {
+      navItem.innerHTML = `<div class="nav-user-wrap" id="nav-user-wrap"><div class="nav-user-btn" onclick="toggleUserMenu(event)"><div class="nav-user-avatar">${letter}</div>${voornaam} ▾</div><div class="nav-user-dropdown" id="nav-user-dropdown"><a href="profiel.html">👤 Mijn profiel</a><a href="boeken.html">+ Nieuw boeken</a><button onclick="detoLogout()">Uitloggen ↩</button></div></div>`;
+    }
+    const mobileLink = document.getElementById('mobile-auth-link');
+    if (mobileLink) {
+      mobileLink.textContent = '👤 ' + voornaam + ' — Mijn profiel';
+      mobileLink.href = 'profiel.html';
+    }
+  })();
+  function toggleUserMenu(e) {
+    e.stopPropagation();
+    const dd = document.getElementById('nav-user-dropdown');
+    if (dd) dd.classList.toggle('open');
+  }
+  document.addEventListener('click', function() {
+    const dd = document.getElementById('nav-user-dropdown');
+    if (dd) dd.classList.remove('open');
+  });
+  function detoLogout() {
+    const KEY = 'sb-clvbgogcsmpszhdvhqyv-auth-token';
+    localStorage.removeItem(KEY);
+    const s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
+    s.onload = async function() {
+      const sb = window.supabase.createClient('https://clvbgogcsmpszhdvhqyv.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNsdmJnb2djc21wc3poZHZocXl2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNDg2OTEsImV4cCI6MjA5MDgyNDY5MX0.SOIRnPdiDr04OebiQyY_IE1ViP9gW6C4xTNgwr14xk4');
+      await sb.auth.signOut();
+      window.location.href = 'deto-homepage.html';
+    };
+    document.head.appendChild(s);
+  }
+</script>
+
+</body>
+</html>

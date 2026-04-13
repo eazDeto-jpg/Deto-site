@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inloggen — Deto</title>
+<link rel="icon" type="image/png" href="deto-logo.png">
+<link rel="stylesheet" href="style.css">
+<style>
+  body { background: #F8FAFC; min-height: 100vh; display: flex; flex-direction: column; }
+
+  /* Split layout */
+  .auth-split {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: calc(100vh - 88px);
+  }
+
+  /* LEFT — dark branding panel */
+  .auth-left {
+    background: #111827;
+    padding: 60px 56px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+  }
+  .auth-left::before {
+    content: '';
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 320px; height: 320px;
+    background: radial-gradient(circle, rgba(34,197,94,0.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .auth-left::after {
+    content: '';
+    position: absolute;
+    bottom: -100px; left: -60px;
+    width: 280px; height: 280px;
+    background: radial-gradient(circle, rgba(34,197,94,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .auth-brand { position: relative; z-index: 1; }
+  .auth-brand-name {
+    font-size: 28px; font-weight: 900; color: white; letter-spacing: -0.5px;
+  }
+  .auth-brand-name span { color: #22C55E; }
+  .auth-brand-tagline { font-size: 13px; color: rgba(255,255,255,0.4); margin-top: 4px; }
+
+  .auth-hero-text {
+    position: relative; z-index: 1;
+  }
+  .auth-hero-text h2 {
+    font-size: 36px; font-weight: 900; color: white; line-height: 1.15;
+    letter-spacing: -1px; margin-bottom: 16px;
+  }
+  .auth-hero-text h2 em { color: #22C55E; font-style: normal; }
+  .auth-hero-text p { font-size: 15px; color: rgba(255,255,255,0.5); line-height: 1.6; }
+
+  .auth-perks { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 10px; }
+  .auth-perk {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 14px; color: rgba(255,255,255,0.65);
+  }
+  .auth-perk-dot {
+    width: 20px; height: 20px; background: rgba(34,197,94,0.15);
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .auth-perk-dot::after { content: '✓'; color: #22C55E; font-size: 11px; font-weight: 700; }
+
+  /* RIGHT — white form panel */
+  .auth-right {
+    background: white;
+    padding: 60px 56px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .card-title { font-size: 24px; font-weight: 900; margin-bottom: 6px; color: #111827; }
+  .card-sub { font-size: 14px; color: #6B7280; margin-bottom: 28px; }
+
+  /* Tabs */
+  .tabs { display: flex; border: 1px solid #E5E7EB; border-radius: 12px; padding: 4px; margin-bottom: 28px; background: #F9FAFB; }
+  .tab { flex: 1; text-align: center; padding: 10px; border-radius: 9px; font-size: 14px; font-weight: 600; cursor: pointer; color: #6B7280; transition: all 0.2s; user-select: none; }
+  .tab.active { background: white; color: #111827; box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
+
+  /* Fields */
+  .field { margin-bottom: 16px; }
+  .field label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: #374151; }
+  .field input {
+    width: 100%; padding: 12px 14px; border: 1.5px solid #E5E7EB; border-radius: 10px;
+    font-size: 15px; font-family: inherit; color: #111827; background: white;
+    transition: border-color 0.2s; outline: none; box-sizing: border-box;
+  }
+  .field input:focus { border-color: #22C55E; }
+  .field input.invalid { border-color: #EF4444; background: #FFF5F5; }
+  .field-error { font-size: 12px; color: #EF4444; display: none; margin-top: 4px; }
+  .field-error.visible { display: block; }
+  .field-row { display: flex; gap: 12px; }
+  .field-row .field { flex: 1; }
+
+  .btn-submit {
+    width: 100%; background: #22C55E; color: white; border: none; padding: 14px;
+    border-radius: 100px; font-size: 16px; font-weight: 700; cursor: pointer;
+    font-family: inherit; margin-top: 8px; transition: background 0.2s, transform 0.15s;
+  }
+  .btn-submit:hover { background: #16A34A; transform: translateY(-1px); }
+  .btn-submit:disabled { background: #9CA3AF; cursor: not-allowed; transform: none; }
+
+  .form-error {
+    background: #FEF2F2; color: #991B1B; border-radius: 10px;
+    padding: 12px 14px; font-size: 13px; font-weight: 600; margin-bottom: 16px; display: none;
+  }
+  .form-success {
+    background: #F0FDF4; color: #166534; border-radius: 10px;
+    padding: 12px 14px; font-size: 13px; font-weight: 600; margin-bottom: 16px; display: none;
+  }
+
+  .back-link { display: block; text-align: center; margin-top: 20px; color: #9CA3AF; font-size: 13px; text-decoration: none; }
+  .back-link:hover { color: #111827; }
+
+  .spinner { display: inline-block; width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.4); border-radius: 50%; border-top-color: white; animation: spin 0.8s linear infinite; vertical-align: middle; margin-right: 6px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    body { background: white; }
+    .auth-split { grid-template-columns: 1fr; min-height: unset; }
+    .auth-left { display: none; }
+    .auth-right { padding: 40px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="deto-homepage.html" class="logo">
+    <img src="deto-logo.png" style="height:56px;width:auto;" alt="Deto">
+  </a>
+  <ul class="nav-links">
+    <li><a href="deto-homepage.html#hoe">Hoe het werkt</a></li>
+    <li><a href="deto-homepage.html#diensten">Diensten</a></li>
+    <li><a href="detailer-registratie.html">Word detailer</a></li>
+    <li id="nav-auth-item">
+      <a href="login.html" class="nav-auth-link">Inloggen</a>
+    </li>
+    <li><a href="boeken.html" class="nav-cta">Boek nu</a></li>
+  </ul>
+  <button class="hamburger" onclick="document.getElementById('mobileMenu').classList.toggle('open')" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="deto-homepage.html">&#127968; Home</a>
+  <a href="deto-homepage.html#hoe">Hoe het werkt</a>
+  <a href="deto-homepage.html#diensten">Diensten</a>
+  <a href="detailer-registratie.html">Word detailer</a>
+  <a href="login.html" id="mobile-auth-link">Inloggen</a>
+  <a href="boeken.html" class="nav-cta-mobile">Boek nu →</a>
+</div>
+
+<div class="auth-split">
+  <!-- LEFT: branding -->
+  <div class="auth-left">
+    <div class="auth-brand">
+      <div class="auth-brand-name"><span>Deto</span></div>
+      <div class="auth-brand-tagline">Autodetailing aan huis · Gent</div>
+    </div>
+    <div class="auth-hero-text">
+      <h2>Jouw auto <em>blinkend schoon</em> — zonder gedoe</h2>
+      <p>Boek in 2 minuten. Een detailer komt naar jou. Betaal achteraf. Zo simpel is het.</p>
+    </div>
+    <div class="auth-perks">
+      <div class="auth-perk"><div class="auth-perk-dot"></div>Gratis verplaatsing in Gent</div>
+      <div class="auth-perk"><div class="auth-perk-dot"></div>Beschikbaar binnen 24 uur</div>
+      <div class="auth-perk"><div class="auth-perk-dot"></div>Betaling na de dienst</div>
+      <div class="auth-perk"><div class="auth-perk-dot"></div>4.9★ · 500+ tevreden klanten</div>
+    </div>
+  </div>
+
+  <!-- RIGHT: form -->
+  <div class="auth-right">
+    <h1 class="card-title">Welkom bij Deto</h1>
+    <p class="card-sub">Log in of maak een gratis account aan om te boeken.</p>
+
+    <div class="tabs">
+      <div class="tab active" id="tab-login" onclick="switchTab('login')">Inloggen</div>
+      <div class="tab" id="tab-register" onclick="switchTab('register')">Aanmelden</div>
+    </div>
+
+    <!-- LOGIN FORM -->
+    <div id="form-login">
+      <div id="login-error" class="form-error"></div>
+      <div class="field">
+        <label>E-mailadres</label>
+        <input type="email" id="login-email" placeholder="jan@email.be" autocomplete="email">
+        <span class="field-error" id="err-login-email"></span>
+      </div>
+      <div class="field">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+          <label style="margin-bottom:0;">Wachtwoord</label>
+          <button type="button" onclick="showForgotForm()" style="background:none;border:none;font-size:12px;color:#6B7280;cursor:pointer;font-family:inherit;padding:0;text-decoration:underline;">Vergeten?</button>
+        </div>
+        <input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password">
+        <span class="field-error" id="err-login-password"></span>
+      </div>
+      <button class="btn-submit" id="btn-login" onclick="doLogin()">Inloggen</button>
+    </div>
+
+    <!-- WACHTWOORD VERGETEN FORM -->
+    <div id="form-forgot" style="display:none;">
+      <div id="forgot-error" class="form-error"></div>
+      <div id="forgot-success" class="form-success"></div>
+      <p style="font-size:14px;color:#6B7280;margin-bottom:16px;">Vul je e-mailadres in. We sturen je een herstellink.</p>
+      <div class="field">
+        <label>E-mailadres</label>
+        <input type="email" id="forgot-email" placeholder="jan@email.be" autocomplete="email">
+      </div>
+      <button class="btn-submit" id="btn-forgot" onclick="doForgot()">Herstellink sturen</button>
+      <button type="button" onclick="hideForgotForm()" style="display:block;width:100%;margin-top:10px;background:none;border:none;color:#6B7280;font-size:13px;cursor:pointer;font-family:inherit;">← Terug naar inloggen</button>
+    </div>
+
+    <!-- REGISTER FORM -->
+    <div id="form-register" style="display:none;">
+      <div id="register-error" class="form-error"></div>
+      <div id="register-success" class="form-success"></div>
+      <div class="field-row">
+        <div class="field">
+          <label>Voornaam</label>
+          <input type="text" id="reg-voornaam" placeholder="Jan" autocomplete="given-name">
+          <span class="field-error" id="err-reg-voornaam"></span>
+        </div>
+        <div class="field">
+          <label>Achternaam</label>
+          <input type="text" id="reg-achternaam" placeholder="Janssen" autocomplete="family-name">
+          <span class="field-error" id="err-reg-achternaam"></span>
+        </div>
+      </div>
+      <div class="field">
+        <label>E-mailadres</label>
+        <input type="email" id="reg-email" placeholder="jan@email.be" autocomplete="email">
+        <span class="field-error" id="err-reg-email"></span>
+      </div>
+      <div class="field">
+        <label>Wachtwoord</label>
+        <input type="password" id="reg-password" placeholder="Minstens 6 tekens" autocomplete="new-password">
+        <span class="field-error" id="err-reg-password"></span>
+      </div>
+      <div class="field">
+        <label>Bevestig wachtwoord</label>
+        <input type="password" id="reg-password2" placeholder="Herhaal wachtwoord" autocomplete="new-password">
+        <span class="field-error" id="err-reg-password2"></span>
+      </div>
+      <button class="btn-submit" id="btn-register" onclick="doRegister()">Account aanmaken</button>
+    </div>
+
+    <a href="deto-homepage.html" class="back-link">← Terug naar home</a>
+  </div>
+</div>
+
+<script>
+  const SUPABASE_URL = 'https://clvbgogcsmpszhdvhqyv.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNsdmJnb2djc21wc3poZHZocXl2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNDg2OTEsImV4cCI6MjA5MDgyNDY5MX0.SOIRnPdiDr04OebiQyY_IE1ViP9gW6C4xTNgwr14xk4';
+
+  let sb = null;
+  const params = new URLSearchParams(window.location.search);
+  const redirectTo = params.get('redirect') || 'profiel.html';
+  if (params.get('tab') === 'register') switchTab('register');
+
+  function switchTab(tab) {
+    document.getElementById('form-login').style.display = tab === 'login' ? 'block' : 'none';
+    document.getElementById('form-register').style.display = tab === 'register' ? 'block' : 'none';
+    document.getElementById('tab-login').classList.toggle('active', tab === 'login');
+    document.getElementById('tab-register').classList.toggle('active', tab === 'register');
+  }
+
+  function showFieldError(id, msg) {
+    const el = document.getElementById('err-' + id);
+    if (!el) return;
+    el.textContent = msg;
+    el.classList.toggle('visible', !!msg);
+    const input = document.getElementById(id);
+    if (input) input.classList.toggle('invalid', !!msg);
+  }
+
+  function clearLoginErrors() {
+    ['login-email', 'login-password'].forEach(id => showFieldError(id, ''));
+    document.getElementById('login-error').style.display = 'none';
+    document.getElementById('login-error').textContent = '';
+  }
+
+  function clearRegisterErrors() {
+    ['reg-voornaam','reg-achternaam','reg-email','reg-password','reg-password2'].forEach(id => showFieldError(id, ''));
+    document.getElementById('register-error').style.display = 'none';
+    document.getElementById('register-success').style.display = 'none';
+  }
+
+  function loadScript(src) {
+    return new Promise((resolve, reject) => {
+      if (document.querySelector('script[src="' + src + '"]')) { resolve(); return; }
+      const s = document.createElement('script');
+      s.src = src; s.onload = resolve; s.onerror = reject;
+      document.head.appendChild(s);
+    });
+  }
+
+  async function getClient() {
+    if (!sb) {
+      await loadScript('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2');
+      sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    }
+    return sb;
+  }
+
+  // Als al ingelogd → doorsturen
+  (async () => {
+    const client = await getClient();
+    const { data: { session } } = await client.auth.getSession();
+    if (session) window.location.replace(redirectTo);
+  })();
+
+  async function doLogin() {
+    clearLoginErrors();
+    const email = document.getElementById('login-email').value.trim();
+    const password = document.getElementById('login-password').value;
+
+    let hasError = false;
+    if (!email) { showFieldError('login-email', 'E-mailadres is verplicht.'); hasError = true; }
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showFieldError('login-email', 'Ongeldig e-mailadres.'); hasError = true; }
+    if (!password) { showFieldError('login-password', 'Wachtwoord is verplicht.'); hasError = true; }
+    if (hasError) return;
+
+    const btn = document.getElementById('btn-login');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span>Inloggen…';
+
+    const client = await getClient();
+    const { error } = await client.auth.signInWithPassword({ email, password });
+
+    if (error) {
+      btn.disabled = false;
+      btn.textContent = 'Inloggen';
+      const errEl = document.getElementById('login-error');
+      if (error.message.includes('Email not confirmed') || error.message.includes('email_not_confirmed')) {
+        errEl.innerHTML = '📧 Bevestig eerst je e-mailadres. Controleer je inbox (ook de spammap).<br><button onclick="resendConfirmation(\'' + email + '\')" style="background:none;border:none;color:#22C55E;cursor:pointer;font-size:13px;font-family:inherit;padding:4px 0;text-decoration:underline;">Opnieuw sturen</button>';
+      } else if (error.message.includes('Invalid login') || error.message.includes('invalid_credentials')) {
+        errEl.textContent = '❌ Ongeldig e-mailadres of wachtwoord.';
+      } else {
+        errEl.textContent = '❌ Er ging iets mis. Probeer opnieuw.';
+      }
+      errEl.style.display = 'block';
+    } else {
+      window.location.replace(redirectTo);
+    }
+  }
+
+  async function doRegister() {
+    clearRegisterErrors();
+    const voornaam  = document.getElementById('reg-voornaam').value.trim();
+    const achternaam = document.getElementById('reg-achternaam').value.trim();
+    const email     = document.getElementById('reg-email').value.trim();
+    const password  = document.getElementById('reg-password').value;
+    const password2 = document.getElementById('reg-password2').value;
+
+    let hasError = false;
+    if (!voornaam)   { showFieldError('reg-voornaam',  'Voornaam is verplicht.'); hasError = true; }
+    if (!achternaam) { showFieldError('reg-achternaam','Achternaam is verplicht.'); hasError = true; }
+    if (!email) { showFieldError('reg-email', 'E-mailadres is verplicht.'); hasError = true; }
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showFieldError('reg-email', 'Ongeldig e-mailadres.'); hasError = true; }
+    if (!password) { showFieldError('reg-password', 'Wachtwoord is verplicht.'); hasError = true; }
+    else if (password.length < 6) { showFieldError('reg-password', 'Wachtwoord moet minstens 6 tekens zijn.'); hasError = true; }
+    if (!password2) { showFieldError('reg-password2', 'Bevestig je wachtwoord.'); hasError = true; }
+    else if (password !== password2) { showFieldError('reg-password2', 'Wachtwoorden komen niet overeen.'); hasError = true; }
+    if (hasError) return;
+
+    const btn = document.getElementById('btn-register');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span>Account aanmaken…';
+
+    const client = await getClient();
+    const { error } = await client.auth.signUp({
+      email, password,
+      options: {
+        data: { voornaam, achternaam },
+        emailRedirectTo: 'https://deto.site/email-bevestigd.html'
+      }
+    });
+
+    if (error) {
+      btn.disabled = false;
+      btn.textContent = 'Account aanmaken';
+      const errEl = document.getElementById('register-error');
+      errEl.textContent = error.message.includes('already registered') || error.message.includes('already been registered')
+        ? '❌ Dit e-mailadres is al geregistreerd. Probeer in te loggen.'
+        : '❌ Er ging iets mis: ' + error.message;
+      errEl.style.display = 'block';
+      return;
+    }
+
+    // Toon altijd bevestigingsmelding — Supabase stuurt verificatiemail
+    btn.disabled = false;
+    btn.textContent = 'Account aanmaken';
+    const successEl = document.getElementById('register-success');
+    successEl.innerHTML = '✓ Account aangemaakt! <strong>Controleer je inbox</strong> en klik op de bevestigingslink om verder te gaan.';
+    successEl.style.display = 'block';
+    // Verberg formulier velden na succes
+    document.querySelectorAll('#form-register .field, #btn-register').forEach(el => el.style.display = 'none');
+  }
+
+  async function resendConfirmation(email) {
+    const client = await getClient();
+    const { error } = await client.auth.resend({ type: 'signup', email });
+    const errEl = document.getElementById('login-error');
+    if (error) {
+      errEl.innerHTML = '❌ Kon bevestigingsmail niet sturen. Probeer opnieuw.';
+    } else {
+      errEl.innerHTML = '✓ Bevestigingsmail opnieuw verstuurd. Controleer je inbox.';
+      errEl.style.background = '#F0FDF4';
+      errEl.style.color = '#166534';
+    }
+  }
+
+  function showForgotForm() {
+    document.getElementById('form-login').style.display = 'none';
+    document.getElementById('form-forgot').style.display = 'block';
+    document.querySelector('.tabs').style.display = 'none';
+    document.getElementById('forgot-email').value = document.getElementById('login-email').value;
+    document.getElementById('forgot-email').focus();
+  }
+
+  function hideForgotForm() {
+    document.getElementById('form-forgot').style.display = 'none';
+    document.getElementById('form-login').style.display = 'block';
+    document.querySelector('.tabs').style.display = 'flex';
+  }
+
+  async function doForgot() {
+    const email = document.getElementById('forgot-email').value.trim();
+    const errEl = document.getElementById('forgot-error');
+    const sucEl = document.getElementById('forgot-success');
+    const btn = document.getElementById('btn-forgot');
+    errEl.style.display = 'none';
+    sucEl.style.display = 'none';
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      errEl.textContent = '❌ Vul een geldig e-mailadres in.';
+      errEl.style.display = 'block';
+      return;
+    }
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span>Sturen…';
+    const client = await getClient();
+    const { error } = await client.auth.resetPasswordForEmail(email, {
+      redirectTo: 'https://deto.site/reset-wachtwoord.html'
+    });
+    btn.disabled = false;
+    btn.textContent = 'Herstellink sturen';
+    if (error) {
+      errEl.textContent = '❌ Er ging iets mis. Probeer opnieuw.';
+      errEl.style.display = 'block';
+    } else {
+      sucEl.textContent = '✓ Controleer je inbox voor de herstellink.';
+      sucEl.style.display = 'block';
+    }
+  }
+
+  // Enter-toets submit
+  document.addEventListener('keydown', function(e) {
+    if (e.key !== 'Enter') return;
+    const loginVisible = document.getElementById('form-login').style.display !== 'none';
+    if (loginVisible) doLogin(); else doRegister();
+  });
+</script>
+
+<script>
+  (function() {
+    const KEY = 'sb-clvbgogcsmpszhdvhqyv-auth-token';
+    let session = null;
+    try { session = JSON.parse(localStorage.getItem(KEY)); } catch(e) {}
+    if (!session || !session.user) return;
+    const user = session.user;
+    const meta = user.user_metadata || {};
+    const voornaam = meta.voornaam || user.email.split('@')[0];
+    const letter = voornaam.charAt(0).toUpperCase();
+    const navItem = document.getElementById('nav-auth-item');
+    if (navItem) {
+      navItem.innerHTML = `<div class="nav-user-wrap" id="nav-user-wrap"><div class="nav-user-btn" onclick="toggleUserMenu(event)"><div class="nav-user-avatar">${letter}</div>${voornaam} ▾</div><div class="nav-user-dropdown" id="nav-user-dropdown"><a href="profiel.html">👤 Mijn profiel</a><a href="boeken.html">+ Nieuw boeken</a><button onclick="detoLogout()">Uitloggen ↩</button></div></div>`;
+    }
+    const mobileLink = document.getElementById('mobile-auth-link');
+    if (mobileLink) {
+      mobileLink.textContent = '👤 ' + voornaam + ' — Mijn profiel';
+      mobileLink.href = 'profiel.html';
+    }
+  })();
+  function toggleUserMenu(e) {
+    e.stopPropagation();
+    const dd = document.getElementById('nav-user-dropdown');
+    if (dd) dd.classList.toggle('open');
+  }
+  document.addEventListener('click', function() {
+    const dd = document.getElementById('nav-user-dropdown');
+    if (dd) dd.classList.remove('open');
+  });
+  function detoLogout() {
+    const KEY = 'sb-clvbgogcsmpszhdvhqyv-auth-token';
+    localStorage.removeItem(KEY);
+    const s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
+    s.onload = async function() {
+      const sb = window.supabase.createClient('https://clvbgogcsmpszhdvhqyv.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNsdmJnb2djc21wc3poZHZocXl2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNDg2OTEsImV4cCI6MjA5MDgyNDY5MX0.SOIRnPdiDr04OebiQyY_IE1ViP9gW6C4xTNgwr14xk4');
+      await sb.auth.signOut();
+      window.location.href = 'deto-homepage.html';
+    };
+    document.head.appendChild(s);
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wachtwoord herstellen — Deto</title>
+<link rel="icon" type="image/png" href="deto-logo.png">
+<link rel="stylesheet" href="style.css">
+<style>
+  body { background: #F9FAFB; min-height: 100vh; display: flex; flex-direction: column; }
+  main { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 48px 24px; }
+
+  .card {
+    background: white; border-radius: 20px; padding: 40px 36px;
+    border: 1px solid #E5E7EB; max-width: 440px; width: 100%;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.05);
+  }
+  .card-logo { text-align: center; margin-bottom: 24px; }
+  .card-title { font-size: 22px; font-weight: 900; margin-bottom: 6px; text-align: center; }
+  .card-sub { font-size: 14px; color: #6B7280; margin-bottom: 28px; text-align: center; }
+
+  .field { margin-bottom: 16px; }
+  .field label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: #374151; }
+  .field input {
+    width: 100%; padding: 12px 14px; border: 1.5px solid #E5E7EB; border-radius: 10px;
+    font-size: 15px; font-family: inherit; color: #111827; background: white;
+    transition: border-color 0.2s; outline: none;
+  }
+  .field input:focus { border-color: #22C55E; }
+  .field input.invalid { border-color: #EF4444; background: #FFF5F5; }
+
+  .btn-submit {
+    width: 100%; background: #22C55E; color: white; border: none; padding: 14px;
+    border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer;
+    font-family: inherit; margin-top: 8px; transition: background 0.2s;
+  }
+  .btn-submit:hover { background: #16A34A; }
+  .btn-submit:disabled { background: #9CA3AF; cursor: not-allowed; }
+
+  .form-error {
+    background: #FEF2F2; color: #991B1B; border-radius: 10px;
+    padding: 12px 14px; font-size: 13px; font-weight: 600; margin-bottom: 16px; display: none;
+  }
+  .form-success {
+    background: #F0FDF4; color: #166534; border-radius: 10px;
+    padding: 12px 14px; font-size: 13px; font-weight: 600; margin-bottom: 16px; display: none;
+  }
+
+  .spinner { display: inline-block; width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.4); border-radius: 50%; border-top-color: white; animation: spin 0.8s linear infinite; vertical-align: middle; margin-right: 6px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .state-invalid { text-align: center; padding: 16px 0; }
+  .state-invalid .icon { font-size: 48px; margin-bottom: 16px; }
+  .state-invalid p { color: #6B7280; font-size: 14px; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="deto-homepage.html" class="logo">
+    <img src="deto-logo.png" style="height:56px;width:auto;" alt="Deto">
+  </a>
+  <ul class="nav-links">
+    <li><a href="deto-homepage.html#hoe">Hoe het werkt</a></li>
+    <li><a href="deto-homepage.html#diensten">Diensten</a></li>
+    <li><a href="boeken.html" class="nav-cta">Boek nu</a></li>
+  </ul>
+  <button type="button" class="hamburger" onclick="document.getElementById('mobileMenu').classList.toggle('open')" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="deto-homepage.html">&#127968; Home</a>
+  <a href="deto-homepage.html#hoe">Hoe het werkt</a>
+  <a href="deto-homepage.html#diensten">Diensten</a>
+  <a href="boeken.html" class="nav-cta-mobile">Boek nu →</a>
+</div>
+
+<main>
+  <div class="card">
+    <div class="card-logo">
+      <img src="deto-logo.png" style="height:48px;width:auto;" alt="Deto">
+    </div>
+
+    <!-- Laden -->
+    <div id="state-loading" style="text-align:center;padding:16px 0;">
+      <div style="width:32px;height:32px;border:3px solid #E5E7EB;border-top-color:#22C55E;border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 16px;"></div>
+      <p style="color:#6B7280;font-size:14px;">Link controleren…</p>
+    </div>
+
+    <!-- Ongeldige link -->
+    <div id="state-invalid" class="state-invalid" style="display:none;">
+      <div class="icon">⛔</div>
+      <h2 style="font-size:18px;font-weight:800;margin-bottom:8px;">Ongeldige of verlopen link</h2>
+      <p>Deze herstellink is niet meer geldig. Vraag een nieuwe aan.</p>
+      <a href="login.html" style="display:inline-block;margin-top:20px;color:#22C55E;font-weight:700;font-size:14px;">← Terug naar inloggen</a>
+    </div>
+
+    <!-- Reset formulier -->
+    <div id="state-form" style="display:none;">
+      <h1 class="card-title">Nieuw wachtwoord</h1>
+      <p class="card-sub">Kies een nieuw wachtwoord voor je account.</p>
+      <div id="reset-error" class="form-error"></div>
+      <div class="field">
+        <label>Nieuw wachtwoord</label>
+        <input type="password" id="new-password" placeholder="Minstens 6 tekens" autocomplete="new-password">
+      </div>
+      <div class="field">
+        <label>Bevestig wachtwoord</label>
+        <input type="password" id="new-password2" placeholder="Herhaal wachtwoord" autocomplete="new-password">
+      </div>
+      <button class="btn-submit" id="btn-reset" onclick="doReset()">Wachtwoord opslaan</button>
+    </div>
+
+    <!-- Succes -->
+    <div id="state-success" style="display:none;text-align:center;padding:16px 0;">
+      <div style="font-size:48px;margin-bottom:16px;">✅</div>
+      <h2 style="font-size:18px;font-weight:800;margin-bottom:8px;">Wachtwoord gewijzigd!</h2>
+      <p style="color:#6B7280;font-size:14px;margin-bottom:20px;">Je kunt nu inloggen met je nieuwe wachtwoord.</p>
+      <a href="login.html" style="display:inline-block;background:#22C55E;color:white;padding:12px 24px;border-radius:10px;font-weight:700;font-size:15px;text-decoration:none;">Inloggen →</a>
+    </div>
+  </div>
+</main>
+
+<script>
+  const SUPABASE_URL = 'https://clvbgogcsmpszhdvhqyv.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNsdmJnb2djc21wc3poZHZocXl2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNDg2OTEsImV4cCI6MjA5MDgyNDY5MX0.SOIRnPdiDr04OebiQyY_IE1ViP9gW6C4xTNgwr14xk4';
+  let sb = null;
+
+  function show(id) {
+    ['state-loading','state-invalid','state-form','state-success'].forEach(s => {
+      document.getElementById(s).style.display = s === id ? 'block' : 'none';
+    });
+  }
+
+  async function init() {
+    // Laad Supabase
+    await new Promise((resolve, reject) => {
+      const s = document.createElement('script');
+      s.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
+      s.onload = resolve; s.onerror = reject;
+      document.head.appendChild(s);
+    });
+    sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // Supabase stuurt token in URL hash: #access_token=...&type=recovery
+    const hash = window.location.hash;
+    const params = new URLSearchParams(hash.startsWith('#') ? hash.slice(1) : hash);
+    const type = params.get('type');
+    const accessToken = params.get('access_token');
+    const refreshToken = params.get('refresh_token');
+
+    if (type === 'recovery' && accessToken) {
+      // Zet sessie vanuit de URL tokens
+      const { error } = await sb.auth.setSession({ access_token: accessToken, refresh_token: refreshToken || '' });
+      if (error) { show('state-invalid'); return; }
+      show('state-form');
+      document.getElementById('new-password').focus();
+    } else {
+      show('state-invalid');
+    }
+  }
+
+  async function doReset() {
+    const pw1 = document.getElementById('new-password').value;
+    const pw2 = document.getElementById('new-password2').value;
+    const errEl = document.getElementById('reset-error');
+    const btn = document.getElementById('btn-reset');
+    errEl.style.display = 'none';
+
+    if (!pw1 || pw1.length < 6) {
+      errEl.textContent = '❌ Wachtwoord moet minstens 6 tekens zijn.';
+      errEl.style.display = 'block'; return;
+    }
+    if (pw1 !== pw2) {
+      errEl.textContent = '❌ Wachtwoorden komen niet overeen.';
+      errEl.style.display = 'block'; return;
+    }
+
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span>Opslaan…';
+
+    const { error } = await sb.auth.updateUser({ password: pw1 });
+
+    if (error) {
+      btn.disabled = false;
+      btn.textContent = 'Wachtwoord opslaan';
+      errEl.textContent = '❌ Er ging iets mis. Probeer de herstellink opnieuw aan te vragen.';
+      errEl.style.display = 'block';
+    } else {
+      await sb.auth.signOut();
+      show('state-success');
+    }
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && document.getElementById('state-form').style.display !== 'none') doReset();
+  });
+
+  init();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Boek een beurt — Deto</title>
+<meta name="description" content="Boek een professionele autodetailing aan huis in Gent. Kies jouw dienst, auto type en datum.">
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" href="deto-logo.png">
+<link rel="stylesheet" href="style.css">
+<style>
+  body { background: var(--light); min-height: 100vh; }
+
+  .page {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 48px 24px;
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 28px;
+    align-items: start;
+  }
+
+  .steps-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 32px;
+    grid-column: 1 / -1;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px 24px;
+  }
+
+  .step-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #9CA3AF;
+    flex: 1;
+    transition: color 0.3s;
+  }
+
+  .step-item.active { color: var(--dark); }
+  .step-item.done { color: var(--green); }
+
+  .step-circle {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    background: #F3F4F6;
+    border: 2px solid #E5E7EB;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 800;
+    color: #9CA3AF; flex-shrink: 0;
+    transition: all 0.3s;
+  }
+
+  .step-item.active .step-circle {
+    background: var(--dark); color: white; border-color: var(--dark);
+    box-shadow: 0 0 0 4px rgba(17,24,39,0.08);
+  }
+  .step-item.done .step-circle {
+    background: var(--green); color: white; border-color: var(--green);
+    box-shadow: 0 0 0 4px rgba(34,197,94,0.15);
+  }
+  .step-item.done .step-circle::after { content: '✓'; font-size: 14px; font-weight: 900; }
+  .step-item.done .step-num-label { display: none; }
+
+  .step-line {
+    flex: 1; height: 3px;
+    background: #E5E7EB;
+    margin: 0 8px; border-radius: 2px;
+    overflow: hidden; position: relative;
+  }
+  .step-line::after {
+    content: ''; position: absolute; inset: 0;
+    background: var(--green);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.5s cubic-bezier(0.16,1,0.3,1);
+  }
+  .step-line.done::after { transform: scaleX(1); }
+
+  .form-card {
+    background: white;
+    border-radius: 20px;
+    padding: 32px;
+    border: 1px solid var(--border);
+  }
+
+  .form-label {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gray);
+    margin-bottom: 14px;
+    display: block;
+  }
+
+  .car-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .car-option {
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    padding: 16px 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .car-option:hover { border-color: #d1d5db; }
+  .car-option.selected { border-color: var(--green); background: #F0FDF4; }
+
+  .car-option-emoji { font-size: 22px; }
+  .car-option-name { font-size: 14px; font-weight: 700; color: var(--dark); }
+  .car-option-example { font-size: 11px; color: var(--gray); }
+
+  .service-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .service-item {
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    padding: 16px 18px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .service-item:hover { border-color: #d1d5db; }
+  .service-item.selected { border-color: var(--green); background: #F0FDF4; }
+
+  .service-item-left { display: flex; flex-direction: column; gap: 3px; }
+  .service-item-name { font-size: 15px; font-weight: 700; }
+  .service-item-desc { font-size: 12px; color: var(--gray); }
+  .service-item-price { font-size: 18px; font-weight: 800; color: var(--green); }
+
+  .dirt-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .dirt-item {
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .dirt-item:hover { border-color: #d1d5db; }
+  .dirt-item.selected { border-color: var(--green); background: #F0FDF4; }
+
+  .dirt-item-emoji { font-size: 20px; }
+  .dirt-item-info { flex: 1; }
+  .dirt-item-name { font-size: 14px; font-weight: 700; }
+  .dirt-item-desc { font-size: 12px; color: var(--gray); }
+  .dirt-item-price { font-size: 13px; font-weight: 700; color: var(--gray); }
+  .dirt-item.selected .dirt-item-price { color: var(--green); }
+
+  .field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .field label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--dark);
+  }
+
+  .field input, .field select, .field textarea {
+    padding: 12px 14px;
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    font-size: 15px;
+    font-family: inherit;
+    color: var(--dark);
+    background: white;
+    transition: border-color 0.2s;
+    outline: none;
+    width: 100%;
+  }
+
+  .field input:focus, .field select:focus, .field textarea:focus {
+    border-color: var(--green);
+  }
+
+  .field textarea { resize: vertical; min-height: 80px; }
+
+  .summary-card {
+    background: white;
+    border-radius: 20px;
+    padding: 28px;
+    border: 1px solid var(--border);
+    position: sticky;
+    top: 24px;
+  }
+
+  .summary-title {
+    font-size: 16px;
+    font-weight: 800;
+    margin-bottom: 20px;
+    color: var(--dark);
+  }
+
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+  }
+
+  .summary-row:last-of-type { border-bottom: none; }
+  .summary-row span:first-child { color: var(--gray); }
+  .summary-row span:last-child { font-weight: 600; color: var(--dark); }
+
+  .summary-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 0 0;
+    margin-top: 4px;
+    border-top: 2px solid var(--dark);
+  }
+
+  .summary-total span:first-child { font-size: 15px; font-weight: 700; }
+  .summary-total span:last-child { font-size: 26px; font-weight: 900; letter-spacing: -1px; color: var(--green); }
+
+  .summary-note {
+    font-size: 12px;
+    color: var(--gray);
+    text-align: center;
+    margin-top: 12px;
+    line-height: 1.5;
+  }
+
+  .book-submit-btn {
+    width: 100%;
+    background: var(--green);
+    color: white;
+    border: none;
+    padding: 16px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background 0.2s, transform 0.1s;
+    font-family: inherit;
+  }
+
+  .book-submit-btn:hover { background: var(--green-dark); transform: translateY(-1px); }
+
+  .trust-badges {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 18px;
+  }
+
+  .trust-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--gray);
+  }
+
+  .trust-badge::before {
+    content: '✓';
+    color: var(--green);
+    font-weight: 700;
+    font-size: 13px;
+  }
+
+  .field-error {
+    font-size: 12px;
+    color: #EF4444;
+    font-weight: 600;
+    display: none;
+    margin-top: 4px;
+  }
+  .field-error.visible { display: block; }
+  .field input.invalid, .field select.invalid, .field textarea.invalid {
+    border-color: #EF4444;
+  }
+  .field input.invalid:focus, .field select.invalid:focus {
+    border-color: #EF4444;
+  }
+
+  .time-slot {
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 16px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--dark);
+    background: white;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .time-slot:hover:not(.slot-full) { border-color: #d1d5db; }
+  .time-slot.selected { border-color: var(--green); background: #F0FDF4; color: var(--dark); }
+  .time-slot.slot-full {
+    background: #F9FAFB;
+    color: #9CA3AF;
+    cursor: not-allowed;
+    border-color: var(--border);
+  }
+  .slot-badge {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 20px;
+    background: #FEE2E2;
+    color: #EF4444;
+  }
+  .slot-badge.free { background: #DCFCE7; color: #16A34A; }
+
+  @media (max-width: 768px) {
+    .page { grid-template-columns: 1fr; padding: 24px 16px; }
+    .step-item span { display: none; }
+    .car-grid { grid-template-columns: 1fr 1fr; }
+    .field-row { grid-template-columns: 1fr; }
+    .summary-card { position: static; }
+    .summary-card .book-submit-btn { display: none; }
+    #sticky-book-bar { display: block !important; }
+    body { padding-bottom: 80px; }
+  }
+
+  /* Auth gate overlay */
+  #auth-gate {
+    display: none; position: fixed; inset: 0; background: rgba(249,250,251,0.97);
+    z-index: 500; align-items: center; justify-content: center; flex-direction: column;
+    text-align: center; padding: 24px;
+  }
+  #auth-gate.visible { display: flex; }
+  .auth-gate-card {
+    background: white; border-radius: 24px; padding: 48px 40px; max-width: 420px; width: 100%;
+    border: 1px solid #E5E7EB; box-shadow: 0 8px 40px rgba(0,0,0,0.08);
+  }
+  .auth-gate-icon { font-size: 52px; margin-bottom: 20px; }
+  .auth-gate-card h2 { font-size: 22px; font-weight: 900; margin-bottom: 10px; }
+  .auth-gate-card p { font-size: 15px; color: #6B7280; margin-bottom: 28px; line-height: 1.6; }
+  .auth-gate-btns { display: flex; flex-direction: column; gap: 10px; }
+  .gate-btn-primary {
+    background: #22C55E; color: white; border: none; padding: 14px; border-radius: 12px;
+    font-size: 16px; font-weight: 700; cursor: pointer; font-family: inherit;
+    text-decoration: none; display: block; transition: background 0.2s;
+  }
+  .gate-btn-primary:hover { background: #16A34A; }
+  .gate-btn-secondary {
+    background: #F9FAFB; color: #111827; border: 1.5px solid #E5E7EB; padding: 13px;
+    border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer;
+    font-family: inherit; text-decoration: none; display: block; transition: all 0.2s;
+  }
+  .gate-btn-secondary:hover { border-color: #22C55E; color: #16A34A; }
+
+  /* Beschikbaarheids-status */
+  #availability-msg {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 8px;
+    padding: 10px 14px;
+  }
+  .avail-spinner {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border: 2px solid currentColor;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    flex-shrink: 0;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<!-- Auth gate (verborgen totdat gecontroleerd is) -->
+<div id="auth-gate">
+  <div class="auth-gate-card">
+    <div class="auth-gate-icon">🔒</div>
+    <h2>Log in om te boeken</h2>
+    <p>Je hebt een Deto-account nodig om een afspraak in te plannen. Aanmelden is gratis en duurt minder dan een minuut.</p>
+    <div class="auth-gate-btns">
+      <a href="login.html?tab=register&redirect=boeken.html" class="gate-btn-primary">Account aanmaken — gratis</a>
+      <a href="login.html?redirect=boeken.html" class="gate-btn-secondary">Ik heb al een account → Inloggen</a>
+    </div>
+  </div>
+</div>
+
+<nav>
+  <a href="deto-homepage.html" class="logo">
+    <img src="deto-logo.png" style="height:56px;width:auto;" alt="Deto">
+  </a>
+  <ul class="nav-links">
+    <li><a href="deto-homepage.html#hoe">Hoe het werkt</a></li>
+    <li><a href="deto-homepage.html#diensten">Diensten</a></li>
+    <li><a href="detailer-registratie.html">Word detailer</a></li>
+    <li id="nav-auth-item">
+      <a href="login.html" class="nav-auth-link">Inloggen</a>
+    </li>
+    <li><a href="boeken.html" class="nav-cta">Boek nu</a></li>
+  </ul>
+  <button class="hamburger" onclick="document.getElementById('mobileMenu').classList.toggle('open')" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="deto-homepage.html">&#127968; Home</a>
+  <a href="deto-homepage.html#hoe">Hoe het werkt</a>
+  <a href="deto-homepage.html#diensten">Diensten</a>
+  <a href="detailer-registratie.html">Word detailer</a>
+  <a href="login.html" id="mobile-auth-link">Inloggen</a>
+  <a href="boeken.html" class="nav-cta-mobile">Boek nu →</a>
+</div>
+
+<div class="page">
+
+  <div class="steps-header" id="steps-header">
+    <div class="step-item active" id="step-item-1">
+      <div class="step-circle"><span class="step-num-label">1</span></div>
+      <span>Jouw boeking</span>
+    </div>
+    <div class="step-line" id="step-line-1"></div>
+    <div class="step-item" id="step-item-2">
+      <div class="step-circle"><span class="step-num-label">2</span></div>
+      <span>Bevestiging</span>
+    </div>
+  </div>
+
+  <div>
+
+    <div class="form-card" style="margin-bottom: 16px;">
+      <span class="form-label">Stap 1 — Jouw auto</span>
+      <div class="car-grid">
+        <div class="car-option selected" data-size="klein">
+          <span class="car-option-emoji">🚗</span>
+          <span class="car-option-name">Klein</span>
+          <span class="car-option-example">Clio, Polo, Yaris</span>
+        </div>
+        <div class="car-option" data-size="medium">
+          <span class="car-option-emoji">🚙</span>
+          <span class="car-option-name">Medium</span>
+          <span class="car-option-example">Golf, A-klasse, 3-serie</span>
+        </div>
+        <div class="car-option" data-size="groot">
+          <span class="car-option-emoji">🚐</span>
+          <span class="car-option-name">Groot / SUV</span>
+          <span class="car-option-example">Tiguan, X5, Outlander</span>
+        </div>
+        <div class="car-option" data-size="bestel">
+          <span class="car-option-emoji">🚌</span>
+          <span class="car-option-name">Bestelwagen</span>
+          <span class="car-option-example">Transit, Ducato, Sprinter</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-card" style="margin-bottom: 16px;">
+      <span class="form-label">Stap 2 — Kies een dienst</span>
+      <div class="service-list">
+        <div class="service-item selected" data-service="exterieur" data-idx="0">
+          <div class="service-item-left">
+            <span class="service-item-name">Exterieur</span>
+            <span class="service-item-desc">Handwas, velgen, ramen, banden</span>
+          </div>
+          <span class="service-item-price" id="price-ext">€35</span>
+        </div>
+        <div class="service-item" data-service="interieur" data-idx="1">
+          <div class="service-item-left">
+            <span class="service-item-name">Interieur</span>
+            <span class="service-item-desc">Stofzuigen, dashboard, stoelen, ramen</span>
+          </div>
+          <span class="service-item-price" id="price-int">€45</span>
+        </div>
+        <div class="service-item" data-service="volledig" data-idx="2">
+          <div class="service-item-left">
+            <span class="service-item-name">Volledig — Beste waarde</span>
+            <span class="service-item-desc">Alles binnen + buiten + wax bescherming</span>
+          </div>
+          <span class="service-item-price" id="price-vol">€75</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-card" style="margin-bottom: 16px;">
+      <span class="form-label">Stap 3 — Conditie van jouw auto</span>
+      <div class="dirt-list">
+        <div class="dirt-item selected" data-dirt="0">
+          <span class="dirt-item-emoji">😊</span>
+          <div class="dirt-item-info">
+            <div class="dirt-item-name">Normaal vuil</div>
+            <div class="dirt-item-desc">Gewone weekgrime, licht stof</div>
+          </div>
+          <span class="dirt-item-price">+€0</span>
+        </div>
+        <div class="dirt-item" data-dirt="15">
+          <span class="dirt-item-emoji">😅</span>
+          <div class="dirt-item-info">
+            <div class="dirt-item-name">Redelijk vuil</div>
+            <div class="dirt-item-desc">Zand, stof, voedselresten, vlekken</div>
+          </div>
+          <span class="dirt-item-price">+€15</span>
+        </div>
+        <div class="dirt-item" data-dirt="30">
+          <span class="dirt-item-emoji">🐶</span>
+          <div class="dirt-item-info">
+            <div class="dirt-item-name">Heel vuil</div>
+            <div class="dirt-item-desc">Modder, huisdieren, ernstige vlekken</div>
+          </div>
+          <span class="dirt-item-price">+€30</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <span class="form-label">Stap 4 — Wanneer & Waar</span>
+      <div class="field-group">
+        <div class="field-row">
+          <div class="field">
+            <label>Voornaam</label>
+            <input type="text" placeholder="Jan" id="firstName">
+            <span class="field-error" id="err-firstName"></span>
+          </div>
+          <div class="field">
+            <label>Achternaam</label>
+            <input type="text" placeholder="Janssen" id="lastName">
+            <span class="field-error" id="err-lastName"></span>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>Telefoonnummer</label>
+            <input type="tel" placeholder="+32 4xx xx xx xx" id="phone">
+            <span class="field-error" id="err-phone"></span>
+          </div>
+          <div class="field">
+            <label>E-mailadres</label>
+            <input type="email" placeholder="jan@email.be" id="email">
+            <span class="field-error" id="err-email"></span>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field" style="flex:2;">
+            <label>Straat</label>
+            <input type="text" placeholder="Veldstraat" id="street">
+            <span class="field-error" id="err-street"></span>
+          </div>
+          <div class="field" style="flex:1;">
+            <label>Huisnummer</label>
+            <input type="text" placeholder="1" id="houseNr">
+            <span class="field-error" id="err-houseNr"></span>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field" style="flex:1;">
+            <label>Postcode</label>
+            <input type="text" placeholder="9000" id="postcode" maxlength="4">
+            <span class="field-error" id="err-postcode"></span>
+          </div>
+          <div class="field" style="flex:2;">
+            <label>Gemeente / Stad</label>
+            <input type="text" placeholder="Gent" id="city">
+            <span class="field-error" id="err-city"></span>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>Datum</label>
+            <input type="date" id="date">
+            <span class="field-error" id="err-date"></span>
+          </div>
+          <div class="field">
+            <label>Tijdstip voorkeur</label>
+            <div id="time-slots" style="display:flex;flex-direction:column;gap:8px;">
+              <p style="font-size:13px;color:#9CA3AF;">Kies eerst een datum</p>
+            </div>
+            <input type="hidden" id="time" value="">
+            <span class="field-error" id="err-time"></span>
+          </div>
+        </div>
+        <div id="availability-msg" style="display:none;"></div>
+        <div class="field">
+          <label>Opmerking (optioneel)</label>
+          <textarea placeholder="Bv. toegangscode, specifieke vlekken, parkeerinfo..." id="note"></textarea>
+        </div>
+        <!-- Honeypot anti-spam (verborgen voor mensen, zichtbaar voor bots) -->
+        <input type="text" id="honeypot" name="website" autocomplete="off" style="display:none;" tabindex="-1">
+        <!-- AV + Privacy checkbox -->
+        <div style="display:flex;align-items:flex-start;gap:10px;margin-top:4px;">
+          <input type="checkbox" id="akkoord" style="margin-top:3px;width:18px;height:18px;accent-color:#22C55E;flex-shrink:0;cursor:pointer;">
+          <label for="akkoord" style="font-size:13px;color:#6B7280;line-height:1.5;cursor:pointer;">
+            Ik ga akkoord met de <a href="algemene-voorwaarden.html" target="_blank" style="color:#22C55E;">Algemene Voorwaarden</a> en het <a href="privacy.html" target="_blank" style="color:#22C55E;">Privacybeleid</a> van Deto.
+          </label>
+        </div>
+        <span class="field-error" id="err-akkoord"></span>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="summary-card">
+      <div class="summary-title">Jouw boeking</div>
+
+      <div class="summary-row">
+        <span>Auto type</span>
+        <span id="sum-car">Klein</span>
+      </div>
+      <div class="summary-row">
+        <span>Dienst</span>
+        <span id="sum-service">Exterieur</span>
+      </div>
+      <div class="summary-row">
+        <span>Basisprijs</span>
+        <span id="sum-base">€35</span>
+      </div>
+      <div class="summary-row">
+        <span>Conditie toeslag</span>
+        <span id="sum-dirt">€0</span>
+      </div>
+
+      <div class="summary-total">
+        <span>Totaal</span>
+        <span id="sum-total">€35</span>
+      </div>
+
+      <div id="save-error" style="display:none;background:#FEF2F2;color:#991B1B;border-radius:10px;padding:12px 16px;font-size:13px;font-weight:600;margin-bottom:12px;">
+        ⚠️ Er ging iets mis bij het opslaan. Controleer je gegevens en probeer opnieuw.
+      </div>
+      <button class="book-submit-btn" onclick="submitBooking()">
+        Bevestig boeking →
+      </button>
+
+      <p class="summary-note">Je betaalt pas nadat de detailer klaar is. Gratis annuleren tot 2u voor de afspraak.</p>
+
+      <div class="trust-badges">
+        <div class="trust-badge">Gratis verplaatsing in Gent</div>
+        <div class="trust-badge">Betaal veilig via de app</div>
+        <div class="trust-badge">Gecertificeerde detailers</div>
+        <div class="trust-badge">Gratis annuleren</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Sticky boek-knop onderaan (mobiel) -->
+<div id="sticky-book-bar" style="display:none;position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid #E5E7EB;padding:12px 16px;z-index:1000;box-shadow:0 -4px 12px rgba(0,0,0,0.08);">
+  <button class="book-submit-btn" onclick="submitBooking()" style="margin-top:0;">
+    Bevestig boeking →
+  </button>
+</div>
+
+<!-- Cookie banner -->
+<div id="cookie-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;background:#111827;color:#fff;padding:16px 24px;z-index:99999;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;box-shadow:0 -4px 20px rgba(0,0,0,0.15);">
+  <p style="margin:0;font-size:14px;line-height:1.5;flex:1;min-width:200px;">
+    🍪 Wij gebruiken functionele cookies voor een goede werking van de website en om boekingen op te slaan.
+    Lees ons <a href="privacy.html" style="color:#22C55E;">privacybeleid</a>.
+  </p>
+  <div style="display:flex;gap:10px;flex-shrink:0;">
+    <button onclick="acceptCookies()" style="background:#22C55E;color:#fff;border:none;padding:10px 20px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;">Accepteer</button>
+    <button onclick="declineCookies()" style="background:transparent;color:#9CA3AF;border:1px solid #374151;padding:10px 20px;border-radius:8px;font-size:14px;cursor:pointer;">Alleen noodzakelijk</button>
+  </div>
+</div>
+
+<script>
+  // ===== UI STATE (geen CDN nodig) =====
+  const prices = {
+    klein:  [35, 45, 75],
+    medium: [45, 55, 95],
+    groot:  [55, 70, 115],
+    bestel: [65, 85, 140]
+  };
+  const carNames = { klein: 'Klein', medium: 'Medium', groot: 'Groot / SUV', bestel: 'Bestelwagen' };
+  const serviceNames = ['Exterieur', 'Interieur', 'Volledig'];
+
+  let currentSize = 'klein';
+  let currentService = 0;
+  let currentDirt = 0;
+
+  function updateSummary() {
+    const base = prices[currentSize][currentService];
+    const total = base + currentDirt;
+    document.getElementById('sum-car').textContent = carNames[currentSize];
+    document.getElementById('sum-service').textContent = serviceNames[currentService];
+    document.getElementById('sum-base').textContent = '€' + base;
+    document.getElementById('sum-dirt').textContent = currentDirt > 0 ? '+€' + currentDirt : '€0';
+    document.getElementById('sum-total').textContent = '€' + total;
+    ['ext','int','vol'].forEach((k, i) => {
+      const el = document.getElementById('price-' + k);
+      if (el) el.textContent = '€' + prices[currentSize][i];
+    });
+  }
+
+  function selectCar(el) {
+    document.querySelectorAll('.car-option').forEach(e => e.classList.remove('selected'));
+    el.classList.add('selected');
+    currentSize = el.dataset.size;
+    updateSummary();
+  }
+
+  function selectService(el) {
+    document.querySelectorAll('.service-item').forEach(e => e.classList.remove('selected'));
+    el.classList.add('selected');
+    currentService = parseInt(el.dataset.idx);
+    updateSummary();
+  }
+
+  function selectDirt(el) {
+    document.querySelectorAll('.dirt-item').forEach(e => e.classList.remove('selected'));
+    el.classList.add('selected');
+    currentDirt = parseInt(el.dataset.dirt);
+    updateSummary();
+  }
+
+  // ===== EVENT LISTENERS =====
+  document.querySelectorAll('.car-option').forEach(el => {
+    el.addEventListener('click', () => selectCar(el));
+  });
+  document.querySelectorAll('.service-item').forEach(el => {
+    el.addEventListener('click', () => selectService(el));
+  });
+  document.querySelectorAll('.dirt-item').forEach(el => {
+    el.addEventListener('click', () => selectDirt(el));
+  });
+
+  // Datum minimum = morgen
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  document.getElementById('date').min = tomorrow.toISOString().split('T')[0];
+
+  // ===== AUTH GATE =====
+  (function() {
+    const KEY = 'sb-clvbgogcsmpszhdvhqyv-auth-token';
+    let session = null;
+    try { session = JSON.parse(localStorage.getItem(KEY)); } catch(e) {}
+
+    if (!session || !session.user) {
+      // Niet ingelogd: toon gate
+      document.getElementById('auth-gate').classList.add('visible');
+      return;
+    }
+
+    // Ingelogd: pre-fill velden
+    const user = session.user;
+    const meta = user.user_metadata || {};
+    if (meta.voornaam)  { const el = document.getElementById('firstName'); if(el) el.value = meta.voornaam; }
+    if (meta.achternaam){ const el = document.getElementById('lastName');  if(el) el.value = meta.achternaam; }
+    if (meta.telefoon)  { const el = document.getElementById('phone');     if(el) el.value = meta.telefoon; }
+    if (meta.straat)    { const el = document.getElementById('street');    if(el) el.value = meta.straat; }
+    if (meta.huisnummer){ const el = document.getElementById('houseNr');  if(el) el.value = meta.huisnummer; }
+    if (meta.postcode)  { const el = document.getElementById('postcode'); if(el) el.value = meta.postcode; }
+    if (meta.stad)      { const el = document.getElementById('city');     if(el) el.value = meta.stad; }
+    if (user.email)     {
+      const el = document.getElementById('email');
+      if (el) {
+        el.value = user.email;
+        el.setAttribute('readonly', 'readonly');
+        el.style.background = '#F9FAFB';
+        el.style.color = '#6B7280';
+      }
+    }
+
+  })();
+
+  // ===== BESCHIKBAARHEIDSCHECK =====
+  const SLOTS = [
+    { value: 'Ochtend (8u – 12u)',    label: 'Ochtend',   sub: '8u – 12u' },
+    { value: 'Middag (12u – 16u)',     label: 'Middag',    sub: '12u – 16u' },
+    { value: 'Namiddag (16u – 19u)',   label: 'Namiddag',  sub: '16u – 19u' }
+  ];
+
+  const SUPABASE_URL = 'https://clvbgogcsmpszhdvhqyv.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNsdmJnb2djc21wc3poZHZocXl2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNDg2OTEsImV4cCI6MjA5MDgyNDY5MX0.SOIRnPdiDr04OebiQyY_IE1ViP9gW6C4xTNgwr14xk4';
+
+  let bookedSlots = [];
+  let availableSlots = [];
+  let dateFullyBooked = false;
+
+  async function checkAvailability(date) {
+    const container = document.getElementById('time-slots');
+    const msg = document.getElementById('availability-msg');
+
+    // Reset
+    document.getElementById('time').value = '';
+    dateFullyBooked = false;
+    availableSlots = [];
+    bookedSlots = [];
+
+    // Loading state
+    container.innerHTML = '<p style="font-size:13px;color:#9CA3AF;display:flex;align-items:center;gap:8px;"><span class="avail-spinner"></span>Beschikbaarheid laden\u2026</p>';
+    msg.style.display = 'block';
+    msg.style.background = '#F3F4F6';
+    msg.style.color = '#6B7280';
+    msg.innerHTML = '<span class="avail-spinner"></span> Beschikbaarheid controleren\u2026';
+
+    try {
+      const res = await fetch('/api/check-availability?date=' + encodeURIComponent(date));
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const data = await res.json();
+
+      availableSlots = Array.isArray(data.slots_available) ? data.slots_available : [];
+      bookedSlots = Array.isArray(data.slots_taken) ? data.slots_taken : [];
+      dateFullyBooked = !data.available;
+
+      if (dateFullyBooked) {
+        msg.style.background = '#FEF2F2';
+        msg.style.color = '#991B1B';
+        msg.textContent = '\u2717 Datum is volledig volgeboekt \u2014 kies een andere datum.';
+      } else {
+        msg.style.background = '#F0FDF4';
+        msg.style.color = '#166534';
+        msg.textContent = '\u2713 Datum beschikbaar \u2014 ' + availableSlots.length + ' tijdslot' + (availableSlots.length === 1 ? '' : 's') + ' vrij';
+      }
+    } catch (e) {
+      console.warn('Beschikbaarheid ophalen mislukt:', e);
+      bookedSlots = [];
+      availableSlots = SLOTS.map(s => s.value);
+      msg.style.background = '#FFFBEB';
+      msg.style.color = '#92400E';
+      msg.textContent = '\u26a0 Beschikbaarheid kon niet worden geladen. U kunt doorgaan, maar controleer uw tijdstip.';
+    }
+
+    renderSlots();
+  }
+
+  function renderSlots() {
+    const container = document.getElementById('time-slots');
+    container.innerHTML = '';
+    const selectedTime = document.getElementById('time').value;
+
+    SLOTS.forEach(slot => {
+      const isFull = bookedSlots.includes(slot.value);
+      const isSelected = selectedTime === slot.value;
+
+      const el = document.createElement('div');
+      el.className = 'time-slot' + (isFull ? ' slot-full' : '') + (isSelected ? ' selected' : '');
+      el.innerHTML = `
+        <span>${slot.label} <span style="font-weight:400;color:#6B7280;">${slot.sub}</span>${isFull ? ' <span style="font-size:11px;color:#9CA3AF;">(Volgeboekt)</span>' : ''}</span>
+        <span class="slot-badge ${isFull ? '' : 'free'}">${isFull ? 'Vol' : 'Vrij'}</span>
+      `;
+      if (!isFull) {
+        el.addEventListener('click', () => {
+          document.getElementById('time').value = slot.value;
+          document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('selected'));
+          el.classList.add('selected');
+        });
+      }
+      container.appendChild(el);
+    });
+  }
+
+  document.getElementById('date').addEventListener('change', function() {
+    if (this.value) checkAvailability(this.value);
+    else {
+      document.getElementById('time-slots').innerHTML = '<p style="font-size:13px;color:#9CA3AF;">Kies eerst een datum</p>';
+      document.getElementById('time').value = '';
+      dateFullyBooked = false;
+      availableSlots = [];
+      bookedSlots = [];
+      const msg = document.getElementById('availability-msg');
+      msg.style.display = 'none';
+    }
+  });
+
+  // Pre-selectie vanuit homepage via sessionStorage
+  const keuze = JSON.parse(sessionStorage.getItem('deto_keuze') || '{}');
+  sessionStorage.removeItem('deto_keuze');
+  if (keuze.size && carNames[keuze.size]) {
+    const carEl = document.querySelector('[data-size="' + keuze.size + '"]');
+    if (carEl) selectCar(carEl);
+  }
+  if (typeof keuze.service === 'number') {
+    const svcEl = document.querySelector('[data-idx="' + keuze.service + '"]');
+    if (svcEl) selectService(svcEl);
+  }
+  if (typeof keuze.dirt === 'number') {
+    const dirtEl = document.querySelector('[data-dirt="' + keuze.dirt + '"]');
+    if (dirtEl) selectDirt(dirtEl);
+  }
+  updateSummary();
+
+  // ===== SUBMIT (laadt CDNs pas bij gebruik) =====
+  function loadScript(src) {
+    return new Promise((resolve, reject) => {
+      if (document.querySelector('script[src="' + src + '"]')) { resolve(); return; }
+      const s = document.createElement('script');
+      s.src = src;
+      s.onload = resolve;
+      s.onerror = reject;
+      document.head.appendChild(s);
+    });
+  }
+
+  function showError(id, msg) {
+    const el = document.getElementById('err-' + id);
+    if (!el) return;
+    el.textContent = msg;
+    el.classList.toggle('visible', !!msg);
+    const input = document.getElementById(id);
+    if (input) input.classList.toggle('invalid', !!msg);
+  }
+
+  function clearAllErrors() {
+    document.querySelectorAll('.field-error').forEach(e => { e.textContent = ''; e.classList.remove('visible'); });
+    document.querySelectorAll('.invalid').forEach(e => e.classList.remove('invalid'));
+  }
+
+  async function submitBooking() {
+    // Honeypot check
+    if (document.getElementById('honeypot').value) return;
+
+    const first    = document.getElementById('firstName').value.trim();
+    const last     = document.getElementById('lastName').value.trim();
+    const phone    = document.getElementById('phone').value.trim();
+    const email    = document.getElementById('email').value.trim();
+    const street   = document.getElementById('street').value.trim();
+    const houseNr  = document.getElementById('houseNr').value.trim();
+    const postcode = document.getElementById('postcode').value.trim();
+    const city     = document.getElementById('city').value.trim();
+    const date     = document.getElementById('date').value;
+    const time     = document.getElementById('time').value;
+    const today    = new Date().toISOString().split('T')[0];
+
+    clearAllErrors();
+    let hasError = false;
+
+    if (!first) { showError('firstName', 'Voornaam is verplicht.'); hasError = true; }
+    if (!last)  { showError('lastName',  'Achternaam is verplicht.'); hasError = true; }
+
+    if (!phone) {
+      showError('phone', 'Telefoonnummer is verplicht.'); hasError = true;
+    } else if (!/^\+?[0-9]{7,15}$/.test(phone.replace(/[\s\-\(\)]/g, ''))) {
+      showError('phone', 'Ongeldig nummer. Bv. +32 412 34 56 78.'); hasError = true;
+    }
+
+    if (!email) {
+      showError('email', 'E-mailadres is verplicht.'); hasError = true;
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      showError('email', 'Ongeldig e-mailadres. Bv. jan@email.be.'); hasError = true;
+    }
+
+    if (!street)   { showError('street',   'Straat is verplicht.'); hasError = true; }
+    if (!houseNr)  { showError('houseNr',  'Huisnummer is verplicht.'); hasError = true; }
+    if (!postcode) {
+      showError('postcode', 'Postcode is verplicht.'); hasError = true;
+    } else if (!/^[0-9]{4}$/.test(postcode)) {
+      showError('postcode', 'Postcode moet 4 cijfers zijn.'); hasError = true;
+    }
+    if (!city)     { showError('city',     'Gemeente is verplicht.'); hasError = true; }
+
+    if (!date) {
+      showError('date', 'Kies een datum.'); hasError = true;
+    } else if (date <= today) {
+      showError('date', 'Je kan niet boeken voor vandaag of een dag in het verleden. Kies een toekomstige datum.'); hasError = true;
+    }
+
+    if (!time) {
+      showError('time', 'Kies een beschikbaar tijdstip.'); hasError = true;
+    } else if (dateFullyBooked) {
+      showError('date', 'Deze datum is volledig volgeboekt. Kies een andere datum.'); hasError = true;
+    } else if (bookedSlots.includes(time)) {
+      showError('time', 'Dit tijdstip is niet meer beschikbaar. Kies een ander tijdstip.'); hasError = true;
+    }
+
+    if (!document.getElementById('akkoord').checked) {
+      showError('akkoord', 'Ga akkoord met de Algemene Voorwaarden en het Privacybeleid.'); hasError = true;
+    }
+
+    if (hasError) {
+      const firstErr = document.querySelector('.field-error.visible');
+      if (firstErr) firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    const address = street + ' ' + houseNr + ', ' + postcode + ' ' + city;
+
+    const total = prices[currentSize][currentService] + currentDirt;
+    const btn = document.querySelector('.book-submit-btn');
+    btn.textContent = 'Bezig met opslaan…';
+    btn.disabled = true;
+
+    try {
+      // Haal Supabase sessie op voor JWT token
+      await loadScript('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2');
+      const sbClient = window.supabase.createClient(
+        'https://clvbgogcsmpszhdvhqyv.supabase.co',
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNsdmJnb2djc21wc3poZHZocXl2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNDg2OTEsImV4cCI6MjA5MDgyNDY5MX0.SOIRnPdiDr04OebiQyY_IE1ViP9gW6C4xTNgwr14xk4'
+      );
+      const { data: { session } } = await sbClient.auth.getSession();
+      if (!session) {
+        window.location.href = 'login.html?redirect=boeken.html';
+        return;
+      }
+
+      // Stuur boeking via beveiligde server-side functie
+      const res = await fetch('/api/create-booking', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + session.access_token
+        },
+        body: JSON.stringify({
+          voornaam: first, achternaam: last, telefoon: phone,
+          adres: address, datum: date, tijdstip: time,
+          auto_type: carNames[currentSize], dienst: serviceNames[currentService],
+          vuil_toeslag: currentDirt, totaal: total
+        })
+      });
+
+      const result = await res.json();
+      if (!res.ok || !result.success) {
+        throw new Error(result.error || 'Onbekende fout');
+      }
+
+      // Sla booking info op voor bevestigingspagina
+      sessionStorage.setItem('deto_booking_id', result.booking_id || '');
+
+      // Sla adres + telefoon op in user_metadata voor volgende boeking
+      try {
+        await sbClient.auth.updateUser({ data: { telefoon: phone, adres: address, straat: street, huisnummer: houseNr, postcode: postcode, stad: city } });
+      } catch(_) {}
+
+    } catch (err) {
+      console.error('Fout bij opslaan:', err);
+      const errBox = document.getElementById('save-error');
+      errBox.textContent = '⚠️ ' + (err.message || 'Er ging iets mis. Probeer opnieuw.');
+      errBox.style.display = 'block';
+      document.querySelectorAll('.book-submit-btn').forEach(b => { b.textContent = 'Bevestig boeking →'; b.disabled = false; });
+      return;
+    }
+
+    sessionStorage.setItem('deto_booking', JSON.stringify({
+      service: serviceNames[currentService],
+      car: carNames[currentSize],
+      date, time, total, dirt: currentDirt
+    }));
+
+    // Animate step indicator to done before navigating
+    const s1 = document.getElementById('step-item-1');
+    const s2 = document.getElementById('step-item-2');
+    const line = document.getElementById('step-line-1');
+    if (s1) { s1.classList.remove('active'); s1.classList.add('done'); }
+    if (line) line.classList.add('done');
+    if (s2) s2.classList.add('active');
+    await new Promise(r => setTimeout(r, 500));
+
+    window.location.href = 'bevestiging.html';
+  }
+
+  // Cookie banner
+  (function() {
+    if (!localStorage.getItem('deto_cookie_consent'))
+      document.getElementById('cookie-banner').style.display = 'flex';
+  })();
+  function acceptCookies() {
+    localStorage.setItem('deto_cookie_consent', 'all');
+    document.getElementById('cookie-banner').style.display = 'none';
+  }
+  function declineCookies() {
+    localStorage.setItem('deto_cookie_consent', 'minimal');
+    document.getElementById('cookie-banner').style.display = 'none';
+  }
+</script>
+
+<script>
+  (function() {
+    const KEY = 'sb-clvbgogcsmpszhdvhqyv-auth-token';
+    let session = null;
+    try { session = JSON.parse(localStorage.getItem(KEY)); } catch(e) {}
+    if (!session || !session.user) return;
+    const user = session.user;
+    const meta = user.user_metadata || {};
+    const voornaam = meta.voornaam || user.email.split('@')[0];
+    const letter = voornaam.charAt(0).toUpperCase();
+    const navItem = document.getElementById('nav-auth-item');
+    if (navItem) {
+      navItem.innerHTML = `<div class="nav-user-wrap" id="nav-user-wrap"><div class="nav-user-btn" onclick="toggleUserMenu(event)"><div class="nav-user-avatar">${letter}</div>${voornaam} ▾</div><div class="nav-user-dropdown" id="nav-user-dropdown"><a href="profiel.html">👤 Mijn profiel</a><a href="boeken.html">+ Nieuw boeken</a><button onclick="detoLogout()">Uitloggen ↩</button></div></div>`;
+    }
+    const mobileLink = document.getElementById('mobile-auth-link');
+    if (mobileLink) {
+      mobileLink.textContent = '👤 ' + voornaam + ' — Mijn profiel';
+      mobileLink.href = 'profiel.html';
+    }
+  })();
+  function toggleUserMenu(e) {
+    e.stopPropagation();
+    const dd = document.getElementById('nav-user-dropdown');
+    if (dd) dd.classList.toggle('open');
+  }
+  document.addEventListener('click', function() {
+    const dd = document.getElementById('nav-user-dropdown');
+    if (dd) dd.classList.remove('open');
+  });
+  function detoLogout() {
+    const KEY = 'sb-clvbgogcsmpszhdvhqyv-auth-token';
+    localStorage.removeItem(KEY);
+    const s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
+    s.onload = async function() {
+      const sb = window.supabase.createClient('https://clvbgogcsmpszhdvhqyv.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNsdmJnb2djc21wc3poZHZocXl2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNDg2OTEsImV4cCI6MjA5MDgyNDY5MX0.SOIRnPdiDr04OebiQyY_IE1ViP9gW6C4xTNgwr14xk4');
+      await sb.auth.signOut();
+      window.location.href = 'deto-homepage.html';
+    };
+    document.head.appendChild(s);
+  }
+</script>
+
+</body>
+</html>

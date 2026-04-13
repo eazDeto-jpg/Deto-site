@@ -1,0 +1,1956 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard — Deto Detailer</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" href="deto-logo.png">
+<link rel="stylesheet" href="style.css">
+<style>
+  :root {
+    --green: #22C55E;
+    --green-dark: #16A34A;
+    --dark: #111827;
+    --gray: #6B7280;
+    --light: #F9FAFB;
+    --border: #E5E7EB;
+    --white: #fff;
+    --sidebar-w: 240px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background: var(--light);
+    color: var(--dark);
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* ===== SIDEBAR ===== */
+  .sidebar {
+    width: var(--sidebar-w);
+    background: var(--dark);
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    transition: transform 0.3s;
+  }
+
+  .sidebar-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 24px 24px 22px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    text-decoration: none;
+  }
+
+  .sidebar-logo-text {
+    font-size: 22px;
+    font-weight: 900;
+    color: white;
+    letter-spacing: -0.5px;
+  }
+
+  .sidebar-logo-dot { color: var(--green); }
+
+  .sidebar-nav {
+    flex: 1;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+    padding: 16px 0;
+    overflow-y: auto;
+    backdrop-filter: none !important;
+    border-bottom: none !important;
+    position: static !important;
+    background: transparent !important;
+  }
+
+  .sidebar-section {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+    padding: 12px 24px 6px;
+  }
+
+  .sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 24px;
+    color: rgba(255,255,255,0.55);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.15s;
+    border-left: 3px solid transparent;
+    cursor: pointer;
+    background: none;
+    border-right: none;
+    border-top: none;
+    border-bottom: none;
+    width: 100%;
+    text-align: left;
+    font-family: inherit;
+  }
+
+  .sidebar-link:hover { color: white; background: rgba(255,255,255,0.06); }
+  .sidebar-link.active { color: white; border-left-color: var(--green); background: rgba(34,197,94,0.1); }
+
+  .sidebar-icon { font-size: 16px; width: 20px; text-align: center; flex-shrink: 0; }
+
+  .sidebar-bottom {
+    padding: 20px 24px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .detailer-info { display: flex; align-items: center; gap: 10px; }
+
+  .detailer-avatar {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--green);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px; font-weight: 800; color: white; flex-shrink: 0;
+  }
+
+  .detailer-name { font-size: 13px; font-weight: 700; color: white; line-height: 1.3; }
+  .detailer-role { font-size: 11px; color: rgba(255,255,255,0.4); }
+
+  /* ===== MAIN ===== */
+  .main {
+    margin-left: var(--sidebar-w);
+    flex: 1;
+    padding: 32px;
+    min-height: 100vh;
+  }
+
+  .view { display: none; }
+  .view.active { display: block; }
+
+  /* ===== PAGE HEADER ===== */
+  .page-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 28px;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .page-title { font-size: 26px; font-weight: 900; color: var(--dark); line-height: 1.2; }
+  .page-subtitle { font-size: 14px; color: var(--gray); margin-top: 4px; }
+
+  /* ===== STATS ROW ===== */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+
+  .stat-card {
+    background: white;
+    border-radius: 16px;
+    padding: 22px 24px;
+    border: 1px solid var(--border);
+  }
+
+  .stat-label { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--gray); margin-bottom: 8px; }
+  .stat-value { font-size: 32px; font-weight: 900; color: var(--dark); letter-spacing: -1px; line-height: 1; }
+  .stat-sub { font-size: 13px; color: var(--gray); margin-top: 6px; }
+  .stat-green { color: var(--green); }
+
+  /* ===== BOOKING CARDS ===== */
+  .bookings-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .booking-card {
+    background: white;
+    border-radius: 14px;
+    padding: 20px 24px;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    flex-wrap: wrap;
+    transition: box-shadow 0.15s;
+  }
+  .booking-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.07); }
+
+  .booking-time-badge {
+    background: #F0FDF4;
+    color: var(--green-dark);
+    font-size: 13px;
+    font-weight: 700;
+    padding: 8px 14px;
+    border-radius: 10px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    border: 1px solid #DCFCE7;
+  }
+
+  .booking-info { flex: 1; min-width: 200px; }
+  .booking-name { font-size: 16px; font-weight: 800; color: var(--dark); }
+  .booking-meta { font-size: 13px; color: var(--gray); margin-top: 4px; line-height: 1.5; }
+
+  .booking-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+
+  .booking-total { font-size: 20px; font-weight: 900; color: var(--dark); }
+  .booking-actions { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+
+  .btn {
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+    font-family: inherit;
+    transition: all 0.15s;
+  }
+
+  .btn-primary { background: var(--green); color: white; }
+  .btn-primary:hover { background: var(--green-dark); }
+  .btn-secondary { background: var(--light); color: var(--dark); border: 1.5px solid var(--border); }
+  .btn-secondary:hover { border-color: #9CA3AF; }
+  .btn-sm { padding: 6px 12px; font-size: 12px; }
+
+  .status-badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+  .status-open { background: #FEF3C7; color: #92400E; }
+  .status-done { background: #DCFCE7; color: #166534; }
+
+  /* ===== EMPTY STATE ===== */
+  .empty-state {
+    background: white;
+    border-radius: 16px;
+    padding: 56px 24px;
+    border: 1px solid var(--border);
+    text-align: center;
+  }
+  .empty-icon { font-size: 48px; margin-bottom: 16px; }
+  .empty-title { font-size: 18px; font-weight: 800; margin-bottom: 8px; }
+  .empty-sub { font-size: 14px; color: var(--gray); }
+
+  /* ===== CALENDAR ===== */
+  .calendar-wrap {
+    background: white;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+
+  .calendar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .calendar-month-title { font-size: 18px; font-weight: 800; }
+  .cal-nav-btn {
+    background: var(--light);
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 7px 14px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 700;
+    font-family: inherit;
+    transition: all 0.15s;
+  }
+  .cal-nav-btn:hover { border-color: var(--green); color: var(--green-dark); }
+
+  .calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    padding: 16px;
+    gap: 4px;
+  }
+
+  .cal-day-name {
+    text-align: center;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--gray);
+    padding: 6px 0;
+  }
+
+  .cal-day {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    position: relative;
+  }
+
+  .cal-day:hover:not(.cal-empty):not(.cal-past) { background: var(--light); }
+  .cal-day.cal-empty { cursor: default; }
+  .cal-day.cal-past { color: #D1D5DB; cursor: default; }
+  .cal-day.cal-today { font-weight: 900; color: var(--green-dark); background: #F0FDF4; }
+  .cal-day.cal-has-booking { background: #DCFCE7; color: #166534; font-weight: 800; }
+  .cal-day.cal-has-booking:hover { background: #BBF7D0; }
+  .cal-day.cal-selected { background: var(--green) !important; color: white !important; }
+
+  .cal-dot {
+    position: absolute;
+    bottom: 3px;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--green);
+  }
+  .cal-day.cal-has-booking .cal-dot { background: var(--green-dark); }
+  .cal-day.cal-selected .cal-dot { background: white; }
+
+  .cal-day-panel {
+    background: white;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    padding: 22px 24px;
+  }
+  .cal-day-panel-title { font-size: 16px; font-weight: 800; margin-bottom: 16px; }
+
+  /* ===== FILTER BAR ===== */
+  .filter-bar {
+    background: white;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    padding: 16px 20px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+
+  .filter-bar input, .filter-bar select {
+    padding: 8px 12px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: inherit;
+    color: var(--dark);
+    background: white;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .filter-bar input:focus, .filter-bar select:focus { border-color: var(--green); }
+  .filter-bar label { font-size: 13px; font-weight: 600; color: var(--gray); white-space: nowrap; }
+
+  /* ===== TABLE ===== */
+  .bookings-table-wrap {
+    background: white;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+
+  .bookings-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+
+  .bookings-table th {
+    padding: 14px 16px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--gray);
+    background: var(--light);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .bookings-table td {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+
+  .bookings-table tr:last-child td { border-bottom: none; }
+  .bookings-table tr:hover td { background: #FAFAFA; }
+
+  .td-name { font-weight: 700; }
+  .td-total { font-weight: 800; color: var(--green-dark); }
+
+  /* ===== NOTE MODAL ===== */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 500;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  .modal-overlay.open { display: flex; }
+
+  .modal-box {
+    background: white;
+    border-radius: 20px;
+    padding: 32px;
+    width: 100%;
+    max-width: 440px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+  }
+
+  .modal-title { font-size: 18px; font-weight: 800; margin-bottom: 16px; }
+
+  .modal-box textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    font-size: 14px;
+    font-family: inherit;
+    color: var(--dark);
+    resize: vertical;
+    min-height: 100px;
+    outline: none;
+    margin-bottom: 16px;
+    transition: border-color 0.15s;
+  }
+  .modal-box textarea:focus { border-color: var(--green); }
+
+  .modal-actions { display: flex; gap: 10px; justify-content: flex-end; }
+
+  /* ===== VERDIENSTEN ===== */
+  .earnings-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+
+  .chart-card {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    border: 1px solid var(--border);
+    margin-bottom: 20px;
+  }
+  .chart-title { font-size: 15px; font-weight: 800; margin-bottom: 20px; }
+
+  .bar-chart {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    height: 140px;
+  }
+
+  .bar-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    flex: 1;
+  }
+
+  .bar-fill {
+    width: 100%;
+    max-width: 40px;
+    background: var(--green);
+    border-radius: 6px 6px 0 0;
+    min-height: 4px;
+    transition: height 0.4s;
+  }
+
+  .bar-label { font-size: 10px; color: var(--gray); font-weight: 600; text-align: center; }
+  .bar-amount { font-size: 10px; color: var(--gray); font-weight: 700; }
+
+  /* ===== LOGIN OVERLAY ===== */
+  #login-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: var(--light);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  #login-overlay.open { display: flex; }
+
+  .login-card {
+    background: white;
+    border-radius: 24px;
+    padding: 48px 44px;
+    width: 100%;
+    max-width: 400px;
+    border: 1px solid var(--border);
+    box-shadow: 0 8px 40px rgba(0,0,0,0.08);
+    text-align: center;
+  }
+
+  .login-logo { font-size: 32px; font-weight: 900; color: var(--dark); margin-bottom: 8px; }
+  .login-logo span { color: var(--green); }
+  .login-sub { font-size: 14px; color: var(--gray); margin-bottom: 32px; line-height: 1.5; }
+
+  .login-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+    text-align: left;
+  }
+  .login-field label { font-size: 13px; font-weight: 700; color: var(--dark); }
+  .login-field input {
+    padding: 13px 16px;
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    font-size: 15px;
+    font-family: inherit;
+    outline: none;
+    color: var(--dark);
+    transition: border-color 0.15s;
+  }
+  .login-field input:focus { border-color: var(--green); }
+
+  .login-btn {
+    width: 100%;
+    background: var(--green);
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+    margin-top: 8px;
+    transition: background 0.15s;
+  }
+  .login-btn:hover { background: var(--green-dark); }
+  .login-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  .login-error {
+    display: none;
+    background: #FEF2F2;
+    color: #991B1B;
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    margin-top: 12px;
+  }
+  .login-error.visible { display: block; }
+
+  /* ===== MOBILE TOGGLE ===== */
+  .mobile-toggle {
+    display: none;
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    z-index: 200;
+    background: var(--dark);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    font-size: 18px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ===== DETAILER MANAGEMENT ===== */
+  .form-card-dash {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    border: 1px solid var(--border);
+    margin-bottom: 20px;
+  }
+  .dash-input {
+    padding: 9px 12px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: inherit;
+    color: var(--dark);
+    background: white;
+    outline: none;
+    width: 100%;
+    transition: border-color 0.15s;
+  }
+  .dash-input:focus { border-color: var(--green); }
+
+  .detailer-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  .detailer-table th {
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--gray);
+    background: var(--light);
+    border-bottom: 1px solid var(--border);
+  }
+  .detailer-table td {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+  .detailer-table tr:last-child td { border-bottom: none; }
+
+  .assign-select {
+    padding: 5px 8px;
+    border: 1.5px solid var(--border);
+    border-radius: 6px;
+    font-size: 12px;
+    font-family: inherit;
+    color: var(--dark);
+    background: white;
+    cursor: pointer;
+    max-width: 140px;
+  }
+
+  .badge-admin {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 20px;
+    background: #FEF3C7;
+    color: #92400E;
+    margin-left: 6px;
+  }
+  .badge-detailer {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 20px;
+    background: #DCFCE7;
+    color: #166534;
+    margin-left: 6px;
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 900px) {
+    .earnings-stats { grid-template-columns: repeat(2, 1fr); }
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 768px) {
+    .sidebar { transform: translateX(-100%); }
+    .sidebar.open { transform: translateX(0); }
+    .main { margin-left: 0; padding: 20px 16px; padding-top: 68px; }
+    .mobile-toggle { display: flex; }
+    .stats-row { grid-template-columns: 1fr 1fr; }
+    .earnings-stats { grid-template-columns: 1fr 1fr; }
+    .booking-card { flex-direction: column; gap: 12px; }
+    .booking-right { align-items: flex-start; }
+    .bookings-table-wrap { overflow: visible; }
+
+    /* Tabel → kaarten op mobiel */
+    .bookings-table thead { display: none; }
+    .bookings-table, .bookings-table tbody, .bookings-table tr, .bookings-table td {
+      display: block; width: 100%;
+    }
+    .bookings-table tr {
+      background: white;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      position: relative;
+    }
+    .bookings-table tr:hover td { background: none; }
+    .bookings-table td {
+      border: none;
+      padding: 3px 0;
+      font-size: 13px;
+      color: var(--gray);
+    }
+    .bookings-table td.td-name {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--dark);
+      margin-bottom: 4px;
+    }
+    .bookings-table td.td-total {
+      font-size: 16px;
+      font-weight: 900;
+      color: var(--green-dark);
+    }
+    .bookings-table td::before {
+      content: attr(data-label) ' ';
+      font-weight: 600;
+      color: var(--dark);
+      font-size: 12px;
+    }
+    .bookings-table td.td-name::before,
+    .bookings-table td.td-total::before,
+    .bookings-table td:last-child::before { content: ''; }
+  }
+
+  @media (max-width: 480px) {
+    .stats-row { grid-template-columns: 1fr; }
+    .earnings-stats { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Login overlay -->
+<div id="login-overlay" class="open">
+  <div class="login-card">
+    <div class="login-logo">Deto<span>.</span></div>
+    <p class="login-sub">Detailer dashboard — log in met jouw gegevens.</p>
+    <div class="login-field">
+      <label for="login-email">E-mailadres (laat leeg voor admin toegang)</label>
+      <input type="email" id="login-email" placeholder="detailer@email.be" autocomplete="email">
+    </div>
+    <div class="login-field">
+      <label for="login-pw">Wachtwoord</label>
+      <input type="password" id="login-pw" placeholder="••••••••" autocomplete="current-password">
+    </div>
+    <button class="login-btn" id="login-btn" onclick="doLogin()">Inloggen</button>
+    <div class="login-error" id="login-error">Ongeldig wachtwoord. Probeer opnieuw.</div>
+  </div>
+</div>
+
+<!-- Mobile toggle -->
+<button class="mobile-toggle" id="mobile-toggle" onclick="toggleSidebar()">&#9776;</button>
+
+<!-- Sidebar -->
+<aside class="sidebar" id="sidebar">
+  <a href="deto-homepage.html" class="sidebar-logo">
+    <span class="sidebar-logo-text">Deto<span class="sidebar-logo-dot">.</span></span>
+  </a>
+
+  <nav class="sidebar-nav">
+    <div class="sidebar-section">Overzicht</div>
+    <button class="sidebar-link active" data-view="vandaag" onclick="switchView('vandaag', this)">
+      <span class="sidebar-icon">☀️</span> Vandaag
+    </button>
+    <button class="sidebar-link" data-view="kalender" onclick="switchView('kalender', this)">
+      <span class="sidebar-icon">📅</span> Kalender
+    </button>
+
+    <div class="sidebar-section">Boekingen</div>
+    <button class="sidebar-link" id="nav-pending" data-view="openstaand" onclick="switchView('openstaand', this)" style="display:none;">
+      <span class="sidebar-icon">🔔</span> Openstaand <span id="pending-badge" style="display:none;background:#EF4444;color:white;font-size:10px;font-weight:800;padding:2px 6px;border-radius:20px;margin-left:auto;"></span>
+    </button>
+    <button class="sidebar-link" data-view="alle" onclick="switchView('alle', this)">
+      <span class="sidebar-icon">📋</span> Mijn boekingen
+    </button>
+    <button class="sidebar-link" data-view="verdiensten" onclick="switchView('verdiensten', this)">
+      <span class="sidebar-icon">💶</span> Verdiensten
+    </button>
+
+    <div class="sidebar-section" id="section-beheer" style="display:none;">Beheer</div>
+    <button class="sidebar-link" id="nav-detailers" data-view="detailers" onclick="switchView('detailers', this)" style="display:none;">
+      <span class="sidebar-icon">👥</span> Detailers
+    </button>
+  </nav>
+
+  <div class="sidebar-bottom">
+    <div class="detailer-info">
+      <div class="detailer-avatar" id="sidebar-avatar">D</div>
+      <div>
+        <div class="detailer-name" id="sidebar-name">Laden…</div>
+        <div class="detailer-role" id="sidebar-role"></div>
+      </div>
+    </div>
+    <button class="sidebar-link" style="margin-top:16px;padding-left:0;" onclick="doLogout()">
+      <span class="sidebar-icon">↩</span> Afmelden
+    </button>
+  </div>
+</aside>
+
+<!-- Main content -->
+<main class="main" id="main-content">
+
+  <!-- ===== VIEW: VANDAAG ===== -->
+  <div class="view active" id="view-vandaag">
+    <div class="page-header">
+      <div>
+        <div class="page-title" id="today-title">Vandaag</div>
+        <div class="page-subtitle" id="today-date-sub"></div>
+      </div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-label">Boekingen vandaag</div>
+        <div class="stat-value" id="stat-today-count">—</div>
+        <div class="stat-sub">geplande afspraken</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Te verdienen vandaag</div>
+        <div class="stat-value stat-green" id="stat-today-earn">—</div>
+        <div class="stat-sub">excl. reeds afgerond</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Deze week</div>
+        <div class="stat-value" id="stat-week-earn">—</div>
+        <div class="stat-sub">totaal verwacht</div>
+      </div>
+    </div>
+
+    <div id="today-bookings-wrap">
+      <div class="empty-state">
+        <div class="empty-icon">⏳</div>
+        <div class="empty-title">Laden…</div>
+        <div class="empty-sub">Boekingen worden opgehaald.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== VIEW: OPENSTAAND (detailer only) ===== -->
+  <div class="view" id="view-openstaand">
+    <div class="page-header">
+      <div>
+        <div class="page-title">Openstaande boekingen</div>
+        <div class="page-subtitle">Accepteer boekingen die jij wil uitvoeren</div>
+      </div>
+    </div>
+    <div id="pending-bookings-wrap">
+      <div class="empty-state">
+        <div class="empty-icon">⏳</div>
+        <div class="empty-title">Laden…</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== VIEW: KALENDER ===== -->
+  <div class="view" id="view-kalender">
+    <div class="page-header">
+      <div>
+        <div class="page-title">Kalender</div>
+        <div class="page-subtitle">Klik op een dag om de boekingen te zien.</div>
+      </div>
+    </div>
+
+    <div class="calendar-wrap">
+      <div class="calendar-header">
+        <button class="cal-nav-btn" onclick="calPrevMonth()">&#8592;</button>
+        <div class="calendar-month-title" id="cal-month-title">—</div>
+        <button class="cal-nav-btn" onclick="calNextMonth()">&#8594;</button>
+      </div>
+      <div class="calendar-grid" id="cal-grid"></div>
+    </div>
+
+    <div class="cal-day-panel" id="cal-day-panel" style="display:none;">
+      <div class="cal-day-panel-title" id="cal-day-panel-title">Boekingen</div>
+      <div id="cal-day-bookings"></div>
+    </div>
+  </div>
+
+  <!-- ===== VIEW: ALLE BOEKINGEN ===== -->
+  <div class="view" id="view-alle">
+    <div class="page-header">
+      <div>
+        <div class="page-title">Alle boekingen</div>
+        <div class="page-subtitle">Toekomstige en recente boekingen</div>
+      </div>
+    </div>
+
+    <div class="filter-bar">
+      <label>Van:</label>
+      <input type="date" id="filter-from">
+      <label>Tot:</label>
+      <input type="date" id="filter-to">
+      <input type="text" id="filter-search" placeholder="Zoeken op naam..." style="flex:1;min-width:160px;">
+      <button class="btn btn-primary btn-sm" onclick="applyFilters()">Zoeken</button>
+      <button class="btn btn-secondary btn-sm" onclick="resetFilters()">Reset</button>
+    </div>
+
+    <div id="alle-bookings-wrap">
+      <div class="bookings-table-wrap">
+        <table class="bookings-table">
+          <thead>
+            <tr>
+              <th>Naam</th>
+              <th>Datum</th>
+              <th>Tijdstip</th>
+              <th>Dienst</th>
+              <th>Adres</th>
+              <th>Totaal</th>
+              <th>Status</th>
+              <th id="th-detailer" style="display:none;">Detailer</th>
+              <th>Acties</th>
+            </tr>
+          </thead>
+          <tbody id="alle-bookings-tbody">
+            <tr><td colspan="9" style="text-align:center;padding:32px;color:var(--gray);">Laden…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== VIEW: VERDIENSTEN ===== -->
+  <div class="view" id="view-verdiensten">
+    <div class="page-header">
+      <div>
+        <div class="page-title">Verdiensten</div>
+        <div class="page-subtitle">Overzicht van jouw inkomsten</div>
+      </div>
+    </div>
+
+    <div class="earnings-stats">
+      <div class="stat-card">
+        <div class="stat-label">Totaal verdiensten</div>
+        <div class="stat-value stat-green" id="earn-totaal">—</div>
+        <div class="stat-sub">alle boekingen</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Deze maand</div>
+        <div class="stat-value" id="earn-this-month">—</div>
+        <div class="stat-sub" id="earn-this-month-label">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Vorige maand</div>
+        <div class="stat-value" id="earn-last-month">—</div>
+        <div class="stat-sub" id="earn-last-month-label">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Gem. per boeking</div>
+        <div class="stat-value" id="earn-avg">—</div>
+        <div class="stat-sub">afgeronde boekingen</div>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-title">Maandelijkse inkomsten (laatste 6 maanden)</div>
+      <div class="bar-chart" id="earn-chart"></div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-title">Recent afgerond</div>
+      <div id="recent-completed-wrap">
+        <p style="color:var(--gray);font-size:14px;">Laden…</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== VIEW: DETAILERS (admin only) ===== -->
+  <div class="view" id="view-detailers">
+    <div class="page-header">
+      <div>
+        <div class="page-title">Detailers</div>
+        <div class="page-subtitle">Beheer de detailers op jouw platform</div>
+      </div>
+      <button class="btn btn-primary" onclick="openNewDetailerForm()">+ Nieuwe detailer</button>
+    </div>
+
+    <!-- New detailer form (hidden by default) -->
+    <div id="new-detailer-form" style="display:none;" class="form-card-dash">
+      <h3 style="font-size:16px;font-weight:800;margin-bottom:16px;">Nieuwe detailer aanmaken</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+        <div><label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px;">Naam</label><input id="nd-naam" type="text" placeholder="Jan Janssen" class="dash-input"></div>
+        <div><label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px;">E-mailadres</label><input id="nd-email" type="email" placeholder="jan@email.be" class="dash-input"></div>
+      </div>
+      <div style="margin-bottom:12px;"><label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px;">Regio (postcodes/steden)</label><input id="nd-regio" type="text" placeholder="9000,9040,Gent" class="dash-input" style="width:100%;"><span style="font-size:11px;color:var(--gray);">Komma-gescheiden. Boekingen in deze zones worden automatisch toegewezen.</span></div>
+      <div style="margin-bottom:16px;"><label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px;">Tijdelijk wachtwoord</label><input id="nd-pw" type="text" placeholder="Kies een tijdelijk wachtwoord" class="dash-input" style="width:100%;"><span style="font-size:11px;color:var(--gray);">De detailer wordt gevraagd dit te wijzigen bij eerste login.</span></div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn-primary" onclick="createDetailer()">Aanmaken</button>
+        <button class="btn btn-secondary" onclick="closeNewDetailerForm()">Annuleren</button>
+      </div>
+      <div id="nd-error" style="display:none;color:#EF4444;font-size:13px;margin-top:8px;"></div>
+    </div>
+
+    <div id="detailers-wrap">
+      <p style="color:var(--gray);font-size:14px;">Laden…</p>
+    </div>
+  </div>
+
+</main>
+
+<!-- Wachtwoord wijzigen overlay (eerste login) -->
+<div id="pw-change-overlay" style="display:none;position:fixed;inset:0;background:var(--light);z-index:1100;align-items:center;justify-content:center;padding:24px;">
+  <div class="login-card">
+    <div class="login-logo">Deto<span>.</span></div>
+    <p class="login-sub">Welkom! Kies een persoonlijk wachtwoord om verder te gaan.</p>
+    <div class="login-field">
+      <label for="pwc-new">Nieuw wachtwoord</label>
+      <input type="password" id="pwc-new" placeholder="Minstens 6 tekens" autocomplete="new-password">
+    </div>
+    <div class="login-field">
+      <label for="pwc-confirm">Bevestig wachtwoord</label>
+      <input type="password" id="pwc-confirm" placeholder="Herhaal wachtwoord" autocomplete="new-password">
+    </div>
+    <button class="login-btn" id="pwc-btn" onclick="doChangePassword()">Wachtwoord opslaan</button>
+    <div class="login-error" id="pwc-error"></div>
+  </div>
+</div>
+
+<!-- Note modal -->
+<div class="modal-overlay" id="note-modal">
+  <div class="modal-box">
+    <div class="modal-title">Notitie toevoegen</div>
+    <textarea id="note-textarea" placeholder="Schrijf een notitie bij deze boeking..."></textarea>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeNoteModal()">Annuleren</button>
+      <button class="btn btn-primary" onclick="saveNote()">Opslaan</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== GLOBALS =====
+let allBookings = [];
+let pendingBookings = [];  // voor detailer: te accepteren boekingen
+let allDetailers = [];
+let isAdmin = false;
+let detailerSecret = '';  // admin token (ADMIN_SECRET)
+let detailerToken = '';   // detailer session token
+let detailerId = '';
+let detailerNaam = 'Detailer';
+let calYear = new Date().getFullYear();
+let calMonth = new Date().getMonth();
+let selectedCalDay = null;
+let noteBookingId = null;
+
+const MAANDEN_NL = ['januari','februari','maart','april','mei','juni','juli','augustus','september','oktober','november','december'];
+const DAYS_NL = ['Ma','Di','Wo','Do','Vr','Za','Zo'];
+
+function getAuthHeaders() {
+  if (isAdmin) return { 'x-admin-secret': detailerSecret };
+  return { 'x-detailer-token': detailerToken };
+}
+
+// ===== AUTH =====
+function checkAuth() {
+  // Als ?nieuw=1 in URL staat → nieuwe detailer klikt welkomstlink → wis oude sessie
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('nieuw') === '1') {
+    localStorage.removeItem('deto_mode');
+    localStorage.removeItem('deto_detailer_token');
+    localStorage.removeItem('deto_detailer_id');
+    localStorage.removeItem('deto_detailer_naam');
+    localStorage.removeItem('detailer_authenticated');
+    localStorage.removeItem('detailer_secret');
+    // Verwijder param uit URL zonder reload
+    history.replaceState({}, '', window.location.pathname);
+    document.getElementById('login-overlay').classList.add('open');
+    return;
+  }
+
+  // Try detailer login first
+  const mode = localStorage.getItem('deto_mode');
+  if (mode === 'detailer') {
+    const tok = localStorage.getItem('deto_detailer_token');
+    const id = localStorage.getItem('deto_detailer_id');
+    const naam = localStorage.getItem('deto_detailer_naam');
+    if (tok && id) {
+      isAdmin = false;
+      detailerToken = tok;
+      detailerId = id;
+      detailerNaam = naam || 'Detailer';
+      document.getElementById('login-overlay').classList.remove('open');
+      initDashboard();
+      return;
+    }
+  }
+  // Try admin login
+  const auth = localStorage.getItem('detailer_authenticated');
+  const secret = localStorage.getItem('detailer_secret');
+  if (auth === '1' && secret) {
+    isAdmin = true;
+    detailerSecret = secret;
+    detailerNaam = 'Admin';
+    document.getElementById('login-overlay').classList.remove('open');
+    initDashboard();
+    return;
+  }
+  document.getElementById('login-overlay').classList.add('open');
+}
+
+async function doLogin() {
+  const email = document.getElementById('login-email').value.trim();
+  const pw = document.getElementById('login-pw').value.trim();
+  const btn = document.getElementById('login-btn');
+  const errEl = document.getElementById('login-error');
+  if (!pw) return;
+
+  btn.disabled = true;
+  btn.textContent = 'Even geduld…';
+  errEl.classList.remove('visible');
+
+  try {
+    if (email) {
+      // Detailer login
+      const res = await fetch('/api/detailer-login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, wachtwoord: pw })
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) throw new Error(data.error || 'Fout');
+      localStorage.setItem('deto_mode', 'detailer');
+      localStorage.setItem('deto_detailer_token', data.token);
+      localStorage.setItem('deto_detailer_id', data.id);
+      localStorage.setItem('deto_detailer_naam', data.naam);
+      isAdmin = false;
+      detailerToken = data.token;
+      detailerId = data.id;
+      detailerNaam = data.naam;
+      if (data.moet_wachtwoord_wijzigen) {
+        document.getElementById('login-overlay').classList.remove('open');
+        showPwChangeOverlay();
+        return;
+      }
+    } else {
+      // Admin login
+      const res = await fetch('/api/detailer-auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: pw })
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) throw new Error(data.error || 'Fout');
+      localStorage.setItem('detailer_authenticated', '1');
+      localStorage.setItem('detailer_secret', data.secret);
+      localStorage.removeItem('deto_mode');
+      isAdmin = true;
+      detailerSecret = data.secret;
+      detailerNaam = 'Admin';
+    }
+    document.getElementById('login-overlay').classList.remove('open');
+    initDashboard();
+  } catch(e) {
+    errEl.textContent = e.message || 'Ongeldig wachtwoord. Probeer opnieuw.';
+    errEl.classList.add('visible');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Inloggen';
+  }
+}
+
+document.getElementById('login-email').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') document.getElementById('login-pw').focus();
+});
+
+document.getElementById('login-pw').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') doLogin();
+});
+
+function showPwChangeOverlay() {
+  const el = document.getElementById('pw-change-overlay');
+  el.style.display = 'flex';
+  document.getElementById('pwc-new').focus();
+}
+
+async function doChangePassword() {
+  const pw1 = document.getElementById('pwc-new').value;
+  const pw2 = document.getElementById('pwc-confirm').value;
+  const errEl = document.getElementById('pwc-error');
+  const btn = document.getElementById('pwc-btn');
+  errEl.classList.remove('visible');
+
+  if (!pw1 || pw1.length < 6) { errEl.textContent = 'Wachtwoord moet minstens 6 tekens zijn.'; errEl.classList.add('visible'); return; }
+  if (pw1 !== pw2) { errEl.textContent = 'Wachtwoorden komen niet overeen.'; errEl.classList.add('visible'); return; }
+
+  btn.disabled = true;
+  btn.textContent = 'Opslaan…';
+
+  try {
+    const res = await fetch('/api/detailer-login', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token: detailerToken, nieuw_wachtwoord: pw1 })
+    });
+    const data = await res.json();
+    if (!res.ok || !data.success) throw new Error(data.error || 'Fout');
+    document.getElementById('pw-change-overlay').style.display = 'none';
+    initDashboard();
+  } catch(e) {
+    errEl.textContent = e.message || 'Er ging iets mis. Probeer opnieuw.';
+    errEl.classList.add('visible');
+    btn.disabled = false;
+    btn.textContent = 'Wachtwoord opslaan';
+  }
+}
+
+document.getElementById('pwc-confirm').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') doChangePassword();
+});
+
+function doLogout() {
+  localStorage.removeItem('detailer_authenticated');
+  localStorage.removeItem('detailer_secret');
+  localStorage.removeItem('deto_mode');
+  localStorage.removeItem('deto_detailer_token');
+  localStorage.removeItem('deto_detailer_id');
+  localStorage.removeItem('deto_detailer_naam');
+  window.location.reload();
+}
+
+// ===== INIT =====
+async function initDashboard() {
+  setTodayHeader();
+  updateSidebarProfile();
+  if (isAdmin) {
+    document.getElementById('section-beheer').style.display = '';
+    document.getElementById('nav-detailers').style.display = '';
+    await Promise.all([loadAllBookings(), loadDetailers()]);
+  } else {
+    document.getElementById('nav-pending').style.display = '';
+    await loadAllBookings();
+    renderPendingBadge();
+  }
+  renderVandaag();
+  renderKalender();
+  renderAlleBookings();
+  renderVerdiensten();
+  renderPendingBookings();
+  if (isAdmin) renderDetailersView();
+}
+
+function updateSidebarProfile() {
+  const avatar = document.getElementById('sidebar-avatar');
+  const nameEl = document.getElementById('sidebar-name');
+  const roleEl = document.getElementById('sidebar-role');
+  if (avatar) avatar.textContent = detailerNaam.charAt(0).toUpperCase();
+  if (nameEl) nameEl.textContent = detailerNaam;
+  if (roleEl) roleEl.textContent = isAdmin ? 'Admin — Deto' : 'Detailer — Deto';
+}
+
+function setTodayHeader() {
+  const now = new Date();
+  const opties = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+  const formatted = now.toLocaleDateString('nl-BE', opties);
+  document.getElementById('today-title').textContent = 'Vandaag';
+  document.getElementById('today-date-sub').textContent = formatted.charAt(0).toUpperCase() + formatted.slice(1);
+}
+
+async function loadAllBookings() {
+  try {
+    const fromDate = new Date();
+    fromDate.setFullYear(fromDate.getFullYear() - 1);
+    const from = fromDate.toISOString().split('T')[0];
+    const res = await fetch(`/api/admin-bookings?from=${from}`, {
+      headers: getAuthHeaders()
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    allBookings = data.bookings || [];
+    pendingBookings = data.pending_bookings || [];
+  } catch(e) {
+    console.error('Fout bij laden boekingen:', e);
+    allBookings = [];
+    pendingBookings = [];
+  }
+}
+
+async function loadDetailers() {
+  try {
+    const res = await fetch('/api/detailers', { headers: getAuthHeaders() });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    allDetailers = data.detailers || [];
+  } catch(e) {
+    console.error('Fout bij laden detailers:', e);
+    allDetailers = [];
+  }
+}
+
+// ===== VIEW SWITCHING =====
+function switchView(viewId, linkEl) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+  document.getElementById('view-' + viewId).classList.add('active');
+  if (linkEl) linkEl.classList.add('active');
+
+  // Close sidebar on mobile
+  if (window.innerWidth <= 768) {
+    document.getElementById('sidebar').classList.remove('open');
+  }
+}
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+}
+
+// ===== VANDAAG VIEW =====
+function renderVandaag() {
+  const today = new Date().toISOString().split('T')[0];
+  const todayBookings = allBookings.filter(b => b.datum === today);
+
+  // Stats
+  const todayTotal = todayBookings.reduce((s, b) => s + (b.totaal || 0), 0);
+
+  // Week earnings (from Monday)
+  const now = new Date();
+  const dayOfWeek = (now.getDay() + 6) % 7; // Monday = 0
+  const monday = new Date(now);
+  monday.setDate(now.getDate() - dayOfWeek);
+  const mondayStr = monday.toISOString().split('T')[0];
+  const sunday = new Date(monday);
+  sunday.setDate(monday.getDate() + 6);
+  const sundayStr = sunday.toISOString().split('T')[0];
+
+  const weekTotal = allBookings
+    .filter(b => b.datum >= mondayStr && b.datum <= sundayStr)
+    .reduce((s, b) => s + (b.totaal || 0), 0);
+
+  document.getElementById('stat-today-count').textContent = todayBookings.length;
+  document.getElementById('stat-today-earn').textContent = formatEuro(todayTotal);
+  document.getElementById('stat-week-earn').textContent = formatEuro(weekTotal);
+
+  const wrap = document.getElementById('today-bookings-wrap');
+  if (todayBookings.length === 0) {
+    wrap.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">🌿</div>
+        <div class="empty-title">Geen boekingen vandaag</div>
+        <div class="empty-sub">Geniet van je vrije dag, of kijk in de kalender voor komende afspraken.</div>
+      </div>`;
+    return;
+  }
+
+  wrap.innerHTML = '<div class="bookings-grid">' +
+    todayBookings.map(b => bookingCardHTML(b)).join('') +
+    '</div>';
+}
+
+// ===== PENDING BADGE =====
+function renderPendingBadge() {
+  const badge = document.getElementById('pending-badge');
+  if (!badge) return;
+  if (pendingBookings.length > 0) {
+    badge.textContent = pendingBookings.length;
+    badge.style.display = 'inline-block';
+  } else {
+    badge.style.display = 'none';
+  }
+}
+
+// ===== PENDING BOEKINGEN VIEW =====
+function renderPendingBookings() {
+  const wrap = document.getElementById('pending-bookings-wrap');
+  if (!wrap) return;
+
+  if (pendingBookings.length === 0) {
+    wrap.innerHTML = `<div class="empty-state">
+      <div class="empty-icon">✅</div>
+      <div class="empty-title">Geen openstaande boekingen</div>
+      <div class="empty-sub">Alle boekingen zijn toegewezen. Kom later terug.</div>
+    </div>`;
+    return;
+  }
+
+  wrap.innerHTML = '<div class="bookings-grid">' +
+    pendingBookings.map(b => {
+      const naam = escHtml((b.voornaam || '') + ' ' + (b.achternaam || ''));
+      const meta = [escHtml(b.dienst || ''), escHtml(b.auto_type || ''), escHtml(b.adres || '')].filter(Boolean).join(' &bull; ');
+      return `<div class="booking-card" id="pending-card-${b.id}">
+        <div class="booking-time-badge">${escHtml(b.tijdstip || '—')}</div>
+        <div class="booking-info">
+          <div class="booking-name">${naam}</div>
+          <div class="booking-meta">${formatDatum(b.datum)} &bull; ${meta}</div>
+        </div>
+        <div class="booking-right">
+          <div class="booking-total">${formatEuro(b.totaal || 0)}</div>
+          <span class="status-badge status-open">Openstaand</span>
+          <div class="booking-actions">
+            <button class="btn btn-primary btn-sm" onclick="acceptBooking('${b.id}')">✓ Accepteren</button>
+          </div>
+        </div>
+      </div>`;
+    }).join('') + '</div>';
+}
+
+async function acceptBooking(id) {
+  const card = document.getElementById('pending-card-' + id);
+  const btn = card ? card.querySelector('button') : null;
+  if (btn) { btn.disabled = true; btn.textContent = 'Bezig…'; }
+
+  try {
+    const res = await fetch('/api/admin-bookings', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json', ...getAuthHeaders() },
+      body: JSON.stringify({ id, action: 'accept' })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Fout');
+
+    // Verplaats van pending naar eigen boekingen
+    const booking = pendingBookings.find(b => b.id === id);
+    if (booking) {
+      booking.status = 'accepted';
+      booking.detailer_id = detailerId;
+      allBookings.unshift(booking);
+      pendingBookings = pendingBookings.filter(b => b.id !== id);
+    }
+    renderPendingBookings();
+    renderPendingBadge();
+    renderVandaag();
+    renderAlleBookings();
+  } catch(e) {
+    alert(e.message || 'Kon boeking niet accepteren.');
+    if (btn) { btn.disabled = false; btn.textContent = '✓ Accepteren'; }
+  }
+}
+
+// ===== KALENDER VIEW =====
+function renderKalender() {
+  const year = calYear;
+  const month = calMonth;
+  const title = MAANDEN_NL[month].charAt(0).toUpperCase() + MAANDEN_NL[month].slice(1) + ' ' + year;
+  document.getElementById('cal-month-title').textContent = title;
+
+  const grid = document.getElementById('cal-grid');
+  grid.innerHTML = '';
+
+  // Day headers (Mon–Sun)
+  DAYS_NL.forEach(d => {
+    const el = document.createElement('div');
+    el.className = 'cal-day-name';
+    el.textContent = d;
+    grid.appendChild(el);
+  });
+
+  const firstDay = new Date(year, month, 1);
+  const lastDay = new Date(year, month + 1, 0);
+  const todayStr = new Date().toISOString().split('T')[0];
+
+  // Offset: Monday = 0
+  let startOffset = (firstDay.getDay() + 6) % 7;
+  for (let i = 0; i < startOffset; i++) {
+    const el = document.createElement('div');
+    el.className = 'cal-day cal-empty';
+    grid.appendChild(el);
+  }
+
+  for (let d = 1; d <= lastDay.getDate(); d++) {
+    const dateStr = year + '-' + String(month + 1).padStart(2,'0') + '-' + String(d).padStart(2,'0');
+    const hasBooking = allBookings.some(b => b.datum === dateStr);
+    const isToday = dateStr === todayStr;
+    const isPast = dateStr < todayStr;
+    const isSelected = dateStr === selectedCalDay;
+
+    const el = document.createElement('div');
+    let cls = 'cal-day';
+    if (isPast && !isToday) cls += ' cal-past';
+    if (isToday) cls += ' cal-today';
+    if (hasBooking) cls += ' cal-has-booking';
+    if (isSelected) cls += ' cal-selected';
+    el.className = cls;
+    el.textContent = d;
+
+    if (hasBooking) {
+      const dot = document.createElement('span');
+      dot.className = 'cal-dot';
+      el.appendChild(dot);
+    }
+
+    if (!isPast || isToday) {
+      el.addEventListener('click', () => showCalDay(dateStr));
+    }
+    grid.appendChild(el);
+  }
+}
+
+function calPrevMonth() {
+  calMonth--;
+  if (calMonth < 0) { calMonth = 11; calYear--; }
+  renderKalender();
+}
+
+function calNextMonth() {
+  calMonth++;
+  if (calMonth > 11) { calMonth = 0; calYear++; }
+  renderKalender();
+}
+
+function showCalDay(dateStr) {
+  selectedCalDay = dateStr;
+  renderKalender();
+
+  const dayBookings = allBookings.filter(b => b.datum === dateStr);
+  const panel = document.getElementById('cal-day-panel');
+  const title = document.getElementById('cal-day-panel-title');
+  const wrap = document.getElementById('cal-day-bookings');
+
+  const [y, m, d] = dateStr.split('-');
+  title.textContent = d + ' ' + MAANDEN_NL[parseInt(m) - 1] + ' ' + y;
+  panel.style.display = 'block';
+
+  if (dayBookings.length === 0) {
+    wrap.innerHTML = '<p style="color:var(--gray);font-size:14px;padding:8px 0;">Geen boekingen op deze dag.</p>';
+    return;
+  }
+
+  wrap.innerHTML = '<div class="bookings-grid">' +
+    dayBookings.map(b => bookingCardHTML(b)).join('') +
+    '</div>';
+}
+
+// ===== ALLE BOEKINGEN VIEW =====
+function renderAlleBookings(bookings) {
+  const list = bookings || allBookings;
+  const tbody = document.getElementById('alle-bookings-tbody');
+
+  // Show/hide detailer column based on admin mode
+  const thDetailer = document.getElementById('th-detailer');
+  if (thDetailer) thDetailer.style.display = isAdmin ? '' : 'none';
+
+  if (list.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;padding:32px;color:var(--gray);">Geen boekingen gevonden.</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = list.map(b => {
+    const naam = escHtml((b.voornaam || '') + ' ' + (b.achternaam || ''));
+    const datum = formatDatum(b.datum);
+    const tijd = escHtml(b.tijdstip || '—');
+    const dienst = escHtml(b.dienst || '—');
+    const adres = escHtml(b.adres || '—');
+    const totaal = formatEuro(b.totaal || 0);
+    const status = b.afgerond
+      ? '<span class="status-badge status-done">Afgerond</span>'
+      : '<span class="status-badge status-open">Open</span>';
+
+    const detailerCell = isAdmin ? `<td>
+      <select class="assign-select" onchange="assignDetailer('${b.id}', this.value)">
+        <option value="">Niet toegewezen</option>
+        ${allDetailers.map(d => `<option value="${d.id}" ${b.detailer_id === d.id ? 'selected' : ''}>${escHtml(d.naam)}</option>`).join('')}
+      </select>
+    </td>` : '';
+
+    return `<tr>
+      <td class="td-name">${naam}</td>
+      <td data-label="Datum:">${datum}</td>
+      <td data-label="Tijdstip:">${tijd}</td>
+      <td data-label="Dienst:">${dienst}</td>
+      <td data-label="Adres:" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${adres}">${adres}</td>
+      <td class="td-total">${totaal}</td>
+      <td data-label="Status:">${status}</td>
+      ${detailerCell}
+      <td>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px;">
+          ${!b.afgerond ? `<button class="btn btn-primary btn-sm" onclick="markAfgerond('${b.id}')">Afgerond</button>` : ''}
+          <button class="btn btn-secondary btn-sm" onclick="openNoteModal('${b.id}', \`${escAttr(b.notities || '')}\`)">Notitie</button>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function applyFilters() {
+  const from = document.getElementById('filter-from').value;
+  const to = document.getElementById('filter-to').value;
+  const search = document.getElementById('filter-search').value.trim().toLowerCase();
+
+  let filtered = allBookings;
+  if (from) filtered = filtered.filter(b => b.datum >= from);
+  if (to)   filtered = filtered.filter(b => b.datum <= to);
+  if (search) {
+    filtered = filtered.filter(b =>
+      ((b.voornaam || '') + ' ' + (b.achternaam || '')).toLowerCase().includes(search)
+    );
+  }
+  renderAlleBookings(filtered);
+}
+
+function resetFilters() {
+  document.getElementById('filter-from').value = '';
+  document.getElementById('filter-to').value = '';
+  document.getElementById('filter-search').value = '';
+  renderAlleBookings();
+}
+
+// ===== VERDIENSTEN VIEW =====
+function renderVerdiensten() {
+  const now = new Date();
+  const thisMonth = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0');
+  const lastMonthDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+  const lastMonth = lastMonthDate.getFullYear() + '-' + String(lastMonthDate.getMonth() + 1).padStart(2, '0');
+
+  const completed = allBookings.filter(b => b.afgerond);
+  const allForStats = allBookings; // include open for projections
+
+  // Totaal (alle afgerond)
+  const totaal = completed.reduce((s, b) => s + (b.totaal || 0), 0);
+
+  // Deze maand (alle boekingen in deze maand)
+  const thisMonthTotal = allForStats
+    .filter(b => b.datum && b.datum.startsWith(thisMonth))
+    .reduce((s, b) => s + (b.totaal || 0), 0);
+
+  // Vorige maand
+  const lastMonthTotal = completed
+    .filter(b => b.datum && b.datum.startsWith(lastMonth))
+    .reduce((s, b) => s + (b.totaal || 0), 0);
+
+  // Gem per boeking
+  const avg = completed.length > 0 ? Math.round(totaal / completed.length) : 0;
+
+  document.getElementById('earn-totaal').textContent = formatEuro(totaal);
+  document.getElementById('earn-this-month').textContent = formatEuro(thisMonthTotal);
+  document.getElementById('earn-this-month-label').textContent = MAANDEN_NL[now.getMonth()];
+  document.getElementById('earn-last-month').textContent = formatEuro(lastMonthTotal);
+  document.getElementById('earn-last-month-label').textContent = MAANDEN_NL[lastMonthDate.getMonth()];
+  document.getElementById('earn-avg').textContent = formatEuro(avg);
+
+  // Bar chart — last 6 months
+  const months = [];
+  for (let i = 5; i >= 0; i--) {
+    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    const key = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
+    const label = MAANDEN_NL[d.getMonth()].slice(0, 3);
+    const amount = allForStats
+      .filter(b => b.datum && b.datum.startsWith(key))
+      .reduce((s, b) => s + (b.totaal || 0), 0);
+    months.push({ label, amount, key });
+  }
+
+  const maxVal = Math.max(...months.map(m => m.amount), 1);
+  const chart = document.getElementById('earn-chart');
+  chart.innerHTML = months.map(m => {
+    const pct = Math.round((m.amount / maxVal) * 100);
+    return `<div class="bar-group">
+      <div class="bar-amount">${m.amount > 0 ? formatEuro(m.amount) : ''}</div>
+      <div class="bar-fill" style="height:${pct}%;max-width:100%;"></div>
+      <div class="bar-label">${m.label}</div>
+    </div>`;
+  }).join('');
+
+  // Recent completed
+  const recentCompleted = completed
+    .slice()
+    .sort((a, b) => (b.datum || '').localeCompare(a.datum || ''))
+    .slice(0, 10);
+
+  const rcWrap = document.getElementById('recent-completed-wrap');
+  if (recentCompleted.length === 0) {
+    rcWrap.innerHTML = '<p style="color:var(--gray);font-size:14px;">Nog geen afgeronde boekingen.</p>';
+    return;
+  }
+
+  rcWrap.innerHTML = '<div class="bookings-grid">' +
+    recentCompleted.map(b => {
+      const naam = escHtml((b.voornaam || '') + ' ' + (b.achternaam || ''));
+      return `<div class="booking-card">
+        <div class="booking-time-badge">${escHtml(b.tijdstip || '—')}</div>
+        <div class="booking-info">
+          <div class="booking-name">${naam}</div>
+          <div class="booking-meta">${formatDatum(b.datum)} &bull; ${escHtml(b.dienst || '—')} &bull; ${escHtml(b.auto_type || '—')}</div>
+        </div>
+        <div class="booking-right">
+          <div class="booking-total">${formatEuro(b.totaal || 0)}</div>
+          <span class="status-badge status-done">Afgerond</span>
+        </div>
+      </div>`;
+    }).join('') +
+    '</div>';
+}
+
+// ===== DETAILERS VIEW =====
+function renderDetailersView() {
+  const wrap = document.getElementById('detailers-wrap');
+  if (!wrap) return;
+
+  if (allDetailers.length === 0) {
+    wrap.innerHTML = `<div class="empty-state">
+      <div class="empty-icon">👥</div>
+      <div class="empty-title">Nog geen detailers</div>
+      <div class="empty-sub">Klik op "+ Nieuwe detailer" om de eerste toe te voegen.</div>
+    </div>`;
+    return;
+  }
+
+  wrap.innerHTML = `<div class="bookings-table-wrap">
+    <table class="detailer-table">
+      <thead><tr>
+        <th>Naam</th>
+        <th>E-mail</th>
+        <th>Regio (postcodes/steden)</th>
+        <th>Status</th>
+        <th>Acties</th>
+      </tr></thead>
+      <tbody>
+        ${allDetailers.map(d => `<tr id="drow-${d.id}">
+          <td style="font-weight:700;">${escHtml(d.naam)}</td>
+          <td>${escHtml(d.email)}</td>
+          <td>
+            <div style="display:flex;gap:6px;align-items:center;">
+              <input type="text" class="assign-select" style="max-width:180px;padding:5px 8px;"
+                id="regio-${d.id}" value="${escHtml(d.regio || '')}"
+                placeholder="9000,9040,Gent"
+                onblur="saveRegio('${d.id}', this.value)">
+            </div>
+          </td>
+          <td>${d.actief
+            ? '<span class="status-badge status-done">Actief</span>'
+            : '<span class="status-badge status-open">Inactief</span>'}</td>
+          <td>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+              <button class="btn btn-secondary btn-sm" onclick="toggleDetailerActive('${d.id}', ${d.actief})">${d.actief ? 'Deactiveren' : 'Activeren'}</button>
+              <button class="btn btn-secondary btn-sm" style="color:#EF4444;border-color:#FCA5A5;" onclick="deleteDetailerConfirm('${d.id}', '${escAttr(d.naam)}')">Verwijderen</button>
+            </div>
+          </td>
+        </tr>`).join('')}
+      </tbody>
+    </table>
+  </div>
+  <p style="font-size:12px;color:var(--gray);margin-top:10px;">💡 Regio: vul komma-gescheiden postcodes en/of steden in, bv. <code>9000,9040,Gent</code>. Nieuwe boekingen worden automatisch toegewezen aan de dichtstbijzijnde beschikbare detailer.</p>`;
+}
+
+function openNewDetailerForm() {
+  document.getElementById('new-detailer-form').style.display = 'block';
+  document.getElementById('nd-naam').focus();
+}
+
+function closeNewDetailerForm() {
+  document.getElementById('new-detailer-form').style.display = 'none';
+  document.getElementById('nd-naam').value = '';
+  document.getElementById('nd-email').value = '';
+  document.getElementById('nd-regio').value = '';
+  document.getElementById('nd-pw').value = '';
+  document.getElementById('nd-error').style.display = 'none';
+}
+
+async function createDetailer() {
+  const naam = document.getElementById('nd-naam').value.trim();
+  const email = document.getElementById('nd-email').value.trim();
+  const regio = document.getElementById('nd-regio').value.trim();
+  const wachtwoord = document.getElementById('nd-pw').value.trim();
+  const errEl = document.getElementById('nd-error');
+
+  if (!naam || !email || !wachtwoord) {
+    errEl.textContent = 'Vul naam, e-mail en wachtwoord in.';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  try {
+    const res = await fetch('/api/detailers', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', ...getAuthHeaders() },
+      body: JSON.stringify({ naam, email, wachtwoord, regio })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Fout');
+    allDetailers.unshift(data.detailer);
+    closeNewDetailerForm();
+    renderDetailersView();
+  } catch(e) {
+    errEl.textContent = e.message;
+    errEl.style.display = 'block';
+  }
+}
+
+async function toggleDetailerActive(id, currentlyActive) {
+  try {
+    const res = await fetch('/api/detailers', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json', ...getAuthHeaders() },
+      body: JSON.stringify({ id, actief: !currentlyActive })
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const d = allDetailers.find(d => d.id === id);
+    if (d) d.actief = !currentlyActive;
+    renderDetailersView();
+  } catch(e) {
+    alert('Kon status niet wijzigen. Probeer opnieuw.');
+  }
+}
+
+async function deleteDetailerConfirm(id, naam) {
+  if (!confirm(`Weet je zeker dat je ${naam} wilt verwijderen? Deze actie kan niet ongedaan gemaakt worden.`)) return;
+  try {
+    const res = await fetch(`/api/detailers?id=${id}`, {
+      method: 'DELETE',
+      headers: getAuthHeaders()
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    allDetailers = allDetailers.filter(d => d.id !== id);
+    renderDetailersView();
+  } catch(e) {
+    alert('Kon detailer niet verwijderen. Probeer opnieuw.');
+  }
+}
+
+async function saveRegio(id, regio) {
+  try {
+    const res = await fetch('/api/detailers', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json', ...getAuthHeaders() },
+      body: JSON.stringify({ id, regio: regio.trim() })
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const d = allDetailers.find(d => d.id === id);
+    if (d) d.regio = regio.trim();
+  } catch(e) {
+    alert('Kon regio niet opslaan. Probeer opnieuw.');
+  }
+}
+
+async function assignDetailer(bookingId, selectedDetailerId) {
+  try {
+    const res = await fetch('/api/admin-bookings', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json', ...getAuthHeaders() },
+      body: JSON.stringify({ id: bookingId, detailer_id: selectedDetailerId || null })
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const b = allBookings.find(b => b.id === bookingId);
+    if (b) b.detailer_id = selectedDetailerId || null;
+  } catch(e) {
+    alert('Kon detailer niet toewijzen. Probeer opnieuw.');
+  }
+}
+
+// ===== ACTIONS =====
+async function markAfgerond(id) {
+  try {
+    const body = isAdmin
+      ? { id, afgerond: true }
+      : { id, action: 'complete' };
+    const res = await fetch('/api/admin-bookings', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json', ...getAuthHeaders() },
+      body: JSON.stringify(body)
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const b = allBookings.find(b => b.id === id);
+    if (b) { b.afgerond = true; b.status = 'completed'; }
+    renderVandaag();
+    renderAlleBookings();
+    renderVerdiensten();
+  } catch(e) {
+    alert('Kon boeking niet markeren als afgerond. Probeer opnieuw.');
+  }
+}
+
+function openNoteModal(id, currentNote) {
+  noteBookingId = id;
+  document.getElementById('note-textarea').value = currentNote || '';
+  document.getElementById('note-modal').classList.add('open');
+}
+
+function closeNoteModal() {
+  document.getElementById('note-modal').classList.remove('open');
+  noteBookingId = null;
+}
+
+async function saveNote() {
+  if (!noteBookingId) return;
+  const notities = document.getElementById('note-textarea').value;
+  try {
+    const res = await fetch('/api/admin-bookings', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json', ...getAuthHeaders() },
+      body: JSON.stringify({ id: noteBookingId, notities })
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const b = allBookings.find(b => b.id === noteBookingId);
+    if (b) b.notities = notities;
+    closeNoteModal();
+    renderAlleBookings();
+  } catch(e) {
+    alert('Kon notitie niet opslaan. Probeer opnieuw.');
+  }
+}
+
+// Close modal on overlay click
+document.getElementById('note-modal').addEventListener('click', function(e) {
+  if (e.target === this) closeNoteModal();
+});
+
+// ===== HELPERS =====
+function bookingCardHTML(b) {
+  const naam = escHtml((b.voornaam || '') + ' ' + (b.achternaam || ''));
+  const meta = [
+    escHtml(b.dienst || ''),
+    escHtml(b.auto_type || ''),
+    escHtml(b.adres || '')
+  ].filter(Boolean).join(' &bull; ');
+
+  return `<div class="booking-card">
+    <div class="booking-time-badge">${escHtml(b.tijdstip || '—')}</div>
+    <div class="booking-info">
+      <div class="booking-name">${naam}</div>
+      <div class="booking-meta">${meta}</div>
+      ${b.notities ? `<div style="font-size:12px;color:#6B7280;margin-top:6px;font-style:italic;">📝 ${escHtml(b.notities)}</div>` : ''}
+    </div>
+    <div class="booking-right">
+      <div class="booking-total">${formatEuro(b.totaal || 0)}</div>
+      <span class="status-badge ${b.afgerond ? 'status-done' : 'status-open'}">${b.afgerond ? 'Afgerond' : 'Open'}</span>
+      <div class="booking-actions">
+        ${!b.afgerond ? `<button class="btn btn-primary btn-sm" onclick="markAfgerond('${b.id}')">Afgerond</button>` : ''}
+        <button class="btn btn-secondary btn-sm" onclick="openNoteModal('${b.id}', \`${escAttr(b.notities || '')}\`)">Notitie</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function formatEuro(val) {
+  if (typeof val !== 'number') return '€—';
+  return '€' + val.toLocaleString('nl-BE');
+}
+
+function formatDatum(dateStr) {
+  if (!dateStr) return '—';
+  const [y, m, d] = dateStr.split('-');
+  return parseInt(d) + ' ' + MAANDEN_NL[parseInt(m) - 1] + ' ' + y;
+}
+
+function escHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function escAttr(str) {
+  return String(str).replace(/`/g, '\\`').replace(/\$/g, '\\$');
+}
+
+// ===== BOOTSTRAP =====
+checkAuth();
+</script>
+
+</body>
+</html>

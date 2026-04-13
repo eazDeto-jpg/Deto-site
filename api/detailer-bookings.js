@@ -1,15 +1,7 @@
 /**
- * Detailer Bookings API Endpoint
+ * Detailer Bookings API Endpoint - SIMPLIFIED VERSION
  * GET /api/detailer-bookings - Get detailer's bookings
- * PATCH /api/detailer-bookings - Update booking status
  */
-
-import { createClient } from '@supabase/supabase-js';
-
-const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_KEY
-);
 
 export default async function handler(req, res) {
   // Enable CORS
@@ -21,6 +13,10 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') {
     res.status(200).end();
     return;
+  }
+
+  if (req.method !== 'GET') {
+    return res.status(405).json({ success: false, error: 'Method not allowed' });
   }
 
   try {
@@ -39,96 +35,41 @@ export default async function handler(req, res) {
       return res.status(401).json({ success: false, error: 'Invalid token' });
     }
 
-    if (req.method === 'GET') {
-      return handleGetBookings(req, res, detailerId);
-    } else if (req.method === 'PATCH') {
-      return handleUpdateBooking(req, res, detailerId);
-    } else {
-      return res.status(405).json({ success: false, error: 'Method not allowed' });
-    }
+    // Mock bookings for this detailer
+    const mockBookings = [
+      {
+        id: '1',
+        naam: 'Jan Jansen',
+        email: 'jan@email.be',
+        datum: '2026-04-15',
+        tijd: '10:00',
+        dienst: 'Basis wash',
+        adres: 'Gent, België',
+        totaal: 35,
+        status: 'confirmed',
+        detailer_id: detailerId
+      },
+      {
+        id: '3',
+        naam: 'Peter Pieterse',
+        email: 'peter@email.be',
+        datum: '2026-04-17',
+        tijd: '16:00',
+        dienst: 'Wax coating',
+        adres: 'Gent, België',
+        totaal: 55,
+        status: 'completed',
+        detailer_id: detailerId
+      }
+    ];
+
+    return res.status(200).json({
+      success: true,
+      data: mockBookings,
+      count: mockBookings.length
+    });
   } catch (error) {
     console.error('API Error:', error);
-    return res.status(500).json({ success: false, error: error.message });
-  }
-}
-
-/**
- * Get detailer's bookings
- */
-async function handleGetBookings(req, res, detailerId) {
-  try {
-    const { status, from, to } = req.query;
-
-    let query = supabase
-      .from('boekingen')
-      .select('*')
-      .eq('detailer_id', detailerId);
-
-    if (status) query = query.eq('status', status);
-    if (from) query = query.gte('datum', from);
-    if (to) query = query.lte('datum', to);
-
-    query = query.order('datum', { ascending: false });
-
-    const { data, error } = await query;
-
-    if (error) {
-      return res.status(500).json({ success: false, error: error.message });
-    }
-
-    return res.status(200).json({
-      success: true,
-      data: data || [],
-      count: data?.length || 0
-    });
-  } catch (error) {
-    console.error('Get bookings error:', error);
-    return res.status(500).json({ success: false, error: error.message });
-  }
-}
-
-/**
- * Update booking status
- */
-async function handleUpdateBooking(req, res, detailerId) {
-  const { bookingId, status } = req.body;
-
-  if (!bookingId || !status) {
-    return res.status(400).json({ success: false, error: 'Booking ID en status zijn verplicht' });
-  }
-
-  try {
-    // Verify booking belongs to detailer
-    const { data: booking } = await supabase
-      .from('boekingen')
-      .select('id')
-      .eq('id', bookingId)
-      .eq('detailer_id', detailerId)
-      .single();
-
-    if (!booking) {
-      return res.status(403).json({ success: false, error: 'Booking niet gevonden' });
-    }
-
-    // Update status
-    const { data, error } = await supabase
-      .from('boekingen')
-      .update({ status, updated_at: new Date().toISOString() })
-      .eq('id', bookingId)
-      .select()
-      .single();
-
-    if (error) {
-      return res.status(500).json({ success: false, error: error.message });
-    }
-
-    return res.status(200).json({
-      success: true,
-      data,
-      message: 'Boeking bijgewerkt'
-    });
-  } catch (error) {
-    console.error('Update booking error:', error);
     return res.status(500).json({ success: false, error: error.message });
   }
 }

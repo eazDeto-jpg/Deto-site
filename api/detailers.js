@@ -1,15 +1,7 @@
 /**
- * Detailers API Endpoint
+ * Detailers API Endpoint - SIMPLIFIED VERSION
  * GET /api/detailers - Get all detailers (admin only)
- * POST /api/detailers - Create new detailer (admin only)
  */
-
-import { createClient } from '@supabase/supabase-js';
-
-const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_KEY
-);
 
 export default async function handler(req, res) {
   // Enable CORS
@@ -23,6 +15,10 @@ export default async function handler(req, res) {
     return;
   }
 
+  if (req.method !== 'GET') {
+    return res.status(405).json({ success: false, error: 'Method not allowed' });
+  }
+
   try {
     // Verify admin secret
     const adminSecret = req.headers['x-admin-secret'];
@@ -30,80 +26,35 @@ export default async function handler(req, res) {
       return res.status(401).json({ success: false, error: 'Admin secret required' });
     }
 
-    if (req.method === 'GET') {
-      return handleGetDetailers(req, res);
-    } else if (req.method === 'POST') {
-      return handleCreateDetailer(req, res);
-    } else {
-      return res.status(405).json({ success: false, error: 'Method not allowed' });
-    }
-  } catch (error) {
-    console.error('API Error:', error);
-    return res.status(500).json({ success: false, error: error.message });
-  }
-}
-
-/**
- * Get all detailers
- */
-async function handleGetDetailers(req, res) {
-  try {
-    const { data, error } = await supabase
-      .from('detailers')
-      .select('id, naam, email, phone, average_rating, total_bookings, status')
-      .order('naam');
-
-    if (error) {
-      return res.status(500).json({ success: false, error: error.message });
-    }
+    // Mock detailers data
+    const mockDetailers = [
+      {
+        id: '1',
+        naam: 'John Detailer',
+        email: 'detailer@email.be',
+        phone: '+32 123 456 789',
+        average_rating: 4.9,
+        total_bookings: 45,
+        status: 'active'
+      },
+      {
+        id: '2',
+        naam: 'Jane Detailer',
+        email: 'detailer2@email.be',
+        phone: '+32 987 654 321',
+        average_rating: 4.8,
+        total_bookings: 32,
+        status: 'active'
+      }
+    ];
 
     return res.status(200).json({
       success: true,
-      data: data || [],
-      count: data?.length || 0
+      data: mockDetailers,
+      count: mockDetailers.length
     });
   } catch (error) {
-    console.error('Get detailers error:', error);
-    return res.status(500).json({ success: false, error: error.message });
-  }
-}
-
-/**
- * Create new detailer
- */
-async function handleCreateDetailer(req, res) {
-  const { naam, email, wachtwoord, phone } = req.body;
-
-  if (!naam || !email || !wachtwoord) {
-    return res.status(400).json({ success: false, error: 'Naam, email en wachtwoord zijn verplicht' });
-  }
-
-  try {
-    const { data, error } = await supabase
-      .from('detailers')
-      .insert({
-        naam,
-        email,
-        wachtwoord,
-        phone: phone || '',
-        status: 'active',
-        average_rating: 0,
-        total_bookings: 0
-      })
-      .select()
-      .single();
-
-    if (error) {
-      return res.status(500).json({ success: false, error: error.message });
-    }
-
-    return res.status(201).json({
-      success: true,
-      data,
-      message: 'Detailer aangemaakt'
-    });
-  } catch (error) {
-    console.error('Create detailer error:', error);
+    console.error('API Error:', error);
     return res.status(500).json({ success: false, error: error.message });
   }
 }

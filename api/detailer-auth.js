@@ -1,5 +1,5 @@
 /**
- * Admin Authentication Endpoint
+ * Admin Authentication Endpoint - SIMPLIFIED VERSION
  * POST /api/detailer-auth - Authenticate admin
  */
 
@@ -26,7 +26,7 @@ export default async function handler(req, res) {
       return res.status(400).json({ success: false, error: 'Wachtwoord is verplicht' });
     }
 
-    // Admin password from environment variable
+    // Admin password - CHANGE THIS!
     const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';
 
     if (password !== ADMIN_PASSWORD) {

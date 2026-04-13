@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inloggen - Deto</title>
+  <meta name="description" content="Log in op je Deto account om je boekingen te beheren.">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .login-container {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+      width: 100%;
+      max-width: 400px;
+      padding: 40px;
+    }
+
+    .login-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .login-header h1 {
+      font-size: 28px;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .login-header p {
+      color: #666;
+      font-size: 14px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #333;
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #e0e0e0;
+      border-radius: 6px;
+      font-size: 14px;
+      transition: border-color 0.3s;
+    }
+
+    input[type="email"]:focus,
+    input[type="password"]:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .password-strength {
+      margin-top: 8px;
+      padding: 8px;
+      background: #f5f5f5;
+      border-radius: 4px;
+      font-size: 12px;
+    }
+
+    .strength-bar {
+      height: 4px;
+      background: #e0e0e0;
+      border-radius: 2px;
+      margin-bottom: 4px;
+      overflow: hidden;
+    }
+
+    .strength-fill {
+      height: 100%;
+      width: 0%;
+      transition: width 0.3s;
+      background: #ff6b6b;
+    }
+
+    .strength-fill.medium {
+      background: #ffd93d;
+      width: 50%;
+    }
+
+    .strength-fill.strong {
+      background: #6bcf7f;
+      width: 100%;
+    }
+
+    .error-message {
+      background: #fee;
+      color: #c33;
+      padding: 12px;
+      border-radius: 6px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      display: none;
+    }
+
+    .error-message.show {
+      display: block;
+    }
+
+    .rate-limit-warning {
+      background: #fff3cd;
+      color: #856404;
+      padding: 12px;
+      border-radius: 6px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      display: none;
+    }
+
+    .rate-limit-warning.show {
+      display: block;
+    }
+
+    .captcha-container {
+      margin-bottom: 20px;
+    }
+
+    .h-captcha {
+      display: flex;
+      justify-content: center;
+    }
+
+    .login-button {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .login-button:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+    }
+
+    .login-button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .login-button.loading {
+      position: relative;
+      color: transparent;
+    }
+
+    .login-button.loading::after {
+      content: '';
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      top: 50%;
+      left: 50%;
+      margin-left: -8px;
+      margin-top: -8px;
+      border: 2px solid #ffffff;
+      border-radius: 50%;
+      border-top-color: transparent;
+      animation: spin 0.6s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .login-footer {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 14px;
+      color: #666;
+    }
+
+    .login-footer a {
+      color: #667eea;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .login-footer a:hover {
+      text-decoration: underline;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 30px;
+      border-bottom: 2px solid #e0e0e0;
+    }
+
+    .tab-button {
+      padding: 10px 0;
+      background: none;
+      border: none;
+      color: #999;
+      font-weight: 600;
+      cursor: pointer;
+      position: relative;
+      flex: 1;
+      text-align: center;
+    }
+
+    .tab-button.active {
+      color: #667eea;
+    }
+
+    .tab-button.active::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: #667eea;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-header">
+      <h1>Deto</h1>
+      <p>Professionele autodetailing aan huis</p>
+    </div>
+
+    <div class="tabs">
+      <button class="tab-button active" data-tab="customer">Klant</button>
+      <button class="tab-button" data-tab="detailer">Detailer</button>
+    </div>
+
+    <!-- Customer Login Tab -->
+    <div id="customer" class="tab-content active">
+      <form id="customerLoginForm">
+        <div class="error-message" id="customerError"></div>
+        <div class="rate-limit-warning" id="customerRateLimit"></div>
+
+        <div class="form-group">
+          <label for="customerEmail">E-mailadres</label>
+          <input 
+            type="email" 
+            id="customerEmail" 
+            name="email" 
+            placeholder="jouw@email.com"
+            required
+            aria-label="E-mailadres"
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="customerPassword">Wachtwoord</label>
+          <input 
+            type="password" 
+            id="customerPassword" 
+            name="password" 
+            placeholder="••••••••"
+            required
+            aria-label="Wachtwoord"
+          >
+        </div>
+
+        <div class="captcha-container">
+          <div class="h-captcha" data-sitekey="your-hcaptcha-site-key"></div>
+        </div>
+
+        <button type="submit" class="login-button" id="customerLoginBtn">
+          Inloggen
+        </button>
+      </form>
+
+      <div class="login-footer">
+        <p>Nog geen account? <a href="#signup">Registreer hier</a></p>
+        <p><a href="#forgot-password">Wachtwoord vergeten?</a></p>
+      </div>
+    </div>
+
+    <!-- Detailer Login Tab -->
+    <div id="detailer" class="tab-content">
+      <form id="detailerLoginForm">
+        <div class="error-message" id="detailerError"></div>
+        <div class="rate-limit-warning" id="detailerRateLimit"></div>
+
+        <div class="form-group">
+          <label for="detailerEmail">E-mailadres</label>
+          <input 
+            type="email" 
+            id="detailerEmail" 
+            name="email" 
+            placeholder="jouw@email.com"
+            required
+            aria-label="Detailer e-mailadres"
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="detailerPassword">Wachtwoord</label>
+          <input 
+            type="password" 
+            id="detailerPassword" 
+            name="password" 
+            placeholder="••••••••"
+            required
+            aria-label="Detailer wachtwoord"
+          >
+        </div>
+
+        <div class="captcha-container">
+          <div class="h-captcha" data-sitekey="your-hcaptcha-site-key"></div>
+        </div>
+
+        <button type="submit" class="login-button" id="detailerLoginBtn">
+          Inloggen
+        </button>
+      </form>
+
+      <div class="login-footer">
+        <p><a href="#forgot-password">Wachtwoord vergeten?</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- hCaptcha Script -->
+  <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
+
+  <script type="module">
+    import {
+      isRateLimited,
+      recordFailedAttempt,
+      clearLoginAttempts,
+      getRemainingLockoutTime,
+      isValidEmail,
+      validatePasswordStrength
+    } from './auth-utils.js';
+
+    // Tab switching
+    document.querySelectorAll('.tab-button').forEach(button => {
+      button.addEventListener('click', () => {
+        const tab = button.dataset.tab;
+        
+        document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        
+        button.classList.add('active');
+        document.getElementById(tab).classList.add('active');
+      });
+    });
+
+    // Customer Login
+    document.getElementById('customerLoginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const email = document.getElementById('customerEmail').value.trim();
+      const password = document.getElementById('customerPassword').value;
+      const errorDiv = document.getElementById('customerError');
+      const rateLimitDiv = document.getElementById('customerRateLimit');
+      const button = document.getElementById('customerLoginBtn');
+
+      // Clear previous messages
+      errorDiv.classList.remove('show');
+      rateLimitDiv.classList.remove('show');
+
+      // Validate email format
+      if (!isValidEmail(email)) {
+        errorDiv.textContent = 'Voer een geldig e-mailadres in.';
+        errorDiv.classList.add('show');
+        return;
+      }
+
+      // Check rate limiting
+      if (isRateLimited(email)) {
+        const remainingTime = Math.ceil(getRemainingLockoutTime(email) / 1000);
+        const minutes = Math.ceil(remainingTime / 60);
+        rateLimitDiv.textContent = `Te veel inlogpogingen. Probeer over ${minutes} minuten opnieuw.`;
+        rateLimitDiv.classList.add('show');
+        return;
+      }
+
+      // Validate password
+      if (password.length < 6) {
+        errorDiv.textContent = 'Wachtwoord moet minstens 6 karakters zijn.';
+        errorDiv.classList.add('show');
+        recordFailedAttempt(email);
+        return;
+      }
+
+      // Show loading state
+      button.disabled = true;
+      button.classList.add('loading');
+
+      try {
+        // In production, call your backend API
+        // const response = await fetch('/api/login', {
+        //   method: 'POST',
+        //   headers: { 'Content-Type': 'application/json' },
+        //   body: JSON.stringify({ email, password })
+        // });
+
+        // For now, simulate with Supabase
+        // const { data, error } = await supabase.auth.signInWithPassword({
+        //   email,
+        //   password
+        // });
+
+        // if (error) throw error;
+
+        // Clear rate limit on success
+        clearLoginAttempts(email);
+        
+        // Redirect to dashboard
+        window.location.href = '/profiel.html';
+      } catch (error) {
+        recordFailedAttempt(email);
+        errorDiv.textContent = error.message || 'Inloggen mislukt. Controleer je gegevens.';
+        errorDiv.classList.add('show');
+      } finally {
+        button.disabled = false;
+        button.classList.remove('loading');
+      }
+    });
+
+    // Detailer Login
+    document.getElementById('detailerLoginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const email = document.getElementById('detailerEmail').value.trim();
+      const password = document.getElementById('detailerPassword').value;
+      const errorDiv = document.getElementById('detailerError');
+      const rateLimitDiv = document.getElementById('detailerRateLimit');
+      const button = document.getElementById('detailerLoginBtn');
+
+      // Clear previous messages
+      errorDiv.classList.remove('show');
+      rateLimitDiv.classList.remove('show');
+
+      // Validate email format
+      if (!isValidEmail(email)) {
+        errorDiv.textContent = 'Voer een geldig e-mailadres in.';
+        errorDiv.classList.add('show');
+        return;
+      }
+
+      // Check rate limiting
+      if (isRateLimited(`detailer_${email}`)) {
+        const remainingTime = Math.ceil(getRemainingLockoutTime(`detailer_${email}`) / 1000);
+        const minutes = Math.ceil(remainingTime / 60);
+        rateLimitDiv.textContent = `Te veel inlogpogingen. Probeer over ${minutes} minuten opnieuw.`;
+        rateLimitDiv.classList.add('show');
+        return;
+      }
+
+      // Validate password
+      if (password.length < 6) {
+        errorDiv.textContent = 'Wachtwoord moet minstens 6 karakters zijn.';
+        errorDiv.classList.add('show');
+        recordFailedAttempt(`detailer_${email}`);
+        return;
+      }
+
+      // Show loading state
+      button.disabled = true;
+      button.classList.add('loading');
+
+      try {
+        // Call backend API for detailer login
+        const response = await fetch('/api/detailer-login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+
+        if (!response.ok) {
+          const error = await response.json();
+          throw new Error(error.message || 'Inloggen mislukt');
+        }
+
+        const data = await response.json();
+        
+        // Store token securely (in production, use httpOnly cookies)
+        localStorage.setItem('deto_detailer_token', data.token);
+        localStorage.setItem('deto_detailer_id', data.id);
+        
+        // Clear rate limit on success
+        clearLoginAttempts(`detailer_${email}`);
+        
+        // Redirect to dashboard
+        window.location.href = '/detailer-dashboard.html';
+      } catch (error) {
+        recordFailedAttempt(`detailer_${email}`);
+        errorDiv.textContent = error.message || 'Inloggen mislukt. Controleer je gegevens.';
+        errorDiv.classList.add('show');
+      } finally {
+        button.disabled = false;
+        button.classList.remove('loading');
+      }
+    });
+  </script>
+</body>
+</html>

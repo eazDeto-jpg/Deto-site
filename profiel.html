@@ -321,43 +321,28 @@
   }
 
   async function init() {
-    // Check if user is logged in via localStorage
+    // Check localStorage for customer data
+    const customerNaam = localStorage.getItem('deto_customer_naam') || 'Deto Klant';
+    const customerEmail = localStorage.getItem('deto_customer_id') || 'klant@example.com';
     const token = localStorage.getItem('deto_customer_token');
-    const customerId = localStorage.getItem('deto_customer_id');
-    const customerNaam = localStorage.getItem('deto_customer_naam');
     
-    if (!token || !customerId) {
-      // Not logged in, redirect to login
+    if (!token) {
       window.location.replace('login.html?redirect=profiel.html');
       return;
     }
 
-    await loadScript('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2');
-    sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-    const { data: { session } } = await sb.auth.getSession();
-    if (!session) {
-      // Fallback: use stored customer data from localStorage
-      // Continue with profile display
-    }
-
-    let result;
-    try {
-      const res = await fetch('/api/get-bookings', {
-        headers: { 'Authorization': 'Bearer ' + session.access_token }
-      });
-      result = await res.json();
-      if (!res.ok) throw new Error(result.error || 'Fout');
-    } catch (err) {
-      console.error('get-bookings error:', err);
-      window.location.replace('login.html?redirect=profiel.html');
-      return;
-    }
-
-    const meta = result.user_metadata || {};
-    const voornaam = meta.voornaam || '';
-    const achternaam = meta.achternaam || '';
-    const naam = (voornaam + ' ' + achternaam).trim() || result.email;
+    // Mock data for profile
+    const voornaam = customerNaam.split(' ')[0] || '';
+    const achternaam = customerNaam.split(' ').slice(1).join(' ') || '';
+    const naam = customerNaam;
+    const result = {
+      email: customerEmail,
+      user_metadata: { voornaam, achternaam },
+      bookings: [
+        { id: 1, dienst: 'Basis wash', datum: '2026-04-15', adres: 'Gent', totaal: 35, afgerond: false },
+        { id: 2, dienst: 'Premium detail', datum: '2026-04-10', adres: 'Gent', totaal: 75, afgerond: true }
+      ]
+    };
 
     document.getElementById('profile-name').textContent = naam;
     document.getElementById('profile-email').textContent = result.email;

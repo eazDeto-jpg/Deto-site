@@ -1,0 +1,16 @@
+# Robots.txt for Deto website
+User-agent: *
+Allow: /
+Disallow: /.env.local
+Disallow: /deploy*.cjs
+Disallow: /supabase-*.sql
+
+# Specific crawl-delay for search engines
+User-agent: Googlebot
+Crawl-delay: 0
+
+User-agent: Bingbot
+Crawl-delay: 1
+
+# Sitemap location
+Sitemap: https://deto.site/sitemap.xml

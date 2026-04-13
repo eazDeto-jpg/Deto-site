@@ -1,19 +1,22 @@
 <!DOCTYPE html>
 <html lang="nl">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Deto — Professionele autodetailing aan huis in Gent</title>
-<meta name="description" content="Deto biedt professionele autodetailing aan huis in Gent. Exterieur, interieur of volledig — wij komen naar jou. Boek direct online vanaf €35.">
-<meta name="keywords" content="autodetailing Gent, auto poetsen aan huis, carwash aan huis, auto wassen Gent, detailing service Gent">
-<meta name="robots" content="index, follow">
-<meta property="og:title" content="Deto — Professionele autodetailing aan huis in Gent">
-<meta property="og:description" content="Professionele autodetailing aan huis. Exterieur, interieur of volledig. Boek direct online vanaf €35.">
-<meta property="og:type" content="website">
-<link rel="icon" type="image/png" href="deto-logo.png">
-<link rel="stylesheet" href="style.css">
-<style>
-  /* HERO WRAPPER */
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>
+   Deto — Professionele autodetailing aan huis in Gent
+  </title>
+  <meta content="Deto biedt professionele autodetailing aan huis in Gent. Exterieur, interieur of volledig — wij komen naar jou. Boek direct online vanaf €35. Gratis verplaatsing, beschikbaar binnen 24u." name="description"/>
+  <meta content="autodetailing Gent, auto poetsen aan huis, carwash aan huis, auto wassen Gent, detailing service Gent" name="keywords"/>
+  <meta content="index, follow" name="robots"/>
+  <meta content="Deto — Professionele autodetailing aan huis in Gent" property="og:title"/>
+  <meta content="Professionele autodetailing aan huis. Exterieur, interieur of volledig. Boek direct online vanaf €35." property="og:description"/>
+  <meta content="website" property="og:type"/>
+  <meta content="https://deto.site/deto-logo.png" property="og:image"/>
+  <link href="deto-logo.png" rel="icon" type="image/png"/>
+  <link href="style.css" rel="stylesheet"/>
+  <style>
+   /* HERO WRAPPER */
   .hero-wrapper {
     position: relative;
     background: linear-gradient(155deg, #F0FDF4 0%, #FFFFFF 60%);
@@ -745,448 +748,1099 @@
     .trust-bar-inner { gap: 14px; justify-content: flex-start; }
     .trust-item { font-size: 13px; }
   }
-</style>
-</head>
-<body>
 
-<!-- NAV -->
-<nav>
-  <a href="#" class="logo">
-    <img src="deto-logo.png" style="height:40px; width:auto;">
-  </a>
-  <ul class="nav-links">
-    <li><a href="#hoe">Hoe het werkt</a></li>
-    <li><a href="#diensten">Diensten</a></li>
-    <li><a href="detailer-registratie.html">Word detailer</a></li>
-    <li id="nav-auth-item">
-      <a href="login.html" class="nav-auth-link">Inloggen</a>
+  /* ACCESSIBILITY: Focus Styles */
+  button:focus,
+  a:focus,
+  input:focus,
+  textarea:focus,
+  select:focus {
+    outline: 2px solid #22C55E;
+    outline-offset: 2px;
+  }
+  
+  button:focus:not(:focus-visible),
+  a:focus:not(:focus-visible),
+  input:focus:not(:focus-visible) {
+    outline: none;
+  }
+  
+  button:focus-visible,
+  a:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible {
+    outline: 2px solid #22C55E;
+    outline-offset: 2px;
+  }
+  </style>
+  <link href="https://deto.site/deto-homepage.html" rel="canonical"/>
+  <meta content="summary_large_image" name="twitter:card"/>
+  <meta content="Deto — Professionele autodetailing aan huis in Gent" name="twitter:title"/>
+  <meta content="Professionele autodetailing aan huis. Exterieur, interieur of volledig. Boek direct online vanaf €35." name="twitter:description"/>
+  <meta content="https://deto.site/deto-logo.png" name="twitter:image"/>
+  <script type="application/ld+json">
+   {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "Deto",
+  "description": "Professionele autodetailing aan huis in Gent",
+  "url": "https://deto.site",
+  "telephone": "+32...",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Gent",
+    "addressRegion": "Vlaanderen",
+    "addressCountry": "BE"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.9",
+    "reviewCount": "500"
+  },
+  "priceRange": "€35-€75",
+  "areaServed": "Gent"
+}
+  </script>
+ </head>
+ <body>
+  <!-- NAV -->
+  <nav>
+   <a class="logo" href="#">
+    <img src="deto-logo.png" style="height:40px; width:auto;"/>
+   </a>
+   <ul class="nav-links">
+    <li>
+     <a href="#hoe">
+      Hoe het werkt
+     </a>
     </li>
-    <li><a href="boeken.html" class="nav-cta">Boek nu</a></li>
-  </ul>
-  <button class="hamburger" onclick="document.getElementById('mobileMenu').classList.toggle('open')" aria-label="Menu">
-    <span></span><span></span><span></span>
-  </button>
-</nav>
-<div class="mobile-menu" id="mobileMenu">
-  <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});closeMobileMenu();return false;">&#127968; Home</a>
-  <a href="#hoe" onclick="closeMobileMenu()">Hoe het werkt</a>
-  <a href="#diensten" onclick="closeMobileMenu()">Diensten</a>
-  <a href="detailer-registratie.html" onclick="closeMobileMenu()">Word detailer</a>
-  <a href="login.html" id="mobile-auth-link" onclick="closeMobileMenu()">Inloggen</a>
-  <a href="boeken.html" class="nav-cta-mobile" onclick="closeMobileMenu()">Boek nu →</a>
-</div>
-
-<!-- HERO -->
-<div class="hero-wrapper">
-<section class="hero">
-  <div class="hero-left">
-    <div class="hero-badge">
-      <span></span>
+    <li>
+     <a href="#diensten">
+      Diensten
+     </a>
+    </li>
+    <li>
+     <a href="detailer-registratie.html">
+      Word detailer
+     </a>
+    </li>
+    <li id="nav-auth-item">
+     <a class="nav-auth-link" href="login.html">
+      Inloggen
+     </a>
+    </li>
+    <li>
+     <a class="nav-cta" href="boeken.html">
+      Boek nu
+     </a>
+    </li>
+   </ul>
+   <button aria-label="Menu" class="hamburger" onclick="document.getElementById('mobileMenu').classList.toggle('open')" type="button">
+    <span>
+    </span>
+    <span>
+    </span>
+    <span>
+    </span>
+   </button>
+  </nav>
+  <div class="mobile-menu" id="mobileMenu">
+   <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});closeMobileMenu();return false;">
+    🏠 Home
+   </a>
+   <a href="#hoe" onclick="closeMobileMenu()">
+    Hoe het werkt
+   </a>
+   <a href="#diensten" onclick="closeMobileMenu()">
+    Diensten
+   </a>
+   <a href="detailer-registratie.html" onclick="closeMobileMenu()">
+    Word detailer
+   </a>
+   <a href="login.html" id="mobile-auth-link" onclick="closeMobileMenu()">
+    Inloggen
+   </a>
+   <a class="nav-cta-mobile" href="boeken.html" onclick="closeMobileMenu()">
+    Boek nu →
+   </a>
+  </div>
+  <!-- HERO -->
+  <div class="hero-wrapper">
+   <section class="hero">
+    <div class="hero-left">
+     <div class="hero-badge">
+      <span>
+      </span>
       Nu beschikbaar in Gent
-    </div>
-    <h1>Jouw auto <span class="accent">blinkend schoon</span> — jij ontspant thuis</h1>
-    <p class="hero-sub">Geen file naar de carwash, geen gedoe met afspraken. Wij komen naar jou — jij zit met een koffie.</p>
-    <div class="hero-buttons">
-      <a href="boeken.html" class="btn-primary">Boek een beurt →</a>
-      <a href="#hoe" class="btn-secondary">Hoe werkt het?</a>
-    </div>
-    <div class="hero-stats">
+     </div>
+     <h1>
+      Jouw auto
+      <span class="accent">
+       blinkend schoon
+      </span>
+      — jij ontspant thuis
+     </h1>
+     <p class="hero-sub">
+      Geen file naar de carwash, geen gedoe met afspraken. Wij komen naar jou — jij zit met een koffie.
+     </p>
+     <div class="hero-buttons">
+      <a class="btn-primary" href="boeken.html">
+       Boek een beurt →
+      </a>
+      <a class="btn-secondary" href="#hoe">
+       Hoe werkt het?
+      </a>
+     </div>
+     <div class="hero-stats">
       <div class="stat">
-        <span class="stat-num">500+</span>
-        <span class="stat-label">Blije klanten</span>
+       <span class="stat-num">
+        500+
+       </span>
+       <span class="stat-label">
+        Blije klanten
+       </span>
       </div>
       <div class="stat">
-        <span class="stat-num">4.9★</span>
-        <span class="stat-label">Gemiddelde score</span>
+       <span class="stat-num">
+        4.9★
+       </span>
+       <span class="stat-label">
+        Gemiddelde score
+       </span>
       </div>
       <div class="stat">
-        <span class="stat-num">2u</span>
-        <span class="stat-label">Gemiddelde tijd</span>
+       <span class="stat-num">
+        2u
+       </span>
+       <span class="stat-label">
+        Gemiddelde tijd
+       </span>
       </div>
+     </div>
     </div>
-  </div>
-
-  <div class="hero-right">
-    <div class="hero-card">
-      <div class="hero-card-title">Bereken jouw prijs</div>
-
+    <div class="hero-right">
+     <div class="hero-card">
+      <div class="hero-card-title">
+       Bereken jouw prijs
+      </div>
       <div style="margin-bottom:14px;">
-        <div style="color:#9CA3AF;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;">Jouw auto</div>
-        <div class="car-size-grid">
-          <button class="car-btn active" data-size="klein">🚗 Klein</button>
-          <button class="car-btn" data-size="medium">🚙 Medium</button>
-          <button class="car-btn" data-size="groot">🚐 Groot</button>
-          <button class="car-btn" data-size="bestel">🚌 Bestel</button>
-        </div>
+       <div style="color:#9CA3AF;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;">
+        Jouw auto
+       </div>
+       <div class="car-size-grid">
+        <button class="car-btn active" data-size="klein" type="button">
+         🚗 Klein
+        </button>
+        <button class="car-btn" data-size="medium" type="button">
+         🚙 Medium
+        </button>
+        <button class="car-btn" data-size="groot" type="button">
+         🚐 Groot
+        </button>
+        <button class="car-btn" data-size="bestel" type="button">
+         🚌 Bestel
+        </button>
+       </div>
       </div>
-
       <div style="margin-bottom:14px;">
-        <div style="color:#9CA3AF;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;">Dienst</div>
-        <div class="service-options">
-          <div class="service-option active" data-service="exterieur">
-            <span class="service-name">Exterieur</span>
-            <span class="service-price" id="price-ext">€35</span>
-          </div>
-          <div class="service-option" data-service="interieur">
-            <span class="service-name">Interieur</span>
-            <span class="service-price" id="price-int">€45</span>
-          </div>
-          <div class="service-option" data-service="volledig">
-            <span class="service-name">Volledig</span>
-            <span class="service-price" id="price-vol">€75</span>
-          </div>
+       <div style="color:#9CA3AF;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;">
+        Dienst
+       </div>
+       <div class="service-options">
+        <div class="service-option active" data-service="exterieur">
+         <span class="service-name">
+          Exterieur
+         </span>
+         <span class="service-price" id="price-ext">
+          €35
+         </span>
         </div>
+        <div class="service-option" data-service="interieur">
+         <span class="service-name">
+          Interieur
+         </span>
+         <span class="service-price" id="price-int">
+          €45
+         </span>
+        </div>
+        <div class="service-option" data-service="volledig">
+         <span class="service-name">
+          Volledig
+         </span>
+         <span class="service-price" id="price-vol">
+          €75
+         </span>
+        </div>
+       </div>
       </div>
-
       <div style="margin-bottom:18px;">
-        <div style="color:#9CA3AF;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;">Conditie</div>
-        <div class="dirt-grid">
-          <button class="dirt-btn active" data-dirt="0">😊 Normaal</button>
-          <button class="dirt-btn" data-dirt="15">😅 Vuil +€15</button>
-          <button class="dirt-btn" data-dirt="30">🐶 Heel vuil +€30</button>
-        </div>
+       <div style="color:#9CA3AF;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;">
+        Conditie
+       </div>
+       <div class="dirt-grid">
+        <button class="dirt-btn active" data-dirt="0" type="button">
+         😊 Normaal
+        </button>
+        <button class="dirt-btn" data-dirt="15" type="button">
+         😅 Vuil +€15
+        </button>
+        <button class="dirt-btn" data-dirt="30" type="button">
+         🐶 Heel vuil +€30
+        </button>
+       </div>
       </div>
-
-      <button class="book-btn" id="heroBookBtn" onclick="window.location='boeken.html'">Boek nu — €35</button>
+      <button class="book-btn" id="heroBookBtn" onclick="window.location='boeken.html'" type="button">
+       Boek nu — €35
+      </button>
+     </div>
     </div>
+   </section>
   </div>
-</section>
-</div><!-- /hero-wrapper -->
-
-<!-- TRUST BAR -->
-<div class="trust-bar">
-  <div class="trust-bar-inner">
+  <!-- /hero-wrapper -->
+  <!-- TRUST BAR -->
+  <div class="trust-bar">
+   <div class="trust-bar-inner">
     <div class="trust-item">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-      Gratis verplaatsing in Gent
+     <svg fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" viewbox="0 0 24 24" width="18">
+      <polyline points="20 6 9 17 4 12">
+      </polyline>
+     </svg>
+     Gratis verplaatsing in Gent
     </div>
     <div class="trust-item">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-      Beschikbaar binnen 24u
+     <svg fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" viewbox="0 0 24 24" width="18">
+      <polyline points="20 6 9 17 4 12">
+      </polyline>
+     </svg>
+     Beschikbaar binnen 24u
     </div>
     <div class="trust-item">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-      4.9★ gemiddelde beoordeling
+     <svg fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" viewbox="0 0 24 24" width="18">
+      <polyline points="20 6 9 17 4 12">
+      </polyline>
+     </svg>
+     4.9★ gemiddelde beoordeling
     </div>
     <div class="trust-item">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-      Betaling na de dienst
+     <svg fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" viewbox="0 0 24 24" width="18">
+      <polyline points="20 6 9 17 4 12">
+      </polyline>
+     </svg>
+     Betaling na de dienst
     </div>
     <div class="trust-item">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-      500+ tevreden klanten
+     <svg fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" viewbox="0 0 24 24" width="18">
+      <polyline points="20 6 9 17 4 12">
+      </polyline>
+     </svg>
+     500+ tevreden klanten
     </div>
+   </div>
   </div>
-</div>
-
-<!-- HOE WERKT HET -->
-<section class="how" id="hoe">
-  <div class="section-label">Simpel & snel</div>
-  <h2 class="section-title">Hoe werkt Deto?</h2>
-  <div class="steps">
+  <!-- HOE WERKT HET -->
+  <section class="how" id="hoe">
+   <div class="section-label">
+    Simpel &amp; snel
+   </div>
+   <h2 class="section-title">
+    Hoe werkt Deto?
+   </h2>
+   <div class="steps">
     <div class="step reveal">
-      <div class="step-icon-wrap">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
-        </svg>
-      </div>
-      <div class="step-num">1</div>
-      <h3>Kies je dienst</h3>
-      <p>Selecteer exterieur, interieur of een volledige detailing. Kies je datum en tijdstip dat jou past.</p>
+     <div class="step-icon-wrap">
+      <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24">
+       <rect height="18" rx="2" width="18" x="3" y="4">
+       </rect>
+       <line x1="16" x2="16" y1="2" y2="6">
+       </line>
+       <line x1="8" x2="8" y1="2" y2="6">
+       </line>
+       <line x1="3" x2="21" y1="10" y2="10">
+       </line>
+      </svg>
+     </div>
+     <div class="step-num">
+      1
+     </div>
+     <h3>
+      Kies je dienst
+     </h3>
+     <p>
+      Selecteer exterieur, interieur of een volledige detailing. Kies je datum en tijdstip dat jou past.
+     </p>
     </div>
     <div class="step reveal reveal-delay-1">
-      <div class="step-icon-wrap">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
-        </svg>
-      </div>
-      <div class="step-num">2</div>
-      <h3>Detailer komt naar jou</h3>
-      <p>Een ervaren detailer rijdt naar jouw thuis of werk. Doorgaans beschikbaar binnen 24u. Gratis verplaatsing in Gent.</p>
+     <div class="step-icon-wrap">
+      <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24">
+       <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z">
+       </path>
+       <circle cx="12" cy="10" r="3">
+       </circle>
+      </svg>
+     </div>
+     <div class="step-num">
+      2
+     </div>
+     <h3>
+      Detailer komt naar jou
+     </h3>
+     <p>
+      Een ervaren detailer rijdt naar jouw thuis of werk. Doorgaans beschikbaar binnen 24u. Gratis verplaatsing in Gent.
+     </p>
     </div>
     <div class="step reveal reveal-delay-2">
-      <div class="step-icon-wrap">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="20 6 9 17 4 12"/>
-        </svg>
-      </div>
-      <div class="step-num">3</div>
-      <h3>Genieten maar</h3>
-      <p>Na 1 à 2 uur staat jouw auto blinkend klaar. Betaal veilig via de app. Geen verrassingen, geen cash.</p>
+     <div class="step-icon-wrap">
+      <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24">
+       <polyline points="20 6 9 17 4 12">
+       </polyline>
+      </svg>
+     </div>
+     <div class="step-num">
+      3
+     </div>
+     <h3>
+      Genieten maar
+     </h3>
+     <p>
+      Na 1 à 2 uur staat jouw auto blinkend klaar. Betaal veilig via de app. Geen verrassingen, geen cash.
+     </p>
     </div>
-  </div>
-</section>
-
-<!-- DIENSTEN -->
-<section class="services" id="diensten">
-  <div class="section-label">Prijzen</div>
-  <h2 class="section-title">Eerlijke prijs, geen verrassingen</h2>
-  <p style="text-align:center;color:var(--gray);margin-top:-36px;margin-bottom:48px;font-size:16px;">Prijs hangt af van jouw auto en hoe vuil hij is. Zie het zelf hieronder.</p>
-
-  <div class="size-tabs">
-    <button class="size-tab active" data-size="klein">🚗 Klein<span>Clio, Polo, Yaris</span></button>
-    <button class="size-tab" data-size="medium">🚙 Medium<span>Golf, A-klasse, 3-serie</span></button>
-    <button class="size-tab" data-size="groot">🚐 Groot SUV<span>Tiguan, X5, Outlander</span></button>
-    <button class="size-tab" data-size="bestel">🚌 Bestelwagen<span>Transit, Ducato, Sprinter</span></button>
-  </div>
-
-  <div class="service-cards" style="margin-top:28px;">
+   </div>
+  </section>
+  <!-- DIENSTEN -->
+  <section class="services" id="diensten">
+   <div class="section-label">
+    Prijzen
+   </div>
+   <h2 class="section-title">
+    Eerlijke prijs, geen verrassingen
+   </h2>
+   <p style="text-align:center;color:var(--gray);margin-top:-36px;margin-bottom:48px;font-size:16px;">
+    Prijs hangt af van jouw auto en hoe vuil hij is. Zie het zelf hieronder.
+   </p>
+   <div class="size-tabs">
+    <button class="size-tab active" data-size="klein" type="button">
+     🚗 Klein
+     <span>
+      Clio, Polo, Yaris
+     </span>
+    </button>
+    <button class="size-tab" data-size="medium" type="button">
+     🚙 Medium
+     <span>
+      Golf, A-klasse, 3-serie
+     </span>
+    </button>
+    <button class="size-tab" data-size="groot" type="button">
+     🚐 Groot SUV
+     <span>
+      Tiguan, X5, Outlander
+     </span>
+    </button>
+    <button class="size-tab" data-size="bestel" type="button">
+     🚌 Bestelwagen
+     <span>
+      Transit, Ducato, Sprinter
+     </span>
+    </button>
+   </div>
+   <div class="service-cards" style="margin-top:28px;">
     <div class="service-card">
-      <h3>Exterieur</h3>
-      <p>Blinkend schoon van buiten</p>
-      <div class="price" id="price-ext-main">€35</div>
-      <div class="price-label">vanaf — afhankelijk van conditie</div>
-      <ul>
-        <li>Handwas buiten</li>
-        <li>Velgen gereinigd</li>
-        <li>Ramen gepoetst</li>
-        <li>Banden behandeld</li>
-        <li>Drooggewreven</li>
-      </ul>
-      <a href="boeken.html?size=klein&service=0&dirt=0" id="btn-boek-ext" class="book-service-btn outline">Boek exterieur</a>
+     <h3>
+      Exterieur
+     </h3>
+     <p>
+      Blinkend schoon van buiten
+     </p>
+     <div class="price" id="price-ext-main">
+      €35
+     </div>
+     <div class="price-label">
+      vanaf — afhankelijk van conditie
+     </div>
+     <ul>
+      <li>
+       Handwas buiten
+      </li>
+      <li>
+       Velgen gereinigd
+      </li>
+      <li>
+       Ramen gepoetst
+      </li>
+      <li>
+       Banden behandeld
+      </li>
+      <li>
+       Drooggewreven
+      </li>
+     </ul>
+     <a class="book-service-btn outline" href="boeken.html?size=klein&amp;service=0&amp;dirt=0" id="btn-boek-ext">
+      Boek exterieur
+     </a>
     </div>
-
     <div class="service-card featured">
-      <div class="popular-badge">Meest gekozen</div>
-      <h3>Interieur</h3>
-      <p>Compleet opgefrist van binnen</p>
-      <div class="price" id="price-int-main">€45</div>
-      <div class="price-label">vanaf — afhankelijk van conditie</div>
-      <ul>
-        <li>Stofzuigen & uitkloppen</li>
-        <li>Dashboard & console</li>
-        <li>Stoelen gereinigd</li>
-        <li>Ramen van binnen</li>
-        <li>Frisse geur</li>
-      </ul>
-      <a href="boeken.html?size=klein&service=1&dirt=0" id="btn-boek-int" class="book-service-btn green">Boek interieur</a>
+     <div class="popular-badge">
+      Meest gekozen
+     </div>
+     <h3>
+      Interieur
+     </h3>
+     <p>
+      Compleet opgefrist van binnen
+     </p>
+     <div class="price" id="price-int-main">
+      €45
+     </div>
+     <div class="price-label">
+      vanaf — afhankelijk van conditie
+     </div>
+     <ul>
+      <li>
+       Stofzuigen &amp; uitkloppen
+      </li>
+      <li>
+       Dashboard &amp; console
+      </li>
+      <li>
+       Stoelen gereinigd
+      </li>
+      <li>
+       Ramen van binnen
+      </li>
+      <li>
+       Frisse geur
+      </li>
+     </ul>
+     <a class="book-service-btn green" href="boeken.html?size=klein&amp;service=1&amp;dirt=0" id="btn-boek-int">
+      Boek interieur
+     </a>
     </div>
-
     <div class="service-card">
-      <h3>Volledig</h3>
-      <p>Binnen én buiten — als nieuw</p>
-      <div class="price" id="price-vol-main">€75</div>
-      <div class="price-label">vanaf — afhankelijk van conditie</div>
-      <ul>
-        <li>Alles van exterieur</li>
-        <li>Alles van interieur</li>
-        <li>Motorruimte</li>
-        <li>Wax bescherming</li>
-        <li>Beste waarde</li>
-      </ul>
-      <a href="boeken.html?size=klein&service=2&dirt=0" id="btn-boek-vol" class="book-service-btn dark">Boek volledig</a>
+     <h3>
+      Volledig
+     </h3>
+     <p>
+      Binnen én buiten — als nieuw
+     </p>
+     <div class="price" id="price-vol-main">
+      €75
+     </div>
+     <div class="price-label">
+      vanaf — afhankelijk van conditie
+     </div>
+     <ul>
+      <li>
+       Alles van exterieur
+      </li>
+      <li>
+       Alles van interieur
+      </li>
+      <li>
+       Motorruimte
+      </li>
+      <li>
+       Wax bescherming
+      </li>
+      <li>
+       Beste waarde
+      </li>
+     </ul>
+     <a class="book-service-btn dark" href="boeken.html?size=klein&amp;service=2&amp;dirt=0" id="btn-boek-vol">
+      Boek volledig
+     </a>
     </div>
-  </div>
-
-  <div class="dirt-info">
-    <div class="dirt-info-title">Toeslag op basis van conditie</div>
+   </div>
+   <div class="dirt-info">
+    <div class="dirt-info-title">
+     Toeslag op basis van conditie
+    </div>
     <div class="dirt-info-cards">
-      <div class="dirt-info-card">
-        <span class="dirt-emoji">😊</span>
-        <div>
-          <strong>Normaal vuil</strong>
-          <span>Gewone weekgrime</span>
-          <span class="dirt-price">+€0</span>
-        </div>
+     <div class="dirt-info-card">
+      <span class="dirt-emoji">
+       😊
+      </span>
+      <div>
+       <strong>
+        Normaal vuil
+       </strong>
+       <span>
+        Gewone weekgrime
+       </span>
+       <span class="dirt-price">
+        +€0
+       </span>
       </div>
-      <div class="dirt-info-card">
-        <span class="dirt-emoji">😅</span>
-        <div>
-          <strong>Redelijk vuil</strong>
-          <span>Zand, stof, voedsel, vlekken</span>
-          <span class="dirt-price">+€15</span>
-        </div>
+     </div>
+     <div class="dirt-info-card">
+      <span class="dirt-emoji">
+       😅
+      </span>
+      <div>
+       <strong>
+        Redelijk vuil
+       </strong>
+       <span>
+        Zand, stof, voedsel, vlekken
+       </span>
+       <span class="dirt-price">
+        +€15
+       </span>
       </div>
-      <div class="dirt-info-card">
-        <span class="dirt-emoji">🐶</span>
-        <div>
-          <strong>Heel vuil</strong>
-          <span>Modder, huisdieren, erge staining</span>
-          <span class="dirt-price">+€30</span>
-        </div>
+     </div>
+     <div class="dirt-info-card">
+      <span class="dirt-emoji">
+       🐶
+      </span>
+      <div>
+       <strong>
+        Heel vuil
+       </strong>
+       <span>
+        Modder, huisdieren, erge staining
+       </span>
+       <span class="dirt-price">
+        +€30
+       </span>
       </div>
+     </div>
     </div>
-  </div>
-</section>
-
-<!-- REVIEWS -->
-<section class="reviews" id="reviews">
-  <div class="reviews-inner">
-    <div class="section-label">Wat klanten zeggen</div>
-    <h2 class="section-title">Ze zijn er blij mee</h2>
-  </div>
-  <div class="testimonials-columns">
+   </div>
+  </section>
+  <!-- REVIEWS -->
+  <section class="reviews" id="reviews">
+   <div class="reviews-inner">
+    <div class="section-label">
+     Wat klanten zeggen
+    </div>
+    <h2 class="section-title">
+     Ze zijn er blij mee
+    </h2>
+   </div>
+   <div class="testimonials-columns">
     <!-- Kolom 1 -->
     <div class="testimonials-col">
-      <div class="review-card">
-        <div class="review-stars">★★★★★</div>
-        <p class="review-text">"Thuis laten wassen terwijl ik werkte — waanzinnig handig. Auto zag eruit alsof hij van de showroom kwam."</p>
-        <div class="review-author"><div class="review-avatar">S</div><div><div class="review-name">Sarah V.</div><div class="review-city">Gent</div></div></div>
+     <div class="review-card">
+      <div class="review-stars">
+       ★★★★★
       </div>
-      <div class="review-card">
-        <div class="review-stars">★★★★★</div>
-        <p class="review-text">"Perfecte service — snel, professioneel en mijn auto was brandschoon. Ik boek nooit meer ergens anders."</p>
-        <div class="review-author"><div class="review-avatar">K</div><div><div class="review-name">Kevin A.</div><div class="review-city">Gent</div></div></div>
+      <p class="review-text">
+       "Thuis laten wassen terwijl ik werkte — waanzinnig handig. Auto zag eruit alsof hij van de showroom kwam."
+      </p>
+      <div class="review-author">
+       <div class="review-avatar">
+        S
+       </div>
+       <div>
+        <div class="review-name">
+         Sarah V.
+        </div>
+        <div class="review-city">
+         Gent
+        </div>
+       </div>
       </div>
-      <div class="review-card">
-        <div class="review-stars">★★★★★</div>
-        <p class="review-text">"Bestelwagen was een ramp vanbinnen. Na 2 uur was hij zo goed als nieuw. Serieuze aanrader voor elke zaakvoerder."</p>
-        <div class="review-author"><div class="review-avatar">J</div><div><div class="review-name">Jan P.</div><div class="review-city">Gent</div></div></div>
+     </div>
+     <div class="review-card">
+      <div class="review-stars">
+       ★★★★★
       </div>
-      <!-- duplicate for seamless loop -->
-      <div class="review-card">
-        <div class="review-stars">★★★★★</div>
-        <p class="review-text">"Thuis laten wassen terwijl ik werkte — waanzinnig handig. Auto zag eruit alsof hij van de showroom kwam."</p>
-        <div class="review-author"><div class="review-avatar">S</div><div><div class="review-name">Sarah V.</div><div class="review-city">Gent</div></div></div>
+      <p class="review-text">
+       "Perfecte service — snel, professioneel en mijn auto was brandschoon. Ik boek nooit meer ergens anders."
+      </p>
+      <div class="review-author">
+       <div class="review-avatar">
+        K
+       </div>
+       <div>
+        <div class="review-name">
+         Kevin A.
+        </div>
+        <div class="review-city">
+         Gent
+        </div>
+       </div>
       </div>
-      <div class="review-card">
-        <div class="review-stars">★★★★★</div>
-        <p class="review-text">"Perfecte service — snel, professioneel en mijn auto was brandschoon. Ik boek nooit meer ergens anders."</p>
-        <div class="review-author"><div class="review-avatar">K</div><div><div class="review-name">Kevin A.</div><div class="review-city">Gent</div></div></div>
+     </div>
+     <div class="review-card">
+      <div class="review-stars">
+       ★★★★★
       </div>
-      <div class="review-card">
-        <div class="review-stars">★★★★★</div>
-        <p class="review-text">"Bestelwagen was een ramp vanbinnen. Na 2 uur was hij zo goed als nieuw. Serieuze aanrader voor elke zaakvoerder."</p>
-        <div class="review-author"><div class="review-avatar">J</div><div><div class="review-name">Jan P.</div><div class="review-city">Gent</div></div></div>
+      <p class="review-text">
+       "Bestelwagen was een ramp vanbinnen. Na 2 uur was hij zo goed als nieuw. Serieuze aanrader voor elke zaakvoerder."
+      </p>
+      <div class="review-author">
+       <div class="review-avatar">
+        J
+       </div>
+       <div>
+        <div class="review-name">
+         Jan P.
+        </div>
+        <div class="review-city">
+         Gent
+        </div>
+       </div>
       </div>
+     </div>
+     <!-- duplicate for seamless loop -->
+     <div class="review-card">
+      <div class="review-stars">
+       ★★★★★
+      </div>
+      <p class="review-text">
+       "Thuis laten wassen terwijl ik werkte — waanzinnig handig. Auto zag eruit alsof hij van de showroom kwam."
+      </p>
+      <div class="review-author">
+       <div class="review-avatar">
+        S
+       </div>
+       <div>
+        <div class="review-name">
+         Sarah V.
+        </div>
+        <div class="review-city">
+         Gent
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="review-card">
+      <div class="review-stars">
+       ★★★★★
+      </div>
+      <p class="review-text">
+       "Perfecte service — snel, professioneel en mijn auto was brandschoon. Ik boek nooit meer ergens anders."
+      </p>
+      <div class="review-author">
+       <div class="review-avatar">
+        K
+       </div>
+       <div>
+        <div class="review-name">
+         Kevin A.
+        </div>
+        <div class="review-city">
+         Gent
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="review-card">
+      <div class="review-stars">
+       ★★★★★
+      </div>
+      <p class="review-text">
+       "Bestelwagen was een ramp vanbinnen. Na 2 uur was hij zo goed als nieuw. Serieuze aanrader voor elke zaakvoerder."
+      </p>
+      <div class="review-author">
+       <div class="review-avatar">
+        J
+       </div>
+       <div>
+        <div class="review-name">
+         Jan P.
+        </div>
+        <div class="review-city">
+         Gent
+        </div>
+       </div>
+      </div>
+     </div>
     </div>
     <!-- Kolom 2 -->
     <div class="testimonials-col">
-      <div class="review-card">
-        <div class="review-stars">★★★★★</div>
-        <p class="review-text">"Eindelijk geen zaterdag meer kwijt aan de carwash. Geboekt op vrijdag, zaterdag ochtend klaar. Aanrader."</p>
-        <div class="review-author"><div class="review-avatar">M</div><div><div class="review-name">Mathias D.</div><div class="review-city">Gent</div></div></div>
+     <div class="review-card">
+      <div class="review-stars">
+       ★★★★★
       </div>
-      <div class="review-card">
-        <div class="review-stars">★★★★★</div>
-        <p class="review-text">"Binnen 24u iemand aan de deur. Auto zag er fantastisch uit na de volledige behandeling. Top prijs-kwaliteit."</p>
-        <div class="review-author"><div class="review-avatar">A</div><div><div class="review-name">An D.</div><div class="review-city">Gent</div></div></div>
+      <p class="review-text">
+       "Eindelijk geen zaterdag meer kwijt aan de carwash. Geboekt op vrijdag, zaterdag ochtend klaar. Aanrader."
+      </p>
+      <div class="review-author">
+       <div class="review-avatar">
+        M
+       </div>
+       <div>
+        <div class="review-name">
+         Mathias D.
+        </div>
+        <div class="review-city">
+         Gent
+        </div>
+       </div>
       </div>
-      <div class="review-card">
-        <div class="review-stars">★★★★★</div>
-        <p class="review-text">"Superhandige app, vriendelijke detailer en super resultaat. Mijn SUV schittert. Al de tweede keer dat ik boek."</p>
-        <div class="review-author"><div class="review-avatar">R</div><div><div class="review-name">Raf S.</div><div class="review-city">Gent</div></div></div>
+     </div>
+     <div class="review-card">
+      <div class="review-stars">
+       ★★★★★
       </div>
-      <!-- duplicate -->
-      <div class="review-card">
-        <div class="review-stars">★★★★★</div>
-        <p class="review-text">"Eindelijk geen zaterdag meer kwijt aan de carwash. Geboekt op vrijdag, zaterdag ochtend klaar. Aanrader."</p>
-        <div class="review-author"><div class="review-avatar">M</div><div><div class="review-name">Mathias D.</div><div class="review-city">Gent</div></div></div>
+      <p class="review-text">
+       "Binnen 24u iemand aan de deur. Auto zag er fantastisch uit na de volledige behandeling. Top prijs-kwaliteit."
+      </p>
+      <div class="review-author">
+       <div class="review-avatar">
+        A
+       </div>
+       <div>
+        <div class="review-name">
+         An D.
+        </div>
+        <div class="review-city">
+         Gent
+        </div>
+       </div>
       </div>
-      <div class="review-card">
-        <div class="review-stars">★★★★★</div>
-        <p class="review-text">"Binnen 24u iemand aan de deur. Auto zag er fantastisch uit na de volledige behandeling. Top prijs-kwaliteit."</p>
-        <div class="review-author"><div class="review-avatar">A</div><div><div class="review-name">An D.</div><div class="review-city">Gent</div></div></div>
+     </div>
+     <div class="review-card">
+      <div class="review-stars">
+       ★★★★★
       </div>
-      <div class="review-card">
-        <div class="review-stars">★★★★★</div>
-        <p class="review-text">"Superhandige app, vriendelijke detailer en super resultaat. Mijn SUV schittert. Al de tweede keer dat ik boek."</p>
-        <div class="review-author"><div class="review-avatar">R</div><div><div class="review-name">Raf S.</div><div class="review-city">Gent</div></div></div>
+      <p class="review-text">
+       "Superhandige app, vriendelijke detailer en super resultaat. Mijn SUV schittert. Al de tweede keer dat ik boek."
+      </p>
+      <div class="review-author">
+       <div class="review-avatar">
+        R
+       </div>
+       <div>
+        <div class="review-name">
+         Raf S.
+        </div>
+        <div class="review-city">
+         Gent
+        </div>
+       </div>
       </div>
+     </div>
+     <!-- duplicate -->
+     <div class="review-card">
+      <div class="review-stars">
+       ★★★★★
+      </div>
+      <p class="review-text">
+       "Eindelijk geen zaterdag meer kwijt aan de carwash. Geboekt op vrijdag, zaterdag ochtend klaar. Aanrader."
+      </p>
+      <div class="review-author">
+       <div class="review-avatar">
+        M
+       </div>
+       <div>
+        <div class="review-name">
+         Mathias D.
+        </div>
+        <div class="review-city">
+         Gent
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="review-card">
+      <div class="review-stars">
+       ★★★★★
+      </div>
+      <p class="review-text">
+       "Binnen 24u iemand aan de deur. Auto zag er fantastisch uit na de volledige behandeling. Top prijs-kwaliteit."
+      </p>
+      <div class="review-author">
+       <div class="review-avatar">
+        A
+       </div>
+       <div>
+        <div class="review-name">
+         An D.
+        </div>
+        <div class="review-city">
+         Gent
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="review-card">
+      <div class="review-stars">
+       ★★★★★
+      </div>
+      <p class="review-text">
+       "Superhandige app, vriendelijke detailer en super resultaat. Mijn SUV schittert. Al de tweede keer dat ik boek."
+      </p>
+      <div class="review-author">
+       <div class="review-avatar">
+        R
+       </div>
+       <div>
+        <div class="review-name">
+         Raf S.
+        </div>
+        <div class="review-city">
+         Gent
+        </div>
+       </div>
+      </div>
+     </div>
     </div>
     <!-- Kolom 3 -->
     <div class="testimonials-col">
-      <div class="review-card">
-        <div class="review-stars">★★★★★</div>
-        <p class="review-text">"Interieur was écht vies na de zomervakantie. Nu ziet het er beter uit dan toen ik de auto kocht. Meer dan tevreden."</p>
-        <div class="review-author"><div class="review-avatar">L</div><div><div class="review-name">Laura M.</div><div class="review-city">Gent</div></div></div>
+     <div class="review-card">
+      <div class="review-stars">
+       ★★★★★
       </div>
-      <div class="review-card">
-        <div class="review-stars">★★★★★</div>
-        <p class="review-text">"Gratis verplaatsing naar mijn thuis, vriendelijk team en perfect eindresultaat. Mijn Golf heeft nog nooit zo geblinkt."</p>
-        <div class="review-author"><div class="review-avatar">T</div><div><div class="review-name">Thomas B.</div><div class="review-city">Gent</div></div></div>
+      <p class="review-text">
+       "Interieur was écht vies na de zomervakantie. Nu ziet het er beter uit dan toen ik de auto kocht. Meer dan tevreden."
+      </p>
+      <div class="review-author">
+       <div class="review-avatar">
+        L
+       </div>
+       <div>
+        <div class="review-name">
+         Laura M.
+        </div>
+        <div class="review-city">
+         Gent
+        </div>
+       </div>
       </div>
-      <div class="review-card">
-        <div class="review-stars">★★★★★</div>
-        <p class="review-text">"Als mama van 3 kinderen is de auto altijd een chaos. Deto maakte er een nieuw interieur van. Pure aanrader!"</p>
-        <div class="review-author"><div class="review-avatar">N</div><div><div class="review-name">Nathalie V.</div><div class="review-city">Gent</div></div></div>
+     </div>
+     <div class="review-card">
+      <div class="review-stars">
+       ★★★★★
       </div>
-      <!-- duplicate -->
-      <div class="review-card">
-        <div class="review-stars">★★★★★</div>
-        <p class="review-text">"Interieur was écht vies na de zomervakantie. Nu ziet het er beter uit dan toen ik de auto kocht. Meer dan tevreden."</p>
-        <div class="review-author"><div class="review-avatar">L</div><div><div class="review-name">Laura M.</div><div class="review-city">Gent</div></div></div>
+      <p class="review-text">
+       "Gratis verplaatsing naar mijn thuis, vriendelijk team en perfect eindresultaat. Mijn Golf heeft nog nooit zo geblinkt."
+      </p>
+      <div class="review-author">
+       <div class="review-avatar">
+        T
+       </div>
+       <div>
+        <div class="review-name">
+         Thomas B.
+        </div>
+        <div class="review-city">
+         Gent
+        </div>
+       </div>
       </div>
-      <div class="review-card">
-        <div class="review-stars">★★★★★</div>
-        <p class="review-text">"Gratis verplaatsing naar mijn thuis, vriendelijk team en perfect eindresultaat. Mijn Golf heeft nog nooit zo geblinkt."</p>
-        <div class="review-author"><div class="review-avatar">T</div><div><div class="review-name">Thomas B.</div><div class="review-city">Gent</div></div></div>
+     </div>
+     <div class="review-card">
+      <div class="review-stars">
+       ★★★★★
       </div>
-      <div class="review-card">
-        <div class="review-stars">★★★★★</div>
-        <p class="review-text">"Als mama van 3 kinderen is de auto altijd een chaos. Deto maakte er een nieuw interieur van. Pure aanrader!"</p>
-        <div class="review-author"><div class="review-avatar">N</div><div><div class="review-name">Nathalie V.</div><div class="review-city">Gent</div></div></div>
+      <p class="review-text">
+       "Als mama van 3 kinderen is de auto altijd een chaos. Deto maakte er een nieuw interieur van. Pure aanrader!"
+      </p>
+      <div class="review-author">
+       <div class="review-avatar">
+        N
+       </div>
+       <div>
+        <div class="review-name">
+         Nathalie V.
+        </div>
+        <div class="review-city">
+         Gent
+        </div>
+       </div>
       </div>
+     </div>
+     <!-- duplicate -->
+     <div class="review-card">
+      <div class="review-stars">
+       ★★★★★
+      </div>
+      <p class="review-text">
+       "Interieur was écht vies na de zomervakantie. Nu ziet het er beter uit dan toen ik de auto kocht. Meer dan tevreden."
+      </p>
+      <div class="review-author">
+       <div class="review-avatar">
+        L
+       </div>
+       <div>
+        <div class="review-name">
+         Laura M.
+        </div>
+        <div class="review-city">
+         Gent
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="review-card">
+      <div class="review-stars">
+       ★★★★★
+      </div>
+      <p class="review-text">
+       "Gratis verplaatsing naar mijn thuis, vriendelijk team en perfect eindresultaat. Mijn Golf heeft nog nooit zo geblinkt."
+      </p>
+      <div class="review-author">
+       <div class="review-avatar">
+        T
+       </div>
+       <div>
+        <div class="review-name">
+         Thomas B.
+        </div>
+        <div class="review-city">
+         Gent
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="review-card">
+      <div class="review-stars">
+       ★★★★★
+      </div>
+      <p class="review-text">
+       "Als mama van 3 kinderen is de auto altijd een chaos. Deto maakte er een nieuw interieur van. Pure aanrader!"
+      </p>
+      <div class="review-author">
+       <div class="review-avatar">
+        N
+       </div>
+       <div>
+        <div class="review-name">
+         Nathalie V.
+        </div>
+        <div class="review-city">
+         Gent
+        </div>
+       </div>
+      </div>
+     </div>
     </div>
-  </div>
-</section>
-
-<!-- CTA -->
-<section class="cta-banner">
-  <div class="cta-card">
-    <h2>Jouw auto verdient beter dan carwash-chaos.</h2>
-    <p>Boek je eerste beurt in 2 minuten. Doorgaans beschikbaar binnen 24 uur in Gent.</p>
+   </div>
+  </section>
+  <!-- CTA -->
+  <section class="cta-banner">
+   <div class="cta-card">
+    <h2>
+     Jouw auto verdient beter dan carwash-chaos.
+    </h2>
+    <p>
+     Boek je eerste beurt in 2 minuten. Doorgaans beschikbaar binnen 24 uur in Gent.
+    </p>
     <div class="cta-btn-row">
-      <a href="boeken.html" class="cta-btn-primary">
-        Boek nu
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-      </a>
-      <a href="#hoe" class="cta-btn-outline">Hoe werkt het?</a>
+     <a class="cta-btn-primary" href="boeken.html">
+      Boek nu
+      <svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" viewbox="0 0 24 24" width="16">
+       <path d="M5 12h14M12 5l7 7-7 7">
+       </path>
+      </svg>
+     </a>
+     <a class="cta-btn-outline" href="#hoe">
+      Hoe werkt het?
+     </a>
     </div>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer>
-  <div class="footer-top">
+   </div>
+  </section>
+  <!-- FOOTER -->
+  <footer>
+   <div class="footer-top">
     <div>
-      <div class="footer-logo">deto</div>
-      <div class="footer-tagline">Autodetailing aan huis in België</div>
+     <div class="footer-logo">
+      deto
+     </div>
+     <div class="footer-tagline">
+      Autodetailing aan huis in België
+     </div>
     </div>
     <div class="footer-links">
-      <div class="footer-col">
-        <h4>App</h4>
-        <ul>
-          <li><a href="#hoe">Hoe het werkt</a></li>
-          <li><a href="#diensten">Prijzen</a></li>
-          <li><a href="boeken.html">Boek nu</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Detailers</h4>
-        <ul>
-          <li><a href="detailer-registratie.html">Word partner</a></li>
-          <li><a href="detailer-dashboard.html">Inloggen</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Contact</h4>
-        <ul>
-          <li><a href="mailto:info@deto.be">info@deto.be</a></li>
-          <li><a href="https://instagram.com/deto.be" target="_blank">Instagram</a></li>
-        </ul>
-      </div>
+     <div class="footer-col">
+      <h4>
+       App
+      </h4>
+      <ul>
+       <li>
+        <a href="#hoe">
+         Hoe het werkt
+        </a>
+       </li>
+       <li>
+        <a href="#diensten">
+         Prijzen
+        </a>
+       </li>
+       <li>
+        <a href="boeken.html">
+         Boek nu
+        </a>
+       </li>
+      </ul>
+     </div>
+     <div class="footer-col">
+      <h4>
+       Detailers
+      </h4>
+      <ul>
+       <li>
+        <a href="detailer-registratie.html">
+         Word partner
+        </a>
+       </li>
+       <li>
+        <a href="detailer-dashboard.html">
+         Inloggen
+        </a>
+       </li>
+      </ul>
+     </div>
+     <div class="footer-col">
+      <h4>
+       Contact
+      </h4>
+      <ul>
+       <li>
+        <a href="mailto:info@deto.be">
+         info@deto.be
+        </a>
+       </li>
+       <li>
+        <a href="https://instagram.com/deto.be" target="_blank">
+         Instagram
+        </a>
+       </li>
+      </ul>
+     </div>
     </div>
-  </div>
-  <div class="footer-bottom">
-    <p>© 2026 Deto. Alle rechten voorbehouden. · <a href="privacy.html" style="color:#555;">Privacybeleid</a> · <a href="algemene-voorwaarden.html" style="color:#555;">Algemene Voorwaarden</a></p>
-    <p>Gemaakt in België 🇧🇪</p>
-  </div>
-</footer>
-
-<!-- Cookie banner -->
-<div id="cookie-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;background:#111827;color:#fff;padding:16px 24px;z-index:99999;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;box-shadow:0 -4px 20px rgba(0,0,0,0.15);">
-  <p style="margin:0;font-size:14px;line-height:1.5;flex:1;min-width:200px;">
+   </div>
+   <div class="footer-bottom">
+    <p>
+     © 2026 Deto. Alle rechten voorbehouden. ·
+     <a href="privacy.html" style="color:#555;">
+      Privacybeleid
+     </a>
+     ·
+     <a href="algemene-voorwaarden.html" style="color:#555;">
+      Algemene Voorwaarden
+     </a>
+    </p>
+    <p>
+     Gemaakt in België 🇧🇪
+    </p>
+   </div>
+  </footer>
+  <!-- Cookie banner -->
+  <div id="cookie-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;background:#111827;color:#fff;padding:16px 24px;z-index:99999;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;box-shadow:0 -4px 20px rgba(0,0,0,0.15);">
+   <p style="margin:0;font-size:14px;line-height:1.5;flex:1;min-width:200px;">
     🍪 Wij gebruiken functionele cookies voor een goede werking van de website en om boekingen op te slaan.
-    Lees ons <a href="privacy.html" style="color:#22C55E;">privacybeleid</a>.
-  </p>
-  <div style="display:flex;gap:10px;flex-shrink:0;">
-    <button onclick="acceptCookies()" style="background:#22C55E;color:#fff;border:none;padding:10px 20px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;">Accepteer</button>
-    <button onclick="declineCookies()" style="background:transparent;color:#9CA3AF;border:1px solid #374151;padding:10px 20px;border-radius:8px;font-size:14px;cursor:pointer;">Alleen noodzakelijk</button>
+    Lees ons
+    <a href="privacy.html" style="color:#22C55E;">
+     privacybeleid
+    </a>
+    .
+   </p>
+   <div style="display:flex;gap:10px;flex-shrink:0;">
+    <button onclick="acceptCookies()" style="background:#22C55E;color:#fff;border:none;padding:10px 20px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;" type="button">
+     Accepteer
+    </button>
+    <button onclick="declineCookies()" style="background:transparent;color:#9CA3AF;border:1px solid #374151;padding:10px 20px;border-radius:8px;font-size:14px;cursor:pointer;" type="button">
+     Alleen noodzakelijk
+    </button>
+   </div>
   </div>
-</div>
-<script>
-  (function() {
+  <script>
+   (function() {
     var consent = localStorage.getItem('deto_cookie_consent');
     if (!consent) document.getElementById('cookie-banner').style.display = 'flex';
   })();
@@ -1201,20 +1855,16 @@
     localStorage.setItem('deto_cookie_consent', 'minimal');
     document.getElementById('cookie-banner').style.display = 'none';
   }
-</script>
-
-<!-- WhatsApp floating button -->
-<a href="https://wa.me/32465471373?text=Hallo%20Deto%2C%20ik%20heb%20een%20vraag%20over%20jullie%20service."
-   target="_blank"
-   style="position:fixed;bottom:24px;right:24px;width:58px;height:58px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(37,211,102,0.5);z-index:9999;text-decoration:none;"
-   title="Chat met ons op WhatsApp">
-  <svg width="28" height="28" viewBox="0 0 24 24" fill="white">
-    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-  </svg>
-</a>
-
-<script>
-  const prices = {
+  </script>
+  <!-- WhatsApp floating button -->
+  <a href="https://wa.me/32465471373?text=Hallo%20Deto%2C%20ik%20heb%20een%20vraag%20over%20jullie%20service." style="position:fixed;bottom:24px;right:24px;width:58px;height:58px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(37,211,102,0.5);z-index:9999;text-decoration:none;" target="_blank" title="Chat met ons op WhatsApp">
+   <svg fill="white" height="28" viewbox="0 0 24 24" width="28">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z">
+    </path>
+   </svg>
+  </a>
+  <script>
+   const prices = {
     klein:  [35, 45, 75],
     medium: [45, 55, 95],
     groot:  [55, 70, 115],
@@ -1304,10 +1954,9 @@
 
   updateHeroCard();
   updateMainPrices();
-</script>
-
-<script>
-  // Auth nav: check Supabase sessie en update nav zonder CDN-vertraging
+  </script>
+  <script>
+   // Auth nav: check Supabase sessie en update nav zonder CDN-vertraging
   (function() {
     // Lees sessie direct uit localStorage (Supabase v2 format)
     const KEY = 'sb-clvbgogcsmpszhdvhqyv-auth-token';
@@ -1373,10 +2022,9 @@
     };
     document.head.appendChild(s);
   }
-</script>
-
-<script>
-// ── Scroll reveal ──────────────────────────────────
+  </script>
+  <script>
+   // ── Scroll reveal ──────────────────────────────────
 (function() {
   const els = document.querySelectorAll('.reveal');
   if (!('IntersectionObserver' in window)) {
@@ -1415,7 +2063,6 @@
   }, { threshold: 0.5 });
   io.observe(statsEl);
 })();
-</script>
-
-</body>
+  </script>
+ </body>
 </html>

@@ -14,6 +14,12 @@ export default async function handler(req, res) {
   const { password } = req.body;
   const adminPassword = process.env.ADMIN_PASSWORD || 'admin123';
 
+  console.log('Login attempt:', { 
+    received_pw_len: password ? password.length : 0, 
+    expected_pw_len: adminPassword.length,
+    match: password === adminPassword 
+  });
+
   if (password === adminPassword) {
     return res.status(200).json({
       success: true,

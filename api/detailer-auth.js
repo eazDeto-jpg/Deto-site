@@ -12,7 +12,12 @@ export default async function handler(req, res) {
   }
 
   const { password } = req.body;
-  const adminPassword = process.env.ADMIN_PASSWORD || 'admin123';
+  let adminPassword = process.env.ADMIN_PASSWORD;
+  
+  // If the environment variable is missing or empty, use the fallback
+  if (!adminPassword || adminPassword.trim() === '') {
+    adminPassword = 'admin123';
+  }
 
   console.log('Login attempt:', { 
     received_pw_len: password ? password.length : 0, 

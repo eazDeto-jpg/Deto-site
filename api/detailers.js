@@ -1,60 +1,62 @@
-/**
- * Detailers API Endpoint - SIMPLIFIED VERSION
- * GET /api/detailers - Get all detailers (admin only)
- */
+import { supabase } from './_supabase';
 
 export default async function handler(req, res) {
-  // Enable CORS
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
-  res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, x-admin-secret');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, x-admin-secret');
 
   if (req.method === 'OPTIONS') {
-    res.status(200).end();
-    return;
+    return res.status(200).end();
   }
 
-  if (req.method !== 'GET') {
-    return res.status(405).json({ success: false, error: 'Method not allowed' });
+  const adminSecret = req.headers['x-admin-secret'];
+  if (adminSecret !== process.env.ADMIN_SECRET) {
+    return res.status(401).json({ success: false, error: 'Unauthorized' });
   }
 
   try {
-    // Verify admin secret
-    const adminSecret = req.headers['x-admin-secret'];
-    if (!adminSecret) {
-      return res.status(401).json({ success: false, error: 'Admin secret required' });
+    if (req.method === 'GET') {
+      const { data, error, count } = await supabase
+        .from('detailers')
+        .select('*', { count: 'exact' });
+      if (error) throw error;
+      return res.status(200).json({ success: true, detailers: data, count });
     }
 
-    // Mock detailers data
-    const mockDetailers = [
-      {
-        id: '1',
-        naam: 'John Detailer',
-        email: 'detailer@email.be',
-        phone: '+32 123 456 789',
-        average_rating: 4.9,
-        total_bookings: 45,
-        status: 'active'
-      },
-      {
-        id: '2',
-        naam: 'Jane Detailer',
-        email: 'detailer2@email.be',
-        phone: '+32 987 654 321',
-        average_rating: 4.8,
-        total_bookings: 32,
-        status: 'active'
-      }
-    ];
+    if (req.method === 'POST') {
+      const { naam, email, wachtwoord_hash, regio } = req.body;
+      const token = Buffer.from(\`\${email}:\${Date.now()}\`).toString('base64');
+      const { data, error } = await supabase
+        .from('detailers')
+        .insert([{ naam, email, wachtwoord_hash, regio, token }])
+        .select();
+      if (error) throw error;
+      return res.status(201).json({ success: true, detailer: data[0] });
+    }
 
-    return res.status(200).json({
-      success: true,
-      data: mockDetailers,
-      count: mockDetailers.length
-    });
+    if (req.method === 'PATCH') {
+      const { id, ...updates } = req.body;
+      const { data, error } = await supabase
+        .from('detailers')
+        .update(updates)
+        .eq('id', id)
+        .select();
+      if (error) throw error;
+      return res.status(200).json({ success: true, detailer: data[0] });
+    }
+
+    if (req.method === 'DELETE') {
+      const { id } = req.query;
+      const { error } = await supabase
+        .from('detailers')
+        .delete()
+        .eq('id', id);
+      if (error) throw error;
+      return res.status(200).json({ success: true });
+    }
   } catch (error) {
-    console.error('API Error:', error);
     return res.status(500).json({ success: false, error: error.message });
   }
+
+  return res.status(405).json({ success: false, error: 'Method not allowed' });
 }

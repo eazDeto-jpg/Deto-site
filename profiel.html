@@ -37,8 +37,8 @@
     <div class="profile-header">
       <div class="avatar" id="avatar">D</div>
       <div class="profile-info">
-        <h1 id="profile-name">Deto Klant</h1>
-        <p id="profile-email">klant@example.com</p>
+        <h1 id="profile-name">Laden...</h1>
+        <p id="profile-email">...</p>
       </div>
     </div>
   </div>
@@ -47,8 +47,7 @@
     <h2 class="section-title">Mijn boekingen</h2>
     <div id="bookings-list">
       <div class="empty">
-        <p>Je hebt nog geen boekingen.</p>
-        <a href="boeken.html" class="btn-book">Boek nu →</a>
+        <p>Boekingen laden...</p>
       </div>
     </div>
   </div>
@@ -57,48 +56,60 @@
 <script>
   function doLogout() {
     if (confirm('Weet je zeker dat je wilt uitloggen?')) {
-      localStorage.removeItem('deto_customer_token');
+      const KEY = 'sb-clvbgogcsmpszhdvhqyv-auth-token';
+      localStorage.removeItem(KEY);
       localStorage.removeItem('deto_customer_id');
       localStorage.removeItem('deto_customer_naam');
       window.location.href = 'deto-homepage.html';
     }
   }
 
-  function init() {
-    const token = localStorage.getItem('deto_customer_token');
-    const customerId = localStorage.getItem('deto_customer_id');
-    const customerNaam = localStorage.getItem('deto_customer_naam');
-
-    if (!token || !customerId) {
+  async function init() {
+    const KEY = 'sb-clvbgogcsmpszhdvhqyv-auth-token';
+    const sessionStr = localStorage.getItem(KEY);
+    
+    if (!sessionStr) {
       window.location.href = 'login.html?redirect=profiel.html';
       return;
     }
 
-    const naam = customerNaam || 'Deto Klant';
+    const session = JSON.parse(sessionStr);
+    const user = session.user;
+    const meta = user.user_metadata || {};
+    const naam = meta.full_name || user.email;
     const firstLetter = naam.charAt(0).toUpperCase();
     
     document.getElementById('avatar').textContent = firstLetter;
     document.getElementById('profile-name').textContent = naam;
-    document.getElementById('profile-email').textContent = customerId;
+    document.getElementById('profile-email').textContent = user.email;
 
-    const bookings = [
-      { dienst: 'Basis wash', datum: '2026-04-15', adres: 'Gent', status: 'upcoming' },
-      { dienst: 'Premium detail', datum: '2026-04-10', adres: 'Gent', status: 'completed' }
-    ];
-
-    const bookingsList = document.getElementById('bookings-list');
-    if (bookings.length === 0) {
-      bookingsList.innerHTML = '<div class="empty"><p>Je hebt nog geen boekingen.</p><a href="boeken.html" class="btn-book">Boek nu →</a></div>';
-    } else {
-      bookingsList.innerHTML = bookings.map(b => `
-        <div class="booking-item">
-          <div class="booking-service">${b.dienst}</div>
-          <div class="booking-meta">${b.datum} • ${b.adres}</div>
-          <span class="booking-status ${b.status === 'upcoming' ? 'status-upcoming' : 'status-completed'}">
-            ${b.status === 'upcoming' ? 'Gepland' : 'Voltooid'}
-          </span>
-        </div>
-      `).join('');
+    try {
+      const res = await fetch('/api/customer-bookings', {
+        headers: {
+          'Authorization': 'Bearer ' + session.access_token
+        }
+      });
+      
+      const data = await res.json();
+      
+      const bookingsList = document.getElementById('bookings-list');
+      
+      if (!data.success || !data.bookings || data.bookings.length === 0) {
+        bookingsList.innerHTML = '<div class="empty"><p>Je hebt nog geen boekingen.</p><a href="boeken.html" class="btn-book">Boek nu →</a></div>';
+      } else {
+        bookingsList.innerHTML = data.bookings.map(b => `
+          <div class="booking-item">
+            <div class="booking-service">${b.dienst} (${b.auto_type})</div>
+            <div class="booking-meta">${b.datum} • ${b.adres}</div>
+            <span class="booking-status ${b.afgerond ? 'status-completed' : 'status-upcoming'}">
+              ${b.afgerond ? 'Voltooid' : 'Gepland'}
+            </span>
+          </div>
+        `).join('');
+      }
+    } catch (err) {
+      console.error('Fout bij laden boekingen:', err);
+      document.getElementById('bookings-list').innerHTML = '<div class="empty"><p>Kon boekingen niet laden.</p></div>';
     }
   }
 

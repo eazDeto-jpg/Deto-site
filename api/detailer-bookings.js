@@ -1,75 +1,58 @@
-/**
- * Detailer Bookings API Endpoint - SIMPLIFIED VERSION
- * GET /api/detailer-bookings - Get detailer's bookings
- */
+import { supabase } from './_supabase';
 
 export default async function handler(req, res) {
-  // Enable CORS
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
-  res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, x-detailer-token');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, PATCH, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, x-detailer-token');
 
   if (req.method === 'OPTIONS') {
-    res.status(200).end();
-    return;
+    return res.status(200).end();
   }
 
-  if (req.method !== 'GET') {
-    return res.status(405).json({ success: false, error: 'Method not allowed' });
+  const detailerToken = req.headers['x-detailer-token'];
+  if (!detailerToken) {
+    return res.status(401).json({ success: false, error: 'Unauthorized' });
   }
 
   try {
-    // Verify detailer token
-    const token = req.headers['x-detailer-token'];
-    if (!token) {
-      return res.status(401).json({ success: false, error: 'Detailer token required' });
-    }
+    // Find detailer by token
+    const { data: detailer, error: dError } = await supabase
+      .from('detailers')
+      .select('id')
+      .eq('token', detailerToken)
+      .single();
 
-    // Decode token to get detailer ID
-    let detailerId;
-    try {
-      const decoded = Buffer.from(token, 'base64').toString('utf-8');
-      detailerId = decoded.split(':')[0];
-    } catch (e) {
+    if (dError || !detailer) {
       return res.status(401).json({ success: false, error: 'Invalid token' });
     }
 
-    // Mock bookings for this detailer
-    const mockBookings = [
-      {
-        id: '1',
-        naam: 'Jan Jansen',
-        email: 'jan@email.be',
-        datum: '2026-04-15',
-        tijd: '10:00',
-        dienst: 'Basis wash',
-        adres: 'Gent, België',
-        totaal: 35,
-        status: 'confirmed',
-        detailer_id: detailerId
-      },
-      {
-        id: '3',
-        naam: 'Peter Pieterse',
-        email: 'peter@email.be',
-        datum: '2026-04-17',
-        tijd: '16:00',
-        dienst: 'Wax coating',
-        adres: 'Gent, België',
-        totaal: 55,
-        status: 'completed',
-        detailer_id: detailerId
-      }
-    ];
+    if (req.method === 'GET') {
+      const { data, error, count } = await supabase
+        .from('boekingen')
+        .select('*', { count: 'exact' })
+        .eq('detailer_id', detailer.id)
+        .order('datum', { ascending: false });
 
-    return res.status(200).json({
-      success: true,
-      data: mockBookings,
-      count: mockBookings.length
-    });
+      if (error) throw error;
+      return res.status(200).json({ success: true, bookings: data, count });
+    }
+
+    if (req.method === 'PATCH') {
+      const { id, action } = req.body;
+      if (action === 'complete') {
+        const { data, error } = await supabase
+          .from('boekingen')
+          .update({ afgerond: true, status: 'completed' })
+          .eq('id', id)
+          .eq('detailer_id', detailer.id)
+          .select();
+        if (error) throw error;
+        return res.status(200).json({ success: true, booking: data[0] });
+      }
+    }
   } catch (error) {
-    console.error('API Error:', error);
     return res.status(500).json({ success: false, error: error.message });
   }
+
+  return res.status(405).json({ success: false, error: 'Method not allowed' });
 }

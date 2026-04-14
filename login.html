@@ -115,10 +115,11 @@
     document.getElementById('register-form').style.display = tab === 'register' ? 'block' : 'none';
   }
 
-  function doLogin() {
+  async function doLogin() {
     const email = document.getElementById('login-email').value.trim();
     const password = document.getElementById('login-password').value;
     const errorEl = document.getElementById('login-error');
+    const btn = document.getElementById('btn-login');
 
     if (!email || !password) {
       errorEl.textContent = '❌ Vul e-mailadres en wachtwoord in.';
@@ -126,22 +127,47 @@
       return;
     }
 
-    // Mock login - accept any email/password
-    // In production, this would call your API endpoint
-    localStorage.setItem('deto_customer_token', btoa(email + ':' + password));
-    localStorage.setItem('deto_customer_id', email);
-    localStorage.setItem('deto_customer_naam', email.split('@')[0]);
+    btn.disabled = true;
+    btn.textContent = 'Bezig met inloggen...';
+    errorEl.style.display = 'none';
 
-    // Redirect to profile
-    window.location.href = 'profiel.html';
+    try {
+      const res = await fetch('/api/customer-login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || 'Inloggen mislukt');
+      }
+
+      // Store session in localStorage (Supabase v2 format for compatibility)
+      const KEY = 'sb-clvbgogcsmpszhdvhqyv-auth-token';
+      localStorage.setItem(KEY, JSON.stringify(data.session));
+      
+      // Also store simple fields for easy access
+      localStorage.setItem('deto_customer_id', data.user.id);
+      localStorage.setItem('deto_customer_naam', (data.user.user_metadata && data.user.user_metadata.full_name) || data.user.email);
+
+      window.location.href = 'profiel.html';
+    } catch (err) {
+      errorEl.textContent = '❌ ' + err.message;
+      errorEl.style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'Inloggen';
+    }
   }
 
-  function doRegister() {
+  async function doRegister() {
     const voornaam = document.getElementById('reg-voornaam').value.trim();
     const achternaam = document.getElementById('reg-achternaam').value.trim();
     const email = document.getElementById('reg-email').value.trim();
     const password = document.getElementById('reg-password').value;
     const errorEl = document.getElementById('register-error');
+    const btn = document.getElementById('btn-register');
 
     if (!voornaam || !achternaam || !email || !password) {
       errorEl.textContent = '❌ Vul alle velden in.';
@@ -155,20 +181,44 @@
       return;
     }
 
-    // Mock register - create account
-    const naam = voornaam + ' ' + achternaam;
-    localStorage.setItem('deto_customer_token', btoa(email + ':' + password));
-    localStorage.setItem('deto_customer_id', email);
-    localStorage.setItem('deto_customer_naam', naam);
+    btn.disabled = true;
+    btn.textContent = 'Account aanmaken...';
+    errorEl.style.display = 'none';
 
-    // Redirect to profile
-    window.location.href = 'profiel.html';
+    try {
+      const res = await fetch('/api/customer-login?action=register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password, voornaam, achternaam })
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || 'Registratie mislukt');
+      }
+
+      // Store session
+      const KEY = 'sb-clvbgogcsmpszhdvhqyv-auth-token';
+      localStorage.setItem(KEY, JSON.stringify(data.session));
+      
+      localStorage.setItem('deto_customer_id', data.user.id);
+      localStorage.setItem('deto_customer_naam', voornaam + ' ' + achternaam);
+
+      window.location.href = 'profiel.html';
+    } catch (err) {
+      errorEl.textContent = '❌ ' + err.message;
+      errorEl.style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'Account aanmaken';
+    }
   }
 
   // Check if already logged in
   window.addEventListener('DOMContentLoaded', function() {
-    const token = localStorage.getItem('deto_customer_token');
-    if (token) {
+    const KEY = 'sb-clvbgogcsmpszhdvhqyv-auth-token';
+    const session = localStorage.getItem(KEY);
+    if (session) {
       window.location.href = 'profiel.html';
     }
   });

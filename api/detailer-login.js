@@ -1,105 +1,65 @@
-/**
- * Detailer Login API Endpoint - SIMPLIFIED VERSION
- * POST /api/detailer-login - Authenticate detailer
- * PATCH /api/detailer-login - Change password
- */
+import { supabase } from './_supabase';
 
 export default async function handler(req, res) {
-  // Enable CORS
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
-  res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, PATCH, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
   if (req.method === 'OPTIONS') {
-    res.status(200).end();
-    return;
+    return res.status(200).end();
   }
 
-  try {
-    if (req.method === 'POST') {
-      return handleLogin(req, res);
-    } else if (req.method === 'PATCH') {
-      return handleChangePassword(req, res);
-    } else {
-      return res.status(405).json({ success: false, error: 'Method not allowed' });
+  if (req.method === 'POST') {
+    const { email, wachtwoord } = req.body;
+
+    try {
+      // For detailers, we check the detailers table
+      // Note: In a real app, you'd use Supabase Auth for detailers too, 
+      // but here we follow the existing schema which has a detailers table with password hashes.
+      const { data: detailer, error } = await supabase
+        .from('detailers')
+        .select('*')
+        .eq('email', email)
+        .single();
+
+      if (error || !detailer) {
+        return res.status(401).json({ success: false, error: 'Detailer niet gevonden' });
+      }
+
+      // Simple password check (should use bcrypt in production)
+      if (detailer.wachtwoord_hash !== wachtwoord) {
+        return res.status(401).json({ success: false, error: 'Ongeldig wachtwoord' });
+      }
+
+      return res.status(200).json({
+        success: true,
+        id: detailer.id,
+        naam: detailer.naam,
+        token: detailer.token,
+        moet_wachtwoord_wijzigen: detailer.moet_wachtwoord_wijzigen
+      });
+    } catch (error) {
+      return res.status(500).json({ success: false, error: error.message });
     }
-  } catch (error) {
-    console.error('API Error:', error);
-    return res.status(500).json({ success: false, error: error.message || 'Server error' });
-  }
-}
-
-/**
- * Handle detailer login
- */
-async function handleLogin(req, res) {
-  const { email, wachtwoord } = req.body;
-
-  if (!email || !wachtwoord) {
-    return res.status(400).json({ success: false, error: 'Email en wachtwoord zijn verplicht' });
   }
 
-  try {
-    // For now, accept any email/password combination
-    // TODO: Connect to Supabase database
-    
-    // Mock detailer data
-    const detailers = {
-      'detailer@email.be': { id: '1', naam: 'John Detailer', wachtwoord: 'password123' },
-      'detailer2@email.be': { id: '2', naam: 'Jane Detailer', wachtwoord: 'password123' }
-    };
+  if (req.method === 'PATCH') {
+    const { id, nieuw_wachtwoord } = req.body;
+    try {
+      const { error } = await supabase
+        .from('detailers')
+        .update({ 
+          wachtwoord_hash: nieuw_wachtwoord,
+          moet_wachtwoord_wijzigen: false 
+        })
+        .eq('id', id);
 
-    const detailer = detailers[email];
-    
-    if (!detailer) {
-      return res.status(401).json({ success: false, error: 'Detailer niet gevonden' });
+      if (error) throw error;
+      return res.status(200).json({ success: true });
+    } catch (error) {
+      return res.status(500).json({ success: false, error: error.message });
     }
-
-    if (detailer.wachtwoord !== wachtwoord) {
-      return res.status(401).json({ success: false, error: 'Ongeldig wachtwoord' });
-    }
-
-    // Generate simple token
-    const token = Buffer.from(`${detailer.id}:${Date.now()}`).toString('base64');
-
-    return res.status(200).json({
-      success: true,
-      token,
-      id: detailer.id,
-      naam: detailer.naam,
-      moet_wachtwoord_wijzigen: false
-    });
-  } catch (error) {
-    console.error('Login error:', error);
-    return res.status(500).json({ success: false, error: 'Login mislukt' });
-  }
-}
-
-/**
- * Handle password change
- */
-async function handleChangePassword(req, res) {
-  const { token, nieuw_wachtwoord } = req.body;
-
-  if (!token || !nieuw_wachtwoord) {
-    return res.status(400).json({ success: false, error: 'Token en wachtwoord zijn verplicht' });
   }
 
-  if (nieuw_wachtwoord.length < 6) {
-    return res.status(400).json({ success: false, error: 'Wachtwoord moet minstens 6 tekens zijn' });
-  }
-
-  try {
-    // Decode token to get detailer ID
-    const decoded = Buffer.from(token, 'base64').toString('utf-8');
-    const detailerId = decoded.split(':')[0];
-
-    // TODO: Update password in database
-
-    return res.status(200).json({ success: true, message: 'Wachtwoord gewijzigd' });
-  } catch (error) {
-    console.error('Password change error:', error);
-    return res.status(500).json({ success: false, error: 'Fout bij wachtwoord wijzigen' });
-  }
+  return res.status(405).json({ success: false, error: 'Method not allowed' });
 }

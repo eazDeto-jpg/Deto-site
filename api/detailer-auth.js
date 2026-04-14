@@ -1,48 +1,26 @@
-/**
- * Admin Authentication Endpoint - SIMPLIFIED VERSION
- * POST /api/detailer-auth - Authenticate admin
- */
-
 export default async function handler(req, res) {
-  // Enable CORS
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
-  res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
   if (req.method === 'OPTIONS') {
-    res.status(200).end();
-    return;
+    return res.status(200).end();
   }
 
   if (req.method !== 'POST') {
     return res.status(405).json({ success: false, error: 'Method not allowed' });
   }
 
-  try {
-    const { password } = req.body;
+  const { password } = req.body;
+  const adminPassword = process.env.ADMIN_PASSWORD || 'admin123';
 
-    if (!password) {
-      return res.status(400).json({ success: false, error: 'Wachtwoord is verplicht' });
-    }
-
-    // Admin password - CHANGE THIS!
-    const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';
-
-    if (password !== ADMIN_PASSWORD) {
-      return res.status(401).json({ success: false, error: 'Ongeldig wachtwoord' });
-    }
-
-    // Generate admin secret
-    const secret = Buffer.from(`admin:${Date.now()}:${Math.random()}`).toString('base64');
-
+  if (password === adminPassword) {
     return res.status(200).json({
       success: true,
-      secret,
-      message: 'Admin ingelogd'
+      secret: process.env.ADMIN_SECRET,
+      message: 'Admin login succesvol'
     });
-  } catch (error) {
-    console.error('Auth error:', error);
-    return res.status(500).json({ success: false, error: 'Authenticatie mislukt' });
+  } else {
+    return res.status(401).json({ success: false, error: 'Ongeldig admin wachtwoord' });
   }
 }

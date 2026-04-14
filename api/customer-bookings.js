@@ -1,71 +1,41 @@
-/**
- * Customer Bookings API Endpoint
- * GET /api/customer-bookings - Get customer's bookings
- */
+import { supabase } from './_supabase';
 
 export default async function handler(req, res) {
-  // Enable CORS
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
-  res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, x-customer-token');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
   if (req.method === 'OPTIONS') {
-    res.status(200).end();
-    return;
+    return res.status(200).end();
   }
 
-  if (req.method !== 'GET') {
-    return res.status(405).json({ success: false, error: 'Method not allowed' });
+  const authHeader = req.headers['authorization'];
+  if (!authHeader) {
+    return res.status(401).json({ success: false, error: 'Unauthorized' });
   }
+
+  const token = authHeader.replace('Bearer ', '');
 
   try {
-    // Verify customer token
-    const token = req.headers['x-customer-token'];
-    if (!token) {
-      return res.status(401).json({ success: false, error: 'Customer token required' });
+    // Verify the user with Supabase Auth
+    const { data: { user }, error: authError } = await supabase.auth.getUser(token);
+    if (authError || !user) {
+      return res.status(401).json({ success: false, error: 'Invalid session' });
     }
 
-    // Decode token to get customer ID
-    let customerId;
-    try {
-      const decoded = Buffer.from(token, 'base64').toString('utf-8');
-      customerId = decoded.split(':')[0];
-    } catch (e) {
-      return res.status(401).json({ success: false, error: 'Invalid token' });
+    if (req.method === 'GET') {
+      const { data, error, count } = await supabase
+        .from('boekingen')
+        .select('*', { count: 'exact' })
+        .eq('email', user.email) // Match by email as per current schema
+        .order('datum', { ascending: false });
+
+      if (error) throw error;
+      return res.status(200).json({ success: true, bookings: data, count });
     }
-
-    // Mock bookings for this customer
-    const mockBookings = [
-      {
-        id: '1',
-        datum: '2026-04-15',
-        tijd: '10:00',
-        dienst: 'Basis wash',
-        adres: 'Gent, België',
-        totaal: 35,
-        status: 'confirmed',
-        customer_id: customerId
-      },
-      {
-        id: '2',
-        datum: '2026-04-20',
-        tijd: '14:00',
-        dienst: 'Premium detail',
-        adres: 'Gent, België',
-        totaal: 75,
-        status: 'pending',
-        customer_id: customerId
-      }
-    ];
-
-    return res.status(200).json({
-      success: true,
-      data: mockBookings,
-      count: mockBookings.length
-    });
   } catch (error) {
-    console.error('API Error:', error);
     return res.status(500).json({ success: false, error: error.message });
   }
+
+  return res.status(405).json({ success: false, error: 'Method not allowed' });
 }
